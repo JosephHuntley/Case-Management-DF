@@ -79,6 +79,7 @@ Investigator notes attached to cases.
 | note | TEXT | Markdown-supported note |
 | created_at | TIMESTAMP | Creation timestamp |
 | updated_at | TIMESTAMP | Last update timestamp |
+| is_archived | BOOLEAN | Is the note archived/deleted
 
 ---
 
@@ -124,23 +125,6 @@ Tracks evidence handling and transfers.
 
 ---
 
-## artifacts
-
-Parsed forensic findings and extracted artifacts.
-
-| Field | Type | Notes |
-|---|---|---|
-| id | UUID PK | Primary key |
-| case_id | UUID FK -> cases.id | Related case |
-| evidence_id | UUID FK -> evidence_items.id | Related evidence |
-| tool_job_id | UUID FK -> tool_jobs.id | Generating tool job |
-| artifact_type | VARCHAR(100) | file, process, registry, browser_history |
-| artifact_key | VARCHAR(255) | Artifact identifier |
-| artifact_value | JSONB | Flexible artifact data |
-| discovered_at | TIMESTAMP NULL | Original discovery time |
-| created_at | TIMESTAMP | Creation timestamp |
-
----
 
 ## tags
 
@@ -206,6 +190,24 @@ This table should NEVER allow:
 
 
 **These tables aren't confrimed. Likely will be updated**
+---
+
+## artifacts
+
+Parsed forensic findings and extracted artifacts.
+
+| Field | Type | Notes |
+|---|---|---|
+| id | UUID PK | Primary key |
+| case_id | UUID FK -> cases.id | Related case |
+| evidence_id | UUID FK -> evidence_items.id | Related evidence |
+| tool_job_id | UUID FK -> tool_jobs.id | Generating tool job |
+| artifact_type | VARCHAR(100) | file, process, registry, browser_history |
+| artifact_key | VARCHAR(255) | Artifact identifier |
+| artifact_value | JSONB | Flexible artifact data |
+| discovered_at | TIMESTAMP NULL | Original discovery time |
+| created_at | TIMESTAMP | Creation timestamp |
+
 ---
 
 ## forensic_tools
