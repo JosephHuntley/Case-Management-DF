@@ -1,14 +1,13 @@
 from datetime import datetime
 from uuid import uuid4
-from enum import Enum
 
-from sqlalchemy import String, Text, ForeignKey, DateTime, Enum as SQLEnum
+from sqlalchemy import String, Text, DateTime
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
 
-def Tag(Base):
+class Tag(Base):
     __tablename__ = "tags"
 
     id: Mapped[str] = mapped_column(
