@@ -1,11 +1,10 @@
 from enum import Enum
+from datetime import datetime
+from uuid import uuid4
 
 from sqlalchemy import String, Text, Boolean, DateTime, Enum as SQLEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
-
-from datetime import datetime
-from uuid import uuid4
 
 from app.db.base import Base
 
@@ -15,6 +14,7 @@ class UserRole(str, Enum):
     INVESTIGATOR = "investigator"
     ANALYST = "analyst"
     VIEWER = "viewer"
+
 
 class User(Base):
     __tablename__ = "users"
@@ -27,12 +27,14 @@ class User(Base):
 
     username: Mapped[str] = mapped_column(
         String(100),
-        unique=True
+        unique=True,
+        nullable=False
     )
 
     email: Mapped[str] = mapped_column(
         String(255),
-        unique=True
+        unique=True,
+        nullable=False
     )
 
     password_hash: Mapped[str] = mapped_column(
@@ -48,16 +50,19 @@ class User(Base):
 
     is_active: Mapped[bool] = mapped_column(
         Boolean,
-        default=True
+        default=True,
+        nullable=False
     )
 
     created_at: Mapped[datetime] = mapped_column(
-        DateTime,
-        default=datetime.utcnow
+        DateTime(timezone=True),
+        default=datetime.utcnow,
+        nullable=False
     )
 
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime,
+        DateTime(timezone=True),
         default=datetime.utcnow,
-        onupdate=datetime.utcnow
+        onupdate=datetime.utcnow,
+        nullable=False
     )
