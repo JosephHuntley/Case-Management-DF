@@ -134,7 +134,8 @@ Reusable tags for organizing cases.
 |---|---|---|
 | id | UUID PK | Primary key |
 | name | VARCHAR(100) UNIQUE | Tag name |
-| color | VARCHAR(20) | Optional UI color |
+| description | text | Description of tag |
+| color | VARCHAR(7) | Optional UI color hex color | 
 | created_at | TIMESTAMP | Creation timestamp |
 
 ---
