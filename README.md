@@ -42,6 +42,7 @@ System users/investigators.
 | is_active | BOOLEAN | Active account flag |
 | created_at | TIMESTAMP | Creation timestamp |
 | updated_at | TIMESTAMP | Last update timestamp |
+| deleted_at | TIMESTAMP NULL | Soft delete timestamp |
 
 ---
 
