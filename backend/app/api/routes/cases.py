@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from uuid import uuid4
+from datetime import datetime
 
 from app.db.session import get_db
 from app.models.case import Case
@@ -19,6 +20,7 @@ def create_case(payload: CaseCreate, db: Session = Depends(get_db)):
         description=payload.description,
         status=payload.status,
         priority=payload.priority,
+        created_by=payload.created_by
     )
 
     db.add(case)
@@ -68,8 +70,6 @@ def delete_case(case_id: str, db: Session = Depends(get_db)):
     if not case:
         raise HTTPException(status_code=404, detail="Case not found")
 
-    case.deleted_at = case.deleted_at or None
-    from datetime import datetime
     case.deleted_at = datetime.utcnow()
 
     db.commit()

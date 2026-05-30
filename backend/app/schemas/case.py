@@ -8,6 +8,8 @@ class CaseBase(BaseModel):
     description: str
     status: str = "open"
     priority: str = "medium"
+    created_by: UUID
+    deleted_at: datetime | None = None
 
 
 class CaseCreate(CaseBase):
