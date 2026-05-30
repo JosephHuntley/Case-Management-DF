@@ -18,8 +18,8 @@ Embeded Postgres SQL
   - Assign tags to new cases
 - Create Routes
   - ~~Cases~~
+    - ~~Case Tags~~
   - ~~Tags~~
-    - Case Tags
   - ~~Users~~
   - Case Notes
   - Chain of Custody

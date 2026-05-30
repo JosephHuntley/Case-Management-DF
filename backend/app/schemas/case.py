@@ -24,6 +24,7 @@ class CaseUpdate(BaseModel):
     priority: str | None = None
     assigned_to: UUID | None = None
     closed_at: datetime | None = None
+    tag_ids: list[UUID] | None = None
 
 
 class CaseOut(CaseBase):
