@@ -8,6 +8,7 @@ from app.db.models.evidence_item import EvidenceItem
 from app.db.models.chain_of_custody import ChainOfCustody
 from app.db.models.tag import Tag
 from app.db.models.case_tag import CaseTag
+from app.db.models.audit_log import AuditLog
 
 def init_db():
     Base.metadata.create_all(bind=engine)
