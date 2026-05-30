@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from uuid import uuid4
+from datetime import datetime
 
 from app.db.session import get_db
 from app.models.user import User
@@ -65,8 +66,6 @@ def delete_user(user_id: str, db: Session = Depends(get_db)):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    user.deleted_at = user.deleted_at or None
-    from datetime import datetime
     user.deleted_at = datetime.utcnow()
 
     db.commit()

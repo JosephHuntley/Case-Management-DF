@@ -1,6 +1,5 @@
 from uuid import uuid4
 
-
 def test_create_user(client):
     response = client.post(
         "/users/",
