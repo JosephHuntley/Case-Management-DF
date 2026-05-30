@@ -3,7 +3,7 @@ from uuid import uuid4
 
 from sqlalchemy import String, Text, ForeignKey, DateTime
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..db.base import Base
 
@@ -81,4 +81,10 @@ class Case(Base):
     deleted_at: Mapped[datetime | None] = mapped_column(
         DateTime,
         nullable=True
+    )
+
+    tags = relationship(
+        "Tag",
+        secondary="case_tags",
+        back_populates="cases"
     )

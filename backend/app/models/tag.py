@@ -3,7 +3,7 @@ from uuid import uuid4
 
 from sqlalchemy import String, Text, DateTime
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
 
@@ -33,4 +33,10 @@ class Tag(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
         default=datetime.utcnow
+    )
+
+    cases = relationship(
+        "Case",
+        secondary="case_tags",
+        back_populates="tags"
     )

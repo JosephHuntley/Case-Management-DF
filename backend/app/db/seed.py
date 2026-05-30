@@ -1,17 +1,19 @@
 from uuid import uuid4
+
 from .session import SessionLocal
 from ..models.user import User
 from ..models.case import Case
+from ..models.tag import Tag
+
 
 def seed_db():
     db = SessionLocal()
 
-    # Don't reseed if data already exists
     if db.query(User).first():
         db.close()
         return
 
-    user = User(
+    admin = User(
         id=uuid4(),
         username="admin",
         email="admin@test.local",
@@ -19,18 +21,38 @@ def seed_db():
         role="admin"
     )
 
-    db.add(user)
-
-    user = User(
+    investigator = User(
         id=uuid4(),
         username="investigator",
-        email="investigator.test@local.com",
+        email="investigator@test.local",
         password_hash="not_real_hash",
         role="investigator"
     )
 
-    db.add(user)
-    db.flush() 
+    db.add_all([admin, investigator])
+
+    malware_tag = Tag(
+        id=uuid4(),
+        name="malware",
+        description="Cases involving malware",
+        color="#ff0000"
+    )
+
+    windows_tag = Tag(
+        id=uuid4(),
+        name="windows",
+        description="Cases involving Windows OS",
+        color="#ff0000"
+    )
+
+    triage_tag = Tag(
+        id=uuid4(),
+        name="triage",
+        description="Cases that need to be triaged",
+        color="#ff0000"
+    )
+
+    db.add_all([malware_tag, windows_tag, triage_tag])
 
     case = Case(
         id=uuid4(),
@@ -39,8 +61,14 @@ def seed_db():
         description="Development seed data",
         status="open",
         priority="high",
-        created_by=user.id
+        created_by=investigator.id
     )
+
+    case.tags.extend([
+        malware_tag,
+        windows_tag,
+        triage_tag
+    ])
 
     db.add(case)
     db.commit()
