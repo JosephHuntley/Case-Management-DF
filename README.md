@@ -14,9 +14,28 @@ Embeded Postgres SQL
 
 ## TODO (More Details to be added)
 - Create new cases
-- Store case details in database
-- Track changes to data
-- Retrieve old cases
+  - Log new case in audit table
+  - Assign tags to new cases
+- Create Routes
+  - ~~Cases~~
+  - ~~Tags~~
+    - Case Tags
+  - ~~Users~~
+  - Case Notes
+  - Chain of Custody
+  - Evidence Items
+  - Report
+- ~~Store case details in database~~
+  - ~~Retrieve old cases~~
+- Track changes to data 
+  - Update each route to log changes in audit table
+    - Case
+    - Tags
+    - Users
+    - Chain of Custody
+    - Case Notes
+    - Evidence Items
+    - Report
 - Generate reports for common data extractions
 - Integrate with other forensic tools (Which tools?)
   - To start, CLI Based tools like TSK and Volatility
