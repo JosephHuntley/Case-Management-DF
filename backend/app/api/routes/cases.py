@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from uuid import uuid4
 
 from app.db.session import get_db
-from app.db.models.case import Case
+from app.models.case import Case
 from app.schemas.case import CaseCreate, CaseUpdate, CaseOut
 
 router = APIRouter(prefix="/cases", tags=["Cases"])

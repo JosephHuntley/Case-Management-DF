@@ -1,9 +1,7 @@
-# app/db/seed.py
-
 from uuid import uuid4
-from app.db.session import SessionLocal
-from app.db.models.user import User
-from app.db.models.case import Case
+from .session import SessionLocal
+from ..models.user import User
+from ..models.case import Case
 
 def seed_db():
     db = SessionLocal()

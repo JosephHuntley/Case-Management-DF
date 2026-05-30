@@ -1,8 +1,8 @@
-from app.db.seed import seed_db
+from .db.seed import seed_db
 from fastapi import FastAPI
-from app.db.init_db import init_db
-from app.api.routes.cases import router as cases_router
-from app.api.routes.users import router as users_router
+from .db.init_db import init_db
+from .api.routes.cases import router as cases_router
+from .api.routes.users import router as users_router
 
 app = FastAPI(title="Case Management DF")
 

@@ -6,7 +6,7 @@ from sqlalchemy import String, Text, Boolean, DateTime, Enum as SQLEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.db.base import Base
+from ..db.base import Base
 
 
 class UserRole(str, Enum):
@@ -65,4 +65,9 @@ class User(Base):
         default=datetime.utcnow,
         onupdate=datetime.utcnow,
         nullable=False
+    )
+
+    deleted_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True
     )
