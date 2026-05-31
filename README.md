@@ -41,7 +41,7 @@ Embeded Postgres SQL
     - Users
     - ~~Cases~~
     - Tags 
-    - Audit
+    - ~~Audit~~
 - Generate reports for common data extractions
 - Integrate with other forensic tools (Which tools?)
   - To start, CLI Based tools like TSK and Volatility
