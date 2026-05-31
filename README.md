@@ -16,6 +16,7 @@ Embeded Postgres SQL
 - Create new cases
   - Log new case in audit table
   - Assign tags to new cases
+- Added hash chain to audit table.
 - Create Routes
   - ~~Cases~~
     - ~~Case Tags~~
@@ -29,7 +30,7 @@ Embeded Postgres SQL
   - ~~Retrieve old cases~~
 - Track changes to data 
   - Update each route to log changes in audit table
-    - Case
+    - ~~Case~~
     - Tags
     - Users
     - Chain of Custody
@@ -207,6 +208,8 @@ This table should NEVER allow:
 | changed_by | UUID FK -> users.id | User making change |
 | old_values | JSONB | Previous values |
 | new_values | JSONB | Updated values |
+| previous_hash | varchar(64) | Hash of the previous row |
+| row_hash _ varchar(64) | Hash of the row's data |
 | created_at | TIMESTAMP | Event timestamp |
 
 

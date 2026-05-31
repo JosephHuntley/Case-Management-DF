@@ -56,6 +56,16 @@ class AuditLog(Base):
         nullable=True
     )
 
+    previous_hash: Mapped[str] = mapped_column(
+        String(64),
+        nullable=True
+    )
+
+    row_hash: Mapped[str] = mapped_column(
+        String(64),
+        nullable=False
+    )
+
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         default=datetime.utcnow,

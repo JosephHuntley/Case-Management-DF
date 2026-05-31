@@ -16,8 +16,7 @@ class AuditService:
                 entity_id=entity_id,
                 action="insert",
                 changed_by=user_id,
-                old_values=None,
-                new_values=new_values,
+                old_values=None
             )
         )
 
@@ -29,7 +28,7 @@ class AuditService:
                 action="update",
                 changed_by=user_id,
                 old_values=old_values,
-                new_values=new_values,
+                new_values=new_values
             )
         )
 
@@ -41,6 +40,6 @@ class AuditService:
                 action="delete",
                 changed_by=user_id,
                 old_values=old_values,
-                new_values=None,
+                new_values=None
             )
         )

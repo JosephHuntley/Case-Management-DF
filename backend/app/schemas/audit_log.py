@@ -11,3 +11,5 @@ class AuditLogCreate(BaseModel):
     changed_by: UUID
     old_values: Optional[dict[str, Any]] = None
     new_values: Optional[dict[str, Any]] = None
+    # previous_hash: Optional[str] = None
+    # row_hash: Optional[str] = None
