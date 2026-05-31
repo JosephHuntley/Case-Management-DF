@@ -1,3 +1,4 @@
+from app.services.user_service import UserService
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from uuid import uuid4
@@ -11,62 +12,25 @@ router = APIRouter(prefix="/users", tags=["Users"])
 
 # CREATE
 @router.post("/", response_model=UserOut)
-def create_user(payload: UserCreate, db: Session = Depends(get_db)):
-    user = User(
-        id=uuid4(),
-        username=payload.username,
-        email=payload.email,
-        role=payload.role,
-        is_active=True,
-        password_hash=payload.password,  # TODO: In production, hash the password!
-    )
-
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return user
+def create_user(payload: UserCreate, db: Session = Depends(get_db)):   
+    return UserService.create_user(db, payload)
 
 # READ ALL
 @router.get("/", response_model=list[UserOut])
 def get_users(db: Session = Depends(get_db)):
-    return db.query(User).filter(User.is_active == True).filter(User.deleted_at == None).all()
+    return UserService.get_all_users(db)
 
 # READ ONE
 @router.get("/{user_id}", response_model=UserOut)
 def get_user(user_id: str, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.id == user_id).first()
-
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-
-
-    return user
+    return UserService.get_user_by_id(db, user_id)
 
 # UPDATE
 @router.put("/{user_id}", response_model=UserOut)
 def update_user(user_id: str, payload: UserUpdate, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.id == user_id).first()
-
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    for key, value in payload.dict(exclude_unset=True).items():
-        setattr(user, key, value)
-
-    db.commit()
-    db.refresh(user)
-    return user
-
+    return UserService.update_user(db, user_id, payload)
 
 # SOFT DELETE
 @router.delete("/{user_id}")
 def delete_user(user_id: str, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.id == user_id).first()
-
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    user.deleted_at = datetime.utcnow()
-
-    db.commit()
-    return {"message": "user archived"}
+    return UserService.delete_user(db, user_id)
