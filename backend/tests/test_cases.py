@@ -1,6 +1,8 @@
 from uuid import uuid4
 
-def test_create_case(client):
+from app.models.audit_log import AuditLog
+
+def test_create_case(client, db_session):
     user = client.post(
         "/users/",
         json={
@@ -46,6 +48,12 @@ def test_create_case(client):
     assert data["status"] == "open"
     assert data["priority"] == "medium"
     assert "id" in data
+
+    ## Verify auditing
+    audit_logs = db_session.query(AuditLog).filter(AuditLog.entity_id == data["id"]).all()
+    assert len(audit_logs) == 1
+    assert audit_logs[0].action == "insert"
+    assert audit_logs[0].entity_type == "case"
     
 def test_get_cases(client):
     response = client.get("/cases/")
@@ -90,7 +98,7 @@ def test_get_missing_cases(client):
 
     assert response.status_code == 404
 
-def test_update_case(client):
+def test_update_case(client, db_session):
     user = client.post(
         "/users/",
         json={
@@ -135,7 +143,17 @@ def test_update_case(client):
     assert response.json()["status"] == "in progress"
     assert response.json()["priority"] == "high"
 
-def test_delete_case(client):
+    ## Verify auditing
+    audit_logs = db_session.query(AuditLog).filter(AuditLog.entity_id == case_id).order_by(AuditLog.created_at).all()
+    assert len(audit_logs) == 2
+    assert audit_logs[1].action == "update"
+    assert audit_logs[1].entity_type == "case"
+    assert audit_logs[1].old_values["title"] == "Test Case"
+    assert audit_logs[1].new_values["title"] == "Updated Test Case"
+    assert audit_logs[1].old_values["status"] == "open"
+    assert audit_logs[1].new_values["status"] == "in progress"
+
+def test_delete_case(client, db_session):
     user = client.post(
         "/users/",
         json={
@@ -174,4 +192,12 @@ def test_delete_case(client):
     response = client.get(f"/cases/{case_id}")
     assert response.status_code == 200
     assert response.json()["deleted_at"] is not None
+
+    ## Verify auditing
+    audit_logs = db_session.query(AuditLog).filter(AuditLog.entity_id == case_id).order_by(AuditLog.created_at).all()
+    assert len(audit_logs) == 2
+    assert audit_logs[1].action == "delete"
+    assert audit_logs[1].entity_type == "case"
+    assert audit_logs[1].old_values["title"] == "Test Case"
+    assert audit_logs[1].new_values == None
 
