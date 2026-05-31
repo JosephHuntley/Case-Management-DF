@@ -4,7 +4,7 @@ def test_create_user(client):
     response = client.post(
         "/users/",
         json={
-            "username": "testuser",
+            "username": "testuser6748",
             "email": "test@example.com",
             "password": "password123",
             "role": "investigator"
@@ -14,7 +14,7 @@ def test_create_user(client):
     assert response.status_code == 200
 
     data = response.json()
-    assert data["username"] == "testuser"
+    assert data["username"] == "testuser6748"
     assert data["email"] == "test@example.com"
     assert data["role"] == "investigator"
     assert "id" in data

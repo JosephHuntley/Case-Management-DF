@@ -14,6 +14,18 @@ def test_create_case(client):
     assert user.status_code == 200
     user_id = user.json()["id"]
 
+    tag = client.post(
+        "/tags/",
+        json={
+            "name": "Test Tag1",
+            "description": "This is a test tag",
+            "color": "#FF0000"
+        }
+    )
+
+    assert tag.status_code == 200
+    tag_id = tag.json()["id"]
+
     response = client.post(
         "/cases/",
         json={
@@ -21,7 +33,8 @@ def test_create_case(client):
             "description": "This is a test case",
             "status": "open",
             "priority": "medium",
-            "created_by": user_id
+            "created_by": user_id,
+            "tag_ids": []
         }
     )
 
