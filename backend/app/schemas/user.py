@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from uuid import UUID
 from datetime import datetime
 
@@ -20,3 +20,6 @@ class UserOut(UserBase):
     id: UUID
     is_active: bool
     created_at: datetime
+    deleted_at: datetime | None
+
+    model_config = ConfigDict(from_attributes=True)

@@ -1,3 +1,4 @@
+from datetime import datetime
 
 from app.models.user import User
 from sqlalchemy.orm import Session
@@ -29,6 +30,8 @@ class UserRepository:
         return user
     
     @staticmethod
-    def soft_delete(db: Session, user: User) -> None:
+    def soft_delete(db: Session, user: User) -> User | None:
         user.is_active = False
+        user.deleted_at = datetime.utcnow()
         db.flush()
+        return user

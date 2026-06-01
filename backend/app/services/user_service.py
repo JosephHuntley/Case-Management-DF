@@ -1,6 +1,7 @@
 from uuid import UUID, uuid4
 from app.models.user import User
-from app.schemas.user import UserCreate
+from app.schemas.user import UserCreate, UserOut
+from app.services.audit_service import AuditService
 from sqlalchemy.orm import Session
 from app.repositories.user_repository import UserRepository
 from passlib.context import CryptContext
@@ -13,17 +14,31 @@ class UserService:
     @staticmethod
     def create_user(
         db: Session,
-        payload: UserCreate
+        payload: UserCreate,
+        current_user: User
     ) -> User:
         
         user = User(
             id=uuid4(),
             username=payload.username,
             email=payload.email,
-            password_hash=pwd_context.hash(payload.password)
+            password_hash=pwd_context.hash(payload.password),
+            role=payload.role
         )
 
         user = UserRepository.create(db, user)
+
+        audit_data = UserOut.model_validate(user).model_dump(mode="json")
+        print("AUDIT DATA:", audit_data)
+
+        audit_service = AuditService(db)
+        audit_service.log_create(
+            entity_type="User",
+            entity_id=user.id,
+            user_id=current_user.id, 
+            new_values=audit_data
+            )
+
         db.commit()
         db.refresh(user)
         return user
@@ -36,3 +51,58 @@ class UserService:
     @staticmethod
     def get_all_users(db: Session) -> list[User]:
         return UserRepository.get_all(db)
+
+    @staticmethod
+    def update_user(db: Session, user_id: UUID, payload: UserCreate, current_user: User) -> User | None:
+        user = UserRepository.get_by_id(db, user_id)
+        old_data = UserOut.model_validate(user).model_dump(mode="json")
+
+        if not user:
+            return None
+
+        update_data = payload.model_dump(exclude_unset=True)
+
+        tag_ids = update_data.pop("tag_ids", None)
+
+        UserRepository.update(
+            db=db,
+            user=user,
+            data=update_data
+        )
+
+        new_data = UserOut.model_validate(user).model_dump(mode="json")
+        
+
+        audit_service = AuditService(db)
+        audit_service.log_update(
+            entity_type="User",
+            entity_id=user.id,
+            user_id=current_user.id,
+            old_values=old_data,
+            new_values=new_data
+            )
+
+        db.commit()
+        db.refresh(user)
+
+        return user
+
+    @staticmethod
+    def delete_user(db: Session, user_id: UUID, current_user: User) -> None:
+        user = UserRepository.get_by_id(db, user_id)
+
+        if not user:
+            return None
+
+        UserRepository.soft_delete(db, user)
+
+        audit_service = AuditService(db)
+        audit_service.log_delete(
+            entity_type="User",
+            entity_id=user.id,
+            user_id=current_user.id,
+            old_values=UserOut.model_validate(user).model_dump(mode="json")
+            ) 
+
+        db.commit()
+        return True

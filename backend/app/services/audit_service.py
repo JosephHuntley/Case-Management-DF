@@ -8,15 +8,14 @@ class AuditService:
 
     
     def log_create(self, *, entity_type, entity_id, user_id, new_values):
-        print("LOGGING CREATE")
-        print(f"Entity Type: {entity_type}, Entity ID: {entity_id}, User ID: {user_id}, New Values: {new_values}")
         return self.repo.create(
             AuditLogCreate(
                 entity_type=entity_type,
                 entity_id=entity_id,
                 action="insert",
                 changed_by=user_id,
-                old_values=None
+                old_values=None,
+                new_values=new_values
             )
         )
 

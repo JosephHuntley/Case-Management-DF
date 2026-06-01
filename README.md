@@ -32,13 +32,13 @@ Embeded Postgres SQL
   - Update each route to log changes in audit table
     - ~~Case~~
     - Tags
-    - Users
+    - ~~Users~~
     - Chain of Custody
     - Case Notes
     - Evidence Items
     - Report
   - Create tests
-    - Users
+    - ~~Users~~
     - ~~Cases~~
     - Tags 
     - ~~Audit~~

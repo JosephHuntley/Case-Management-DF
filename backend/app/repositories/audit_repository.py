@@ -15,6 +15,7 @@ class AuditRepository:
     def create(self, log: AuditLogCreate):
         previous_hash = self.get_last_hash(log.entity_type, log.entity_id)
 
+
         db_log = AuditLog(
             **log.model_dump(),
             previous_hash=previous_hash,
@@ -30,9 +31,12 @@ class AuditRepository:
             "previous_hash": previous_hash,
         }
 
+
         db_log.row_hash = hashlib.sha256(
             json.dumps(payload, sort_keys=True, default=str).encode()
         ).hexdigest()
+
+        print(db_log)
 
         self.db.add(db_log)
         self.db.flush()
