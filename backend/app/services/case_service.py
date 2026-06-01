@@ -9,12 +9,6 @@ from app.schemas.case import CaseCreate, CaseOut, CaseUpdate
 from app.services.audit_service import AuditService
 
 
-def model_to_dict(obj):
-    return {
-        c.name: getattr(obj, c.name)
-        for c in obj.__table__.columns
-    }
-
 class CaseService:
 
     @staticmethod
