@@ -21,7 +21,7 @@ Embeded Postgres SQL
   - ~~Cases~~
     - ~~Case Tags~~
   - ~~Tags~~
-  - ~~Users~~c
+  - ~~Users~~
   - Case Notes
   - Chain of Custody
   - Evidence Items
@@ -31,7 +31,7 @@ Embeded Postgres SQL
 - Track changes to data 
   - Update each route to log changes in audit table
     - ~~Case~~
-    - Tags
+    - ~~Tags~~
     - ~~Users~~
     - Chain of Custody
     - Case Notes
@@ -40,7 +40,7 @@ Embeded Postgres SQL
   - Create tests
     - ~~Users~~
     - ~~Cases~~
-    - Tags 
+    - ~~Tags~~ 
     - ~~Audit~~
 - Generate reports for common data extractions
 - Integrate with other forensic tools (Which tools?)

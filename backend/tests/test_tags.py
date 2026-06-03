@@ -1,6 +1,8 @@
 from uuid import uuid4
 
-def test_create_tag(client):
+from app.models.audit_log import AuditLog
+
+def test_create_tag(client, db_session):
     response = client.post(
         "/tags/",
         json={
@@ -18,13 +20,19 @@ def test_create_tag(client):
     assert data["color"] == "#FF5733"
     assert "id" in data
 
+    ## Verify auditing
+    audit_logs = db_session.query(AuditLog).filter(AuditLog.entity_id == data["id"]).all()
+    assert len(audit_logs) == 1
+    assert audit_logs[0].action == "insert"
+    assert audit_logs[0].entity_type == "tag"
+
 def test_get_tags(client):
     response = client.get("/tags/")
 
     assert response.status_code == 200
     assert isinstance(response.json(), list)
 
-def test_update_tag(client):
+def test_update_tag(client, db_session):
     created = client.post(
         "/tags/",
         json={
@@ -53,7 +61,17 @@ def test_update_tag(client):
     assert data["description"] == "This tag has been updated"
     assert data["color"] == "#3357FF"
 
-def test_delete_tag(client):
+    ## Verify auditing
+    audit_logs = db_session.query(AuditLog).filter(AuditLog.entity_id == tag_id).order_by(AuditLog.created_at).all()
+    assert len(audit_logs) == 2
+    assert audit_logs[1].action == "update"
+    assert audit_logs[1].entity_type == "tag"
+    assert audit_logs[1].old_values["name"] == "Update Tag"
+    assert audit_logs[1].new_values["name"] == "Updated Tag"
+    assert audit_logs[1].old_values["color"] == "#33FF57"
+    assert audit_logs[1].new_values["color"] == "#3357FF"
+
+def test_delete_tag(client, db_session):
     created = client.post(
         "/tags/",
         json={
@@ -74,3 +92,10 @@ def test_delete_tag(client):
     response = client.get("/tags/")
     deleted_tag = [t for t in response.json() if t["id"] == tag_id]
     assert len(deleted_tag) == 0
+
+    ## Verify auditing
+    audit_logs = db_session.query(AuditLog).filter(AuditLog.entity_id == tag_id).order_by(AuditLog.created_at).all()
+    assert len(audit_logs) == 2
+    assert audit_logs[1].action == "delete"
+    assert audit_logs[1].entity_type == "tag"
+    assert audit_logs[1].old_values["name"] == "Delete Tag"
