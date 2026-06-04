@@ -1,6 +1,6 @@
 from ...services.case_service import CaseService
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session, selectinload
+from sqlalchemy.orm import Session
 from uuid import uuid4
 from datetime import datetime
 

@@ -12,7 +12,7 @@ class AuditService:
             AuditLogCreate(
                 entity_type=entity_type,
                 entity_id=entity_id,
-                action="insert",
+                action="create",
                 changed_by=user_id,
                 old_values=None,
                 new_values=new_values

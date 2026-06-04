@@ -1,51 +1,61 @@
-from sqlalchemy import String, Text, DateTime, ForeignKey, Boolean
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column
-
 from datetime import datetime
-from uuid import uuid4
-
-
+from typing import TYPE_CHECKING
+from uuid import UUID, uuid4
+from sqlalchemy import String, Text, DateTime, ForeignKey, Boolean, func
+from sqlalchemy.dialects.postgresql import UUID as PGUUID
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
+
+if TYPE_CHECKING:
+    from app.models.case import Case
+    from app.models.user import User
 
 
 class CaseNote(Base):
     __tablename__ = "case_notes"
 
-    id: Mapped[str] = mapped_column(
-        UUID(as_uuid=True),
+    id: Mapped[UUID] = mapped_column(
+        PGUUID(as_uuid=True),
         primary_key=True,
         default=uuid4
     )
-
-    case_id: Mapped[str] = mapped_column(
-        UUID(as_uuid=True),
-        ForeignKey("cases.id"),
+    case_id: Mapped[UUID] = mapped_column(
+        PGUUID(as_uuid=True),
+        ForeignKey("cases.id", ondelete="CASCADE"),
         nullable=False
     )
-
-    author_id: Mapped[str] = mapped_column(
-        UUID(as_uuid=True),
-        ForeignKey("users.id"),
+    author_id: Mapped[UUID] = mapped_column(
+        PGUUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="RESTRICT"),
         nullable=False
     )
-
     note: Mapped[str] = mapped_column(
         Text,
         nullable=False
     )
-
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime,
-        default=datetime.utcnow
-    )
-
-    updated_at: Mapped[datetime] = mapped_column(
-        DateTime,
-        default=datetime.utcnow,
-        onupdate=datetime.utcnow
-    )
     is_archived: Mapped[bool] = mapped_column(
         Boolean,
-        default=False
-    ) 
+        default=False,
+        nullable=False
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+        nullable=False
+    )
+
+    # Relationships
+    case: Mapped["Case"] = relationship(
+        "Case",
+        back_populates="notes"
+    )
+    author: Mapped["User"] = relationship(
+        "User",
+        back_populates="notes"
+    )

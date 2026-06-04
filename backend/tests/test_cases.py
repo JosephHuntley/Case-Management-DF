@@ -52,7 +52,7 @@ def test_create_case(client, db_session):
     ## Verify auditing
     audit_logs = db_session.query(AuditLog).filter(AuditLog.entity_id == data["id"]).all()
     assert len(audit_logs) == 1
-    assert audit_logs[0].action == "insert"
+    assert audit_logs[0].action == "create"
     assert audit_logs[0].entity_type == "case"
     
 def test_get_cases(client):
