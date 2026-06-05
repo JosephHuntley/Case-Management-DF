@@ -1,14 +1,11 @@
-from app.models.user import User
+from app.models import User
 from app.security import get_current_user
-from app.services.tag_service import TagService
-from fastapi import APIRouter, Depends, HTTPException
+from app.services import TagService
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from uuid import uuid4
 
 from app.db.session import get_db
-
-from app.models.tag import Tag
-from app.schemas.tag import TagCreate, TagOut
+from app.schemas import TagCreate, TagOut
 
 router = APIRouter(prefix="/tags", tags=["Tags"])
 

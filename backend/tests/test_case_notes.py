@@ -1,6 +1,6 @@
 # test_case_notes.py
 from uuid import UUID, uuid4
-from app.models.audit_log import AuditLog, AuditAction
+from app.models import AuditLog, AuditAction
 
 
 def test_create_case_note(client, db_session):

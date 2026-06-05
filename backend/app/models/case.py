@@ -8,12 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from ..db.base import Base
 
 if TYPE_CHECKING:
-    from app.models.tag import Tag
-    from app.models.user import User
-    from app.models.case_note import CaseNote
-    from app.models.evidence_item import EvidenceItem
-    from app.models.report import Report
-
+    from app.models import Tag, User, CaseNote, EvidenceItem, Report
 
 class CaseStatus(str, Enum):
     OPEN = "open"

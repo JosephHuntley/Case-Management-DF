@@ -1,13 +1,11 @@
 from uuid import UUID, uuid4
 
-from app.models.user import User
 from sqlalchemy.orm import Session
 
+from app.models import User, Case
+from app.repositories import CaseRepository
+from app.schemas import CaseCreate, CaseOut, CaseUpdate
 from app.services.audit_service import AuditService
-
-from app.models.case import Case
-from app.repositories.case_repository import CaseRepository
-from app.schemas.case import CaseCreate, CaseOut, CaseUpdate
 
 
 

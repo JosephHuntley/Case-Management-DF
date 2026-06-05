@@ -1,12 +1,11 @@
 from http.client import HTTPException
 from uuid import UUID, uuid4
-from datetime import datetime
-from app.repositories.tag_repository import TagRepository
-from app.models.user import User
+
 from sqlalchemy.orm import Session
 
-from app.schemas.tag import TagCreate, TagOut
-from app.models.tag import Tag
+from app.repositories import TagRepository
+from app.models import User, Tag
+from app.schemas import TagCreate, TagOut
 from app.services.audit_service import AuditService
 
 class TagService:

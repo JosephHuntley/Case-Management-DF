@@ -1,13 +1,11 @@
-from ...services.case_service import CaseService
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from uuid import uuid4
-from datetime import datetime
 
+from app.services import CaseService
 from app.db.session import get_db
-from app.models.case import Case
-from app.schemas.case import CaseCreate, CaseUpdate, CaseOut
-from app.models.tag import Tag
+from app.schemas import CaseCreate, CaseUpdate, CaseOut
 from app.security import get_current_user
 
 router = APIRouter(prefix="/cases", tags=["Cases"])

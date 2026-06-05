@@ -1,10 +1,11 @@
 from uuid import UUID, uuid4
-from app.models.user import User
-from app.schemas.user import UserCreate, UserOut
-from app.services.audit_service import AuditService
 from sqlalchemy.orm import Session
-from app.repositories.user_repository import UserRepository
 from passlib.context import CryptContext
+
+from app.models import User
+from app.schemas import UserCreate, UserOut
+from app.repositories import UserRepository
+from app.services.audit_service import AuditService
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

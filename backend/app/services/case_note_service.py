@@ -1,11 +1,12 @@
 # case_note_service.py
 from fastapi import HTTPException
 from uuid import UUID
-from app.models.user import User
+
 from sqlalchemy.orm import Session
-from app.models.case_note import CaseNote
-from app.repositories.case_note_repository import CaseNoteRepository
-from app.schemas.case_note import CaseNoteCreate, CaseNoteOut
+
+from app.models import CaseNote, User
+from app.repositories import CaseNoteRepository
+from app.schemas import CaseNoteCreate, CaseNoteOut
 from app.services.audit_service import AuditService
 
 

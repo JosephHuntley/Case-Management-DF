@@ -1,13 +1,11 @@
-from app.services.user_service import UserService
-from app.security import get_current_user
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from uuid import uuid4
-from datetime import datetime
 
+from app.services import UserService
+from app.security import get_current_user
 from app.db.session import get_db
-from app.models.user import User
-from app.schemas.user import UserCreate, UserUpdate, UserOut
+from app.models import User
+from app.schemas import UserCreate, UserUpdate, UserOut
 
 router = APIRouter(prefix="/users", tags=["Users"])
 

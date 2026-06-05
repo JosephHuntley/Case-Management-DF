@@ -1,5 +1,5 @@
-from app.models.user import User
 from uuid import UUID
+from app.models import User
 
 def get_current_user():
     return User(

@@ -3,8 +3,7 @@ from datetime import datetime, timezone
 
 from sqlalchemy.orm import Session, joinedload
 
-from app.models.case import Case
-from app.models.tag import Tag
+from app.models import Case, Tag
 
 
 class CaseRepository:

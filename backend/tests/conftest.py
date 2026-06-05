@@ -1,14 +1,16 @@
 import pytest
 from uuid import UUID
+
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
+
 from app.db.base import Base
 from app.db.session import get_db
 from app.main import app
-from app.models.user import User, UserRole
 from app.security import get_current_user
 from tests.setup_tests_db import create_test_db
+from app.models import User, UserRole
 
 TEST_DB_URL = "postgresql+psycopg://postgres:password@localhost:5432/case_db_test"
 TEST_USER_ID = UUID("11111111-1111-1111-1111-111111111111")

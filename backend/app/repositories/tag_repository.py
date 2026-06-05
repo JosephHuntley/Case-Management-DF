@@ -1,7 +1,6 @@
 from uuid import uuid4
-from datetime import datetime
-from app.models.tag import Tag
 from sqlalchemy.orm import Session
+from app.models import Tag
 
 class TagRepository:
 

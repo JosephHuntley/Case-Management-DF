@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from app.models.audit_log import AuditLog
+from app.models import AuditLog
 
 def test_create_user(client, db_session):
     response = client.post(

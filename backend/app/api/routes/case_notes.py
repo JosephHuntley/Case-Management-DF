@@ -1,10 +1,10 @@
 from uuid import UUID
 
-from app.schemas.case_note import CaseNoteCreate, CaseNoteOut, CaseNoteUpdate
+from app.schemas import CaseNoteCreate, CaseNoteOut, CaseNoteUpdate
 from app.db.session import get_db
 from app.security import get_current_user
-from app.services.case_note_service import CaseNoteService
-from app.models.user import User
+from app.services import CaseNoteService
+from app.models import User
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 

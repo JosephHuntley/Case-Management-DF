@@ -8,13 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from ..db.base import Base
 
 if TYPE_CHECKING:
-    from app.models.case import Case
-    from app.models.case_note import CaseNote
-    from app.models.evidence_item import EvidenceItem
-    from app.models.report import Report
-    from app.models.audit_log import AuditLog
-    from app.models.chain_of_custody import ChainOfCustody
-
+    from app.models import Case, CaseNote, EvidenceItem, Report, AuditLog, ChainOfCustody
 
 class UserRole(str, Enum):
     ADMIN = "admin"

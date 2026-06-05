@@ -1,5 +1,5 @@
-from app.repositories.audit_repository import AuditRepository
-from app.schemas.audit_log import AuditLogCreate
+from app.repositories import AuditRepository
+from app.schemas import AuditLogCreate
 
 
 class AuditService:

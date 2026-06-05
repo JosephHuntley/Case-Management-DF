@@ -2,7 +2,6 @@ from datetime import datetime
 from enum import Enum
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
-from app.models.chain_of_custody import ChainOfCustody
 from sqlalchemy import String, Text, Boolean, DateTime, BigInteger, ForeignKey, func
 from sqlalchemy import Enum as SQLEnum
 from sqlalchemy.dialects.postgresql import UUID as PGUUID
@@ -10,9 +9,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
 
 if TYPE_CHECKING:
-    from app.models.case import Case
-    from app.models.user import User
-
+    from app.models import Case, User, ChainOfCustody
 
 class EvidenceType(str, Enum):
     DISK_IMAGE = "disk_image"

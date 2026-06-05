@@ -3,8 +3,8 @@ import json
 
 from uuid import UUID
 
-from ..models.audit_log import AuditLog
-from app.schemas.audit_log import AuditLogCreate
+from app.models import AuditLog
+from app.schemas import AuditLogCreate
 from app.db.session import SessionLocal
 
 

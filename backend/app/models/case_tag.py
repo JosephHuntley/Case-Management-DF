@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime
 from uuid import UUID
 from sqlalchemy import DateTime, ForeignKey, PrimaryKeyConstraint, func
 from sqlalchemy.dialects.postgresql import UUID as PGUUID

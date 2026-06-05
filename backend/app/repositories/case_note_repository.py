@@ -1,9 +1,8 @@
 # case_note_repository.py
 from uuid import UUID, uuid4
-from app.models.user import User
 from sqlalchemy.orm import Session
-from app.schemas.case_note import CaseNoteCreate
-from app.models.case_note import CaseNote
+from app.schemas import CaseNoteCreate
+from app.models import CaseNote, User
 
 
 class CaseNoteRepository:

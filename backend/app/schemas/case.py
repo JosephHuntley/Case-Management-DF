@@ -1,7 +1,7 @@
 from pydantic import BaseModel, ConfigDict, Field
 from uuid import UUID
 from datetime import datetime
-from .tag import TagOut
+from app.schemas.tag import TagOut
 
 
 class CaseBase(BaseModel):

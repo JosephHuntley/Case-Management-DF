@@ -1,8 +1,6 @@
 from uuid import uuid4, UUID
-from .session import SessionLocal
-from ..models.user import User, UserRole
-from ..models.case import Case, CaseStatus, CasePriority
-from ..models.tag import Tag
+from app.db.session import SessionLocal
+from app.models import User, UserRole, Case, CaseStatus, CasePriority, Tag
 
 
 def seed_db():

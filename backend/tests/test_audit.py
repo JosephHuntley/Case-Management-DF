@@ -1,8 +1,8 @@
 from uuid import UUID
 
-from app.repositories.audit_repository import AuditRepository
-from app.schemas.audit_log import AuditLogCreate
-from app.models.audit_log import AuditLog
+from app.repositories import AuditRepository
+from app.schemas import AuditLogCreate
+from app.models import AuditLog
 
 
 def test_audit_repository_only(db_session):
