@@ -16,7 +16,6 @@ class TagService:
             id=str(uuid4()),
             name=payload.name,
             description=payload.description,
-            created_at=datetime.utcnow(),
             color=payload.color
         )
 
