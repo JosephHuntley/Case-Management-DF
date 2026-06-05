@@ -5,6 +5,7 @@ from .api.routes.cases import router as cases_router
 from .api.routes.users import router as users_router
 from .api.routes.tags import router as tags_router
 from .api.routes.case_notes import router as case_notes_router
+from .api.routes.chain_of_custody import router as chain_of_custody_router
 
 app = FastAPI(title="Case Management DF")
 
@@ -15,6 +16,7 @@ app.include_router(cases_router)
 app.include_router(users_router)
 app.include_router(tags_router)
 app.include_router(case_notes_router)
+app.include_router(chain_of_custody_router)
 
 @app.get("/")
 

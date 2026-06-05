@@ -3,3 +3,4 @@ from .case_repository import CaseRepository
 from .tag_repository import TagRepository
 from .user_repository import UserRepository
 from .case_note_repository import CaseNoteRepository
+from .chain_of_custody_repository import ChainOfCustodyRepository

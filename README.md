@@ -16,6 +16,7 @@ Embeded Postgres SQL
 - ~~Create new cases~~
   - ~~Log new case in audit table~~
   - Assign tags to new cases
+- ~~Cleaned Imports adding __init__.py files to services, schemas, and repositories~~
 - ~~Added hash chain to audit table.~~
 - Create Routes
   - ~~Cases~~
@@ -23,7 +24,7 @@ Embeded Postgres SQL
   - ~~Tags~~
   - ~~Users~~
   - ~~Case Notes~~
-  - Chain of Custody
+  - ~~Chain of Custody~~
   - Evidence Items
   - Report
 - ~~Store case details in database~~
@@ -33,7 +34,7 @@ Embeded Postgres SQL
     - ~~Case~~
     - ~~Tags~~
     - ~~Users~~
-    - Chain of Custody
+    - ~~Chain of Custody~~
     - ~~Case Notes~~
     - Evidence Items
     - Report
