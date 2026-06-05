@@ -84,7 +84,13 @@ class User(Base):
     )
     notes: Mapped[list["CaseNote"]] = relationship(
         "CaseNote",
+        foreign_keys="CaseNote.author_id",
         back_populates="author"
+    )
+    updated_notes: Mapped[list["CaseNote"]] = relationship(
+        "CaseNote",
+        foreign_keys="CaseNote.updated_by",
+        back_populates="updated_by_user"
     )
     acquired_evidence: Mapped[list["EvidenceItem"]] = relationship(
         "EvidenceItem",

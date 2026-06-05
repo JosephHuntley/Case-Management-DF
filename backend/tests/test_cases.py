@@ -6,7 +6,7 @@ def test_create_case(client, db_session):
     user = client.post(
         "/users/",
         json={
-            "username": "caseuser",
+            "username": "caseuser123",
             "email": "caseuser@test.com",
             "password": "password123",
             "role": "investigator"
@@ -157,8 +157,8 @@ def test_delete_case(client, db_session):
     user = client.post(
         "/users/",
         json={
-            "username": "caseuser4",
-            "email": "caseuser4@test.com",
+            "username": "caseuser42",
+            "email": "caseuser24@test.com",
             "password": "password123",
             "role": "investigator"
         }

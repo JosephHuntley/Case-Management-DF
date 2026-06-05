@@ -29,7 +29,6 @@ def test_audit_repository_only(db_session):
     )
 
     repo.create(log2)
-
     audits = db_session.query(AuditLog).all()
 
     assert len(audits) == 2

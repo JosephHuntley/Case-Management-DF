@@ -29,6 +29,11 @@ class CaseNote(Base):
         ForeignKey("users.id", ondelete="RESTRICT"),
         nullable=False
     )
+    updated_by: Mapped[UUID | None] = mapped_column(
+        PGUUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="RESTRICT"),
+        nullable=True
+    )
     note: Mapped[str] = mapped_column(
         Text,
         nullable=False
@@ -57,5 +62,11 @@ class CaseNote(Base):
     )
     author: Mapped["User"] = relationship(
         "User",
+        foreign_keys="CaseNote.author_id",
         back_populates="notes"
+    )
+    updated_by_user: Mapped["User | None"] = relationship(
+        "User",
+        foreign_keys="CaseNote.updated_by",
+        back_populates="updated_notes"
     )

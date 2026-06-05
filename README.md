@@ -13,8 +13,8 @@ Embeded Postgres SQL
 # Features
 
 ## TODO (More Details to be added)
-- Create new cases
-  - Log new case in audit table
+- ~~Create new cases~~
+  - ~~Log new case in audit table~~
   - Assign tags to new cases
 - ~~Added hash chain to audit table.~~
 - Create Routes
@@ -22,7 +22,7 @@ Embeded Postgres SQL
     - ~~Case Tags~~
   - ~~Tags~~
   - ~~Users~~
-  - Case Notes
+  - ~~Case Notes~~
   - Chain of Custody
   - Evidence Items
   - Report
@@ -34,7 +34,7 @@ Embeded Postgres SQL
     - ~~Tags~~
     - ~~Users~~
     - Chain of Custody
-    - Case Notes
+    - ~~Case Notes~~
     - Evidence Items
     - Report
   - Create tests
@@ -42,6 +42,8 @@ Embeded Postgres SQL
     - ~~Cases~~
     - ~~Tags~~ 
     - ~~Audit~~
+    - ~~Case Notes~~
+  - Authenticate User
 - Generate reports for common data extractions
 - Integrate with other forensic tools (Which tools?)
   - To start, CLI Based tools like TSK and Volatility
