@@ -1,5 +1,5 @@
 from uuid import UUID
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy.orm import Session, joinedload
 
@@ -72,7 +72,7 @@ class CaseRepository:
         case: Case
     ) -> Case:
 
-        case.deleted_at = datetime.utcnow()
+        case.deleted_at = datetime.now(timezone.utc)
 
         db.flush()
         return case

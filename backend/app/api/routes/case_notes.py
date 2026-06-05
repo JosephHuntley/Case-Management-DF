@@ -1,4 +1,6 @@
-from app.schemas.case_note import CaseNoteCreate, CaseNoteOut
+from uuid import UUID
+
+from app.schemas.case_note import CaseNoteCreate, CaseNoteOut, CaseNoteUpdate
 from app.db.session import get_db
 from app.security import get_current_user
 from app.services.case_note_service import CaseNoteService
@@ -34,15 +36,22 @@ def get_case_notes_by_case_id(
 ):
     return CaseNoteService.get_case_notes_by_case_id(db, case_id)
 
-# UPDATE
 @router.put("/{case_note_id}", response_model=CaseNoteOut)
 def update_case_note(
-    case_note_id: str,
-    updated_data: CaseNoteCreate,
+    case_note_id: UUID,
+    updated_data: CaseNoteUpdate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    return CaseNoteService.update_case_note(db, case_note_id, updated_data.dict(exclude_unset=True), current_user)
+    case_note = CaseNoteService.update_case_note(
+        db,
+        case_note_id,
+        updated_data.model_dump(exclude_unset=True),
+        current_user
+    )
+    if case_note is None:
+        raise HTTPException(status_code=404, detail="Case note not found")
+    return case_note
 
 # DELETE (ARCHIVE)
 @router.delete("/{case_note_id}", response_model=CaseNoteOut)

@@ -25,7 +25,7 @@ def test_create_user(client, db_session):
     audit_logs = db_session.query(AuditLog).filter(AuditLog.entity_id == data["id"]).all()
     assert len(audit_logs) == 1
     assert audit_logs[0].action == "create"
-    assert audit_logs[0].entity_type == "User"
+    assert audit_logs[0].entity_type == "user"
 
 
 def test_get_users(client):
@@ -91,7 +91,7 @@ def test_update_user(client, db_session):
     audit_logs = db_session.query(AuditLog).filter(AuditLog.entity_id == data["id"]).all()
     assert len(audit_logs) == 2
     assert audit_logs[0].action == "create"
-    assert audit_logs[0].entity_type == "User"
+    assert audit_logs[0].entity_type == "user"
     assert audit_logs[1].action == "update"
     assert audit_logs[1].new_values["role"] == "admin"
     assert audit_logs[1].old_values["role"] == "investigator"
