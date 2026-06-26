@@ -67,7 +67,7 @@ class EvidenceItem(Base):
     )
     source_path: Mapped[str] = mapped_column(
         Text,
-        nullable=False
+        nullable=True
     )
     acquisition_method: Mapped[AcquisitionMethod | None] = mapped_column(
         SQLEnum(AcquisitionMethod, name="acquisition_method"),

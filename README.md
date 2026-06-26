@@ -25,7 +25,7 @@ Embeded Postgres SQL
   - ~~Users~~
   - ~~Case Notes~~
   - ~~Chain of Custody~~
-  - Evidence Items
+  - ~~Evidence Items~~
   - Report
 - ~~Store case details in database~~
   - ~~Retrieve old cases~~
@@ -36,7 +36,7 @@ Embeded Postgres SQL
     - ~~Users~~
     - ~~Chain of Custody~~
     - ~~Case Notes~~
-    - Evidence Items
+    - ~~Evidence Items~~
     - Report
   - Create tests
     - ~~Users~~
@@ -44,6 +44,7 @@ Embeded Postgres SQL
     - ~~Tags~~ 
     - ~~Audit~~
     - ~~Case Notes~~
+    - ~~Evidence Items~~
   - Authenticate User
 - Generate reports for common data extractions
 - Integrate with other forensic tools (Which tools?)
