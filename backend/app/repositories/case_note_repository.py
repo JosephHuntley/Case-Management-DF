@@ -1,4 +1,3 @@
-# case_note_repository.py
 from uuid import UUID, uuid4
 from sqlalchemy.orm import Session
 from app.schemas import CaseNoteCreate
