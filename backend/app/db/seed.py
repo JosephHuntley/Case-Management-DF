@@ -1,6 +1,7 @@
 from uuid import uuid4, UUID
 from app.db.session import SessionLocal
-from app.models import User, UserRole, Case, CaseStatus, CasePriority, Tag
+from app.models import User, UserRole, Case, CaseStatus, CasePriority, Tag, EvidenceItem, EvidenceType, AcquisitionMethod
+from datetime import datetime, timezone
 
 
 def seed_db():
@@ -57,6 +58,24 @@ def seed_db():
     )
     case.tags.extend([malware_tag, windows_tag, triage_tag])
     db.add(case)
+
+    item = EvidenceItem(
+        id=uuid4,
+        case_id=case.id,
+        acquired_by=admin.id,
+        evidence_tag="E-0001-P-ATL",
+        name=f"iPhone case# {case.id}",
+        description="iPhone 7, serial number 11204930",
+        evidence_type=EvidenceType.DISK_IMAGE.value,
+        source_path="C://test/Example/E-0001-P-ATL.001",
+        acquisition_method=AcquisitionMethod.CELLEBRITE.value,
+        acquired_at=datetime.now(timezone.utc).isoformat(),
+        sha256="dffd6021bb2bd5b0af676290809ec3a53191dd81c7f70a4b28688a362182986f",
+        md5="65a8e27d8879283831b664bd8b7f0ad4",
+        size_bytes=1000123,
+        is_verified=True
+    )
+    db.add(item)
 
     db.commit()
     db.close()

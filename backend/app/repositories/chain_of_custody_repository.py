@@ -7,7 +7,7 @@ class ChainOfCustodyRepository:
     def __init__(self, db):
         self.db = db
 
-    async def create_chain_of_custody(self, chain_of_custody_data: ChainOfCustodyCreate, current_user: User) -> ChainOfCustody:
+    def create_chain_of_custody(self, chain_of_custody_data: ChainOfCustodyCreate, current_user: User) -> ChainOfCustody:
         new_chain = ChainOfCustody(
             id=uuid4(),
             evidence_id=chain_of_custody_data.evidence_id,
@@ -21,14 +21,14 @@ class ChainOfCustodyRepository:
         self.db.flush()
         return new_chain
 
-    async def get_chain_of_custody_by_id(self, chain_of_custody_id:UUID) -> ChainOfCustody | None:
+    def get_chain_of_custody_by_id(self, chain_of_custody_id:UUID) -> ChainOfCustody | None:
         chain_of_custody = self.db.query(ChainOfCustody).filter(
             ChainOfCustody.id == chain_of_custody_id
-        ).all()
+        ).first()
         return chain_of_custody
     
-    async def get_chain_of_custody_by_evidence_id(self, evidence_id: UUID):
+    def get_chain_of_custody_by_evidence_id(self, evidence_id: UUID):
         chain_of_custody_records = self.db.query(ChainOfCustody).filter(
             ChainOfCustody.evidence_id == evidence_id
-        ).all()
+        ).first()
         return chain_of_custody_records

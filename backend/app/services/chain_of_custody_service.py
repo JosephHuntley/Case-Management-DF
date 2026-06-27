@@ -13,7 +13,7 @@ class ChainOfCustodyService:
     def create_chain_of_custody(db: Session, payload: ChainOfCustodyCreate, current_user: User) -> ChainOfCustody:
         chain = ChainOfCustodyRepository(db).create_chain_of_custody(payload, current_user)
 
-        audit_data = ChainOfCustodyOut.model_validate(ChainOfCustodyOut).model_dump(mode="json")
+        audit_data = ChainOfCustodyOut.model_validate(chain).model_dump(mode="json")
         AuditService(db).log_create(
             entity_type="chain_of_custody",
             entity_id=chain.id,

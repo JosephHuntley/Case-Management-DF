@@ -14,7 +14,7 @@ class ChainOfCustodyBase(BaseModel):
 class ChainOfCustodyCreate(ChainOfCustodyBase):
     pass
 
-class ChainOfCustodyOut(BaseModel):
+class ChainOfCustodyOut(ChainOfCustodyBase):
     id: UUID
     created_at: str
     performed_by: UUID
