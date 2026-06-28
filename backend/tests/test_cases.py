@@ -2,7 +2,8 @@ from uuid import uuid4
 
 from app.models import AuditLog
 
-def test_create_case(client, db_session):
+def test_create_case(client_factory, db_session):
+    client = client_factory()
     user = client.post(
         "/users/",
         json={
@@ -55,13 +56,15 @@ def test_create_case(client, db_session):
     assert audit_logs[0].action == "create"
     assert audit_logs[0].entity_type == "case"
     
-def test_get_cases(client):
+def test_get_cases(client_factory):
+    client = client_factory()
     response = client.get("/cases/")
 
     assert response.status_code == 200
     assert isinstance(response.json(), list)
 
-def test_get_case(client):
+def test_get_case(client_factory):
+    client = client_factory()
     user = client.post(
         "/users/",
         json={
@@ -93,12 +96,14 @@ def test_get_case(client):
     assert response.status_code == 200
     assert response.json()["id"] == case_id
 
-def test_get_missing_cases(client):
+def test_get_missing_cases(client_factory):
+    client = client_factory()
     response = client.get(f"/cases/{uuid4()}")
 
     assert response.status_code == 404
 
-def test_update_case(client, db_session):
+def test_update_case(client_factory, db_session):
+    client = client_factory()
     user = client.post(
         "/users/",
         json={
@@ -153,7 +158,8 @@ def test_update_case(client, db_session):
     assert audit_logs[1].old_values["status"] == "open"
     assert audit_logs[1].new_values["status"] == "in progress"
 
-def test_delete_case(client, db_session):
+def test_delete_case(client_factory, db_session):
+    client = client_factory()
     user = client.post(
         "/users/",
         json={

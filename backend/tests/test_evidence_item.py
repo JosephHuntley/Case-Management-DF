@@ -3,7 +3,8 @@ from app.models.evidence_item import EvidenceType, AcquisitionMethod
 from app.models.audit_log import AuditLog, AuditAction
 from uuid import UUID
 
-def test_item_create(client, db_session):
+def test_item_create(client_factory, db_session):
+    client = client_factory()
     user = client.post("/users/", json={
         "username": "evidenceuser1",
         "email": "evidenceuser1@example.com",
@@ -57,7 +58,8 @@ def test_item_create(client, db_session):
     assert evidence.json()["md5"] == "65a8e27d8879283831b664bd8b7f0ad4"
     assert evidence.json()["size_bytes"] == 1000123
 
-def test_get_by_id(client, db_session):
+def test_get_by_id(client_factory, db_session):
+    client = client_factory()
     user = client.post("/users/", json={
         "username": "evidenceuser2",
         "email": "evidenceuser2@example.com",
@@ -108,7 +110,8 @@ def test_get_by_id(client, db_session):
     assert response.json()["size_bytes"] == 1000123
     assert response.json()["is_verified"] == True
 
-def test_get_by_case_id(client, db_session):
+def test_get_by_case_id(client_factory, db_session):
+    client = client_factory()
     user = client.post("/users/", json={
         "username": "evidenceuser3",
         "email": "evidenceuser3@example.com",
@@ -147,7 +150,8 @@ def test_get_by_case_id(client, db_session):
 
     assert len(response.json()) == 1
 
-def test_update_item(client, db_session):
+def test_update_item(client_factory, db_session):
+    client = client_factory()
     user = client.post("/users/", json={
         "username": "evidenceuser4",
         "email": "evidenceuser4@example.com",

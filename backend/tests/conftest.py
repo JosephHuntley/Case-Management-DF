@@ -39,7 +39,7 @@ def db_session(setup_db):
             username="testuser",
             email="test@test.com",
             password_hash="hash",
-            role=UserRole.INVESTIGATOR
+            role=UserRole.ADMIN
         )
         session.add(test_user)
         session.commit()
@@ -64,17 +64,16 @@ def db_session(setup_db):
 
 
 @pytest.fixture()
-def client(db_session):
-    def override_get_db():
-        yield db_session
+def client_factory(db_session):
+    def _make_client(user_id=TEST_USER_ID):
+        def override_get_db():
+            yield db_session
+        def override_current_user():
+            return db_session.get(User, user_id)
 
-    def override_current_user():
-        return db_session.get(User, TEST_USER_ID)
+        app.dependency_overrides[get_db] = override_get_db
+        app.dependency_overrides[get_current_user] = override_current_user
+        return TestClient(app)
 
-    app.dependency_overrides[get_db] = override_get_db
-    app.dependency_overrides[get_current_user] = override_current_user
-
-    with TestClient(app) as c:
-        yield c
-
+    yield _make_client
     app.dependency_overrides.clear()

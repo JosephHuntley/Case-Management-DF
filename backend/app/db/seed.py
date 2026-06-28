@@ -2,6 +2,7 @@ from uuid import uuid4, UUID
 from app.db.session import SessionLocal
 from app.models import User, UserRole, Case, CaseStatus, CasePriority, Tag, EvidenceItem, EvidenceType, AcquisitionMethod
 from datetime import datetime, timezone
+from app.security import hash_password
 
 
 def seed_db():
@@ -15,14 +16,14 @@ def seed_db():
         id=UUID("3fa85f64-5717-4562-b3fc-2c963f66afa6"),
         username="admin",
         email="admin@test.local",
-        password_hash="not_real_hash",
+        password_hash=hash_password("password"),
         role=UserRole.ADMIN
     )
     investigator = User(
         id=uuid4(),
         username="investigator",
         email="investigator@test.local",
-        password_hash="not_real_hash",
+        password_hash=hash_password("diffPassword"),
         role=UserRole.INVESTIGATOR
     )
     db.add_all([admin, investigator])
@@ -60,7 +61,7 @@ def seed_db():
     db.add(case)
 
     item = EvidenceItem(
-        id=uuid4,
+        id=uuid4(),
         case_id=case.id,
         acquired_by=admin.id,
         evidence_tag="E-0001-P-ATL",

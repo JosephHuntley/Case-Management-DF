@@ -7,12 +7,14 @@ from .api.routes.tags import router as tags_router
 from .api.routes.case_notes import router as case_notes_router
 from .api.routes.chain_of_custody import router as chain_of_custody_router
 from .api.routes.evidence_item import router as evidence_item_router
+from app.api.routes.login import router as login_router
 
 app = FastAPI(title="Case Management DF")
 
 init_db()
 seed_db()
 
+app.include_router(login_router)
 app.include_router(cases_router)
 app.include_router(users_router)
 app.include_router(tags_router)

@@ -13,8 +13,7 @@ if TYPE_CHECKING:
 class UserRole(str, Enum):
     ADMIN = "admin"
     INVESTIGATOR = "investigator"
-    ANALYST = "analyst"
-    VIEWER = "viewer"
+    AUDITOR = "auditor" 
 
 
 class User(Base):
@@ -42,7 +41,7 @@ class User(Base):
     role: Mapped[UserRole] = mapped_column(
         SQLEnum(UserRole, name="user_roles"),
         nullable=False,
-        default=UserRole.VIEWER
+        default=UserRole.INVESTIGATOR
     )
     is_active: Mapped[bool] = mapped_column(
         Boolean,

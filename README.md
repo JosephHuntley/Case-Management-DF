@@ -68,7 +68,7 @@ System users/investigators.
 | username | VARCHAR(50) UNIQUE | Login username |
 | email | VARCHAR(255) UNIQUE | User email |
 | password_hash | TEXT | Password hash |
-| role | VARCHAR(50) | admin, investigator, analyst |
+| role | VARCHAR(50) | admin, investigator, auditor |
 | is_active | BOOLEAN | Active account flag |
 | created_at | TIMESTAMP | Creation timestamp |
 | updated_at | TIMESTAMP | Last update timestamp |

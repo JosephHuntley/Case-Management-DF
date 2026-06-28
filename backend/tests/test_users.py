@@ -2,7 +2,8 @@ from uuid import uuid4
 
 from app.models import AuditLog
 
-def test_create_user(client, db_session):
+def test_create_user(client_factory, db_session):
+    client = client_factory()
     response = client.post(
         "/users/",
         json={
@@ -28,14 +29,16 @@ def test_create_user(client, db_session):
     assert audit_logs[0].entity_type == "user"
 
 
-def test_get_users(client):
+def test_get_users(client_factory):
+    client = client_factory()
     response = client.get("/users/")
 
     assert response.status_code == 200
     assert isinstance(response.json(), list)
 
 
-def test_get_user(client):
+def test_get_user(client_factory):
+    client = client_factory()
     created = client.post(
         "/users/",
         json={
@@ -56,12 +59,14 @@ def test_get_user(client):
     assert response.json()["id"] == user_id
 
 
-def test_get_missing_user(client):
+def test_get_missing_user(client_factory):
+    client = client_factory()
     response = client.get(f"/users/{uuid4()}")
     assert response.status_code == 404
 
 
-def test_update_user(client, db_session):
+def test_update_user(client_factory, db_session):
+    client = client_factory()
     created = client.post(
         "/users/",
         json={
@@ -79,12 +84,12 @@ def test_update_user(client, db_session):
     response = client.put(
         f"/users/{user_id}",
         json={
-            "role": "admin"
+            "email": "Update2@example.com"
         }
     )
 
     assert response.status_code == 200
-    assert response.json()["role"] == "admin"
+    assert response.json()["email"] == "Update2@example.com"
 
     data = response.json()
     ## Verify auditing
@@ -93,13 +98,14 @@ def test_update_user(client, db_session):
     assert audit_logs[0].action == "create"
     assert audit_logs[0].entity_type == "user"
     assert audit_logs[1].action == "update"
-    assert audit_logs[1].new_values["role"] == "admin"
-    assert audit_logs[1].old_values["role"] == "investigator"
+    assert audit_logs[0].new_values["email"] == "update@example.com"
+    assert audit_logs[1].old_values["email"] == "update@example.com"
 
 
 
 
-def test_delete_user(client):
+def test_delete_user(client_factory):
+    client = client_factory()
     created = client.post(
         "/users/",
         json={

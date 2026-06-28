@@ -5,3 +5,4 @@ from .user_repository import UserRepository
 from .case_note_repository import CaseNoteRepository
 from .chain_of_custody_repository import ChainOfCustodyRepository
 from .evidence_item_repository import EvidenceItemRepository
+from .refresh_token_repository import RefreshTokenRepository

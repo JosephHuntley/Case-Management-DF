@@ -1,9 +1,10 @@
 # test_case_notes.py
 from uuid import UUID, uuid4
-from app.models import AuditLog, AuditAction
+from app.models import AuditLog, AuditAction, UserRole
 
 
-def test_create_case_note(client, db_session):
+def test_create_case_note(client_factory, db_session):
+    client = client_factory()
     user = client.post("/users/", json={
         "username": "caseuser1",
         "email": "caseuser1@example.com",
@@ -35,12 +36,13 @@ def test_create_case_note(client, db_session):
     assert audit_logs[-1].new_values["note"] == "This is a test case note"
 
 
-def test_get_case_note_by_id(client, db_session):
+def test_get_case_note_by_id(client_factory, db_session):
+    client = client_factory()
     user = client.post("/users/", json={
         "username": "caseuser4",
         "email": "caseuser4@example.com",
         "password": "password123",
-        "role": "investigator"
+        "role": UserRole.ADMIN.value
     })
     case = client.post("/cases/", json={
         "title": "Test Case for Note Retrieval",
@@ -63,12 +65,14 @@ def test_get_case_note_by_id(client, db_session):
     assert response.json()["author_id"] == "11111111-1111-1111-1111-111111111111"
 
 
-def test_get_missing_case_note_by_id(client):
+def test_get_missing_case_note_by_id(client_factory):
+    client = client_factory()
     response = client.get(f"/case-notes/{uuid4()}")
     assert response.status_code == 404
 
 
-def test_get_case_notes_by_case_id(client, db_session):
+def test_get_case_notes_by_case_id(client_factory, db_session):
+    client = client_factory()
     user = client.post("/users/", json={
         "username": "caseuser5",
         "email": "caseuser5@example.com",
@@ -97,7 +101,8 @@ def test_get_case_notes_by_case_id(client, db_session):
         assert response.json()[i]["author_id"] == "11111111-1111-1111-1111-111111111111"
 
 
-def test_archive_case_note(client, db_session):
+def test_archive_case_note(client_factory, db_session):
+    client = client_factory()
     user = client.post("/users/", json={
         "username": "caseuser6",
         "email": "caseuser6@example.com",
@@ -132,7 +137,8 @@ def test_archive_case_note(client, db_session):
     assert audit_logs[-1].entity_type == "case_note"
 
 
-def test_update_case_note(client, db_session):
+def test_update_case_note(client_factory, db_session):
+    client = client_factory()
     user = client.post("/users/", json={
         "username": "caseuser7",
         "email": "caseuser7@example.com",

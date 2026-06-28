@@ -6,7 +6,8 @@ from uuid import uuid4
 from app.services import CaseService
 from app.db.session import get_db
 from app.schemas import CaseCreate, CaseUpdate, CaseOut
-from app.security import get_current_user
+from app.security import get_current_user, require_role
+from app.models import UserRole
 
 router = APIRouter(prefix="/cases", tags=["Cases"])
 
@@ -16,7 +17,7 @@ router = APIRouter(prefix="/cases", tags=["Cases"])
 def create_case(
     payload: CaseCreate,
     db: Session = Depends(get_db),
-    current_user: str = Depends(get_current_user)
+    current_user: str = Depends(require_role (UserRole.ADMIN, UserRole.INVESTIGATOR))
 ):
     return CaseService.create_case(db, payload, current_user)
 
@@ -24,7 +25,8 @@ def create_case(
 # READ ALL
 @router.get("/", response_model=list[CaseOut])
 def get_cases(
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user)
 ):
     return CaseService.get_cases(db)
 
@@ -32,7 +34,8 @@ def get_cases(
 @router.get("/{case_id}", response_model=CaseOut)
 def get_case(
     case_id: str,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user)
 ):
     case = CaseService.get_case(db, case_id)
 
@@ -47,7 +50,7 @@ def get_case(
 
 # UPDATE
 @router.put("/{case_id}", response_model=CaseOut)
-def update_case(case_id: str, payload: CaseUpdate, db: Session = Depends(get_db), current_user: str = Depends(get_current_user)):
+def update_case(case_id: str, payload: CaseUpdate, db: Session = Depends(get_db), current_user: str = Depends(require_role (UserRole.ADMIN, UserRole.INVESTIGATOR))):
     case = CaseService.get_case(db, case_id)
 
     return CaseService.update_case(db, case_id, payload, current_user)
@@ -55,7 +58,7 @@ def update_case(case_id: str, payload: CaseUpdate, db: Session = Depends(get_db)
 
 # SOFT DELETE
 @router.delete("/{case_id}")
-def delete_case(case_id: str, db: Session = Depends(get_db), current_user: str = Depends(get_current_user)):
+def delete_case(case_id: str, db: Session = Depends(get_db), current_user: str = Depends(require_role (UserRole.ADMIN, UserRole.INVESTIGATOR))):
   
     return CaseService.delete_case(db, case_id, current_user)
 

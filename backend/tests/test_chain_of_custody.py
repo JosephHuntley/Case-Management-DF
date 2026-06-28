@@ -3,7 +3,8 @@ from datetime import datetime, timezone
 from uuid import UUID
 
 
-def test_create_chain_of_custody(client, db_session):
+def test_create_chain_of_custody(client_factory, db_session):
+    client = client_factory()
     user = client.post("/users/", json={
         "username": "custodyuser1",
         "email": "custodyuser1@example.com",
@@ -65,7 +66,8 @@ def test_create_chain_of_custody(client, db_session):
     assert audit_logs[0].action == AuditAction.CREATE.value
     assert audit_logs[0].entity_type == "chain_of_custody"
 
-def test_get_chain_by_id(client, db_session):
+def test_get_chain_by_id(client_factory, db_session):
+    client = client_factory()
     user = client.post("/users/", json={
         "username": "custodyuser2",
         "email": "custodyuser2@example.com",
@@ -113,8 +115,8 @@ def test_get_chain_by_id(client, db_session):
     assert response.json()["notes"] == "Initial collection of evidence"
     assert response.json()["action"] == CustodyAction.COLLECTED.value
 
-
-def test_get_chain_by_id(client, db_session):
+def test_get_chain_by_id(client_factory, db_session):
+    client = client_factory()
     user = client.post("/users/", json={
         "username": "custodyuser3",
         "email": "custodyuser3@example.com",

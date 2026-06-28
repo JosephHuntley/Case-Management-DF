@@ -2,10 +2,10 @@ from uuid import UUID
 
 from app.schemas import CaseNoteCreate, CaseNoteOut, CaseNoteUpdate
 from app.db.session import get_db
-from app.security import get_current_user
+from app.security import get_current_user, require_role
 from app.services import CaseNoteService
-from app.models import User
-from fastapi import APIRouter, Depends
+from app.models import User, UserRole
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 
@@ -16,7 +16,7 @@ router = APIRouter(prefix="/case-notes", tags=["Case Notes"])
 def create_case_note(
     payload: CaseNoteCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(require_role (UserRole.ADMIN))
 ):
     return CaseNoteService.create_case_note(db, payload, current_user)
 
@@ -24,7 +24,8 @@ def create_case_note(
 @router.get("/{case_note_id}", response_model=CaseNoteOut)
 def get_case_note_by_id(
     case_note_id: str,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     return CaseNoteService.get_case_note_by_id(db, case_note_id)
 
@@ -32,7 +33,8 @@ def get_case_note_by_id(
 @router.get("/case/{case_id}", response_model=list[CaseNoteOut])
 def get_case_notes_by_case_id(
     case_id: str,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     return CaseNoteService.get_case_notes_by_case_id(db, case_id)
 
@@ -41,7 +43,7 @@ def update_case_note(
     case_note_id: UUID,
     updated_data: CaseNoteUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(require_role (UserRole.ADMIN, UserRole.INVESTIGATOR))
 ):
     case_note = CaseNoteService.update_case_note(
         db,
@@ -58,6 +60,6 @@ def update_case_note(
 def archive_case_note(
     case_note_id: str,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(require_role (UserRole.ADMIN, UserRole.INVESTIGATOR))
 ):
     return CaseNoteService.archive_case_note(db, case_note_id, current_user)

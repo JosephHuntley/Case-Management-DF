@@ -2,7 +2,8 @@ from uuid import uuid4
 
 from app.models import AuditLog
 
-def test_create_tag(client, db_session):
+def test_create_tag(client_factory, db_session):
+    client = client_factory()
     response = client.post(
         "/tags/",
         json={
@@ -26,13 +27,15 @@ def test_create_tag(client, db_session):
     assert audit_logs[0].action == "create"
     assert audit_logs[0].entity_type == "tag"
 
-def test_get_tags(client):
+def test_get_tags(client_factory):
+    client = client_factory()
     response = client.get("/tags/")
 
     assert response.status_code == 200
     assert isinstance(response.json(), list)
 
-def test_update_tag(client, db_session):
+def test_update_tag(client_factory, db_session):
+    client = client_factory()
     created = client.post(
         "/tags/",
         json={
@@ -71,7 +74,8 @@ def test_update_tag(client, db_session):
     assert audit_logs[1].old_values["color"] == "#33FF57"
     assert audit_logs[1].new_values["color"] == "#3357FF"
 
-def test_delete_tag(client, db_session):
+def test_delete_tag(client_factory, db_session):
+    client = client_factory()
     created = client.post(
         "/tags/",
         json={
