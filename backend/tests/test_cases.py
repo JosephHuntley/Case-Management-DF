@@ -14,7 +14,7 @@ def test_create_case(client_factory, db_session):
         }
     )
 
-    assert user.status_code == 200
+    assert user.status_code == 201
     user_id = user.json()["id"]
 
     tag = client.post(
@@ -75,7 +75,7 @@ def test_get_case(client_factory):
         }
     )
 
-    assert user.status_code == 200
+    assert user.status_code == 201
     user_id = user.json()["id"]
 
     created = client.post(
@@ -114,7 +114,7 @@ def test_update_case(client_factory, db_session):
         }
     )
 
-    assert user.status_code == 200
+    assert user.status_code == 201
     user_id = user.json()["id"]
 
     created = client.post(
@@ -170,7 +170,7 @@ def test_delete_case(client_factory, db_session):
         }
     )
 
-    assert user.status_code == 200
+    assert user.status_code == 201
     user_id = user.json()["id"]
 
     created = client.post(

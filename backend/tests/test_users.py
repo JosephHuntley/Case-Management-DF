@@ -14,7 +14,7 @@ def test_create_user(client_factory, db_session):
         }
     )
 
-    assert response.status_code == 200
+    assert response.status_code == 201
 
     data = response.json()
     assert data["username"] == "testuser6748"
@@ -49,7 +49,7 @@ def test_get_user(client_factory):
         }
     )
 
-    assert created.status_code == 200
+    assert created.status_code == 201
 
     user_id = created.json()["id"]
 
@@ -77,7 +77,7 @@ def test_update_user(client_factory, db_session):
         }
     )
 
-    assert created.status_code == 200
+    assert created.status_code == 201
 
     user_id = created.json()["id"]
 
@@ -116,7 +116,7 @@ def test_delete_user(client_factory):
         }
     )
 
-    assert created.status_code == 200
+    assert created.status_code == 201
 
     user_id = created.json()["id"]
 
