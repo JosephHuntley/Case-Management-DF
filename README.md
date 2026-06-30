@@ -50,6 +50,7 @@ Embeded Postgres SQL
 - Generate reports for common data extractions
 - Integrate with other forensic tools (Which tools?)
   - To start, CLI Based tools like TSK and Volatility
+- Fix status codes, particularly replace creating endpoints with 201 rather than 200
 
 # SQL Schema (More Details to be added)
 - Audit (Append Only)
