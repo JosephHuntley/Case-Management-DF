@@ -37,6 +37,7 @@ Embeded Postgres SQL
     - ~~Chain of Custody~~
     - ~~Case Notes~~
     - ~~Evidence Items~~
+    - Failed logins
     - Report
   - Create tests
     - ~~Users~~
@@ -45,7 +46,7 @@ Embeded Postgres SQL
     - ~~Audit~~
     - ~~Case Notes~~
     - ~~Evidence Items~~
-  - Authenticate User
+    - ~~Authenticate User~~
   - Embeded SQL
 - Generate reports for common data extractions
 - Integrate with other forensic tools (Which tools?)
