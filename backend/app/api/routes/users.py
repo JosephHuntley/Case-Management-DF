@@ -10,7 +10,7 @@ from app.schemas import UserCreate, UserUpdate, UserOut
 router = APIRouter(prefix="/users", tags=["Users"])
 
 # CREATE
-@router.post("/", response_model=UserOut)
+@router.post("/", response_model=UserOut, status_code=201)
 def create_user(payload: UserCreate, db: Session = Depends(get_db), current_user: User = Depends(require_role (UserRole.ADMIN, UserRole.INVESTIGATOR))):   
     return UserService.create_user(db, payload, current_user)
 

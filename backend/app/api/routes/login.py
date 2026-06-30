@@ -13,9 +13,9 @@ router = APIRouter(prefix="/auth", tags=["login"])
 class RefreshRequest(BaseModel):
     refresh_token: str
 
-@router.post("/login")
+@router.post("/login", status_code=200)
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.username == form_data.username).first()
+    user = db.query(User).filter(User.username == form_data.username, User.is_active).first()
     if not user or not verify_password(form_data.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Incorrect username or password")
     return AuthService.issue_tokens(db, user)
