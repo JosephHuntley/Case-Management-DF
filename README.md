@@ -37,7 +37,7 @@ Embeded Postgres SQL
     - ~~Chain of Custody~~
     - ~~Case Notes~~
     - ~~Evidence Items~~
-    - Failed logins
+    - ~~Failed logins~~
     - Report
   - Create tests
     - ~~Users~~
@@ -54,10 +54,12 @@ Embeded Postgres SQL
 - Fix status codes, particularly replace creating endpoints with 201 rather than 200
 - Replace repeated user creation with helper function in unit tests
 - ~~Add rate limiter on auth login~~
-- Log failed logins to the audit table or create new table for failed logins.
+- ~~Log failed logins to the audit table or create new table for failed logins.~~
 - CORS
 - Security Headers
 - Lockout after x failed logins
+- Add check for prod or dev env before seeding the DB
+- Tests for failed logins added to auth table
 
 # SQL Schema (More Details to be added)
 - Audit (Append Only)

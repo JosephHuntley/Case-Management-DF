@@ -16,6 +16,7 @@ from app.api.routes.login import router as login_router
 app = FastAPI(title="Case Management DF")
 
 init_db()
+# TODO: Add check for prod or dev env before seeding the DB
 seed_db()
 
 app.state.limiter = limiter
