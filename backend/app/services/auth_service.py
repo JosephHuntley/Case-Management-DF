@@ -1,9 +1,11 @@
 from datetime import datetime, timedelta, timezone
+from app.schemas import AuthLogCreate 
 from fastapi import HTTPException
-from app.models import User
+from app.models import User, AuthEventType
 from app.repositories import RefreshTokenRepository
 from app.security import generate_refresh_token, hash_token, create_access_token
 from app.core.config import settings
+from app.repositories import AuthRepository
 
 class AuthService:
     @staticmethod
@@ -40,3 +42,13 @@ class AuthService:
             raise HTTPException(status_code=401, detail="User no longer exists")
 
         return AuthService.issue_tokens(db, user)
+    
+    def log_failed_login(db, username:str, ip_addr:str, agent:str, reason:AuthEventType):
+        log = AuthLogCreate(
+            username_attempted = username,
+            ip_addr = ip_addr,
+            user_agent = agent, 
+            event_type = reason
+        )
+
+        AuthRepository.create(db,log)
