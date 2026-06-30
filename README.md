@@ -53,10 +53,11 @@ Embeded Postgres SQL
   - To start, CLI Based tools like TSK and Volatility
 - Fix status codes, particularly replace creating endpoints with 201 rather than 200
 - Replace repeated user creation with helper function in unit tests
-- Add rate limiter on auth login
+- ~~Add rate limiter on auth login~~
 - Log failed logins to the audit table or create new table for failed logins.
 - CORS
 - Security Headers
+- Lockout after x failed logins
 
 # SQL Schema (More Details to be added)
 - Audit (Append Only)

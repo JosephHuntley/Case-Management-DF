@@ -10,6 +10,8 @@ from app.main import app
 from app.security import get_current_user, hash_password
 from tests.setup_tests_db import create_test_db
 from app.models import User, UserRole
+from app.core.config import settings
+
 
 TEST_DB_URL = "postgresql+psycopg://postgres:password@localhost:5432/case_db_test"
 TEST_USER_ID = UUID("11111111-1111-1111-1111-111111111111")
@@ -70,6 +72,9 @@ def db_session(setup_db):
         session.commit()
         session.close()
 
+@pytest.fixture(autouse=True)
+def disable_rate_limiting():
+    settings.RATE_LIMIT_ENABLED = True
 
 @pytest.fixture()
 def client_factory(db_session):
