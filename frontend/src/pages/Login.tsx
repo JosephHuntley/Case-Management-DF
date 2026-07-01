@@ -1,12 +1,48 @@
 import "./Login.css"
 import Button from "../components/Button/Button"
 import { Lock, ShieldCheck, LockOpen, ShieldOff } from 'lucide-react'
+import {useState} from "react"
 
-function LoginPage() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Handle form submission logic here
-  };
+type loginProps =  {
+  accessToken: string | null;
+  setAccessToken: (token: string | null) => void;
+  refreshToken: string | null;
+  setRefreshToken: (token: string | null) => void;
+};
+
+function LoginPage({accessToken, setAccessToken, refreshToken, setRefreshToken}: loginProps) {
+
+  const [username, setUsername] = useState<string>("")
+  const [password, setPassword] = useState<string>("")
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+
+  const body = new URLSearchParams({
+    grant_type: "password",
+    username: username,
+    password: password,
+  });
+
+  const res = await fetch("/api/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Accept": "application/json",
+    },
+    body: body.toString(),
+  });
+
+  const data = await res.json();
+
+  if (data.access_token) {
+    setAccessToken(data.access_token);
+  }
+  if (data.refresh_token) {
+    setRefreshToken(data.refresh_token);
+  }
+
+};
 
   const isSecure = window.location.protocol === 'https:'
 
@@ -30,11 +66,11 @@ function LoginPage() {
       <form id="login-form" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username</label>
-          <input type="text" id="username" name="username" required />
+          <input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)} type="text" id="username" name="username" required />
         </div>
         <div>
           <label htmlFor="password">Password</label>
-          <input type="password" id="password" name="password" required />
+          <input onChange={(e:React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} type="password" id="password" name="password" required />
         </div>
         <button type="button" id="forgot-password">Forgot password?</button>
         <Button text="Sign in" type="submit" />

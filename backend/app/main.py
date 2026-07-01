@@ -21,13 +21,13 @@ if settings.ENV == "development":
 init_db()
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
-app.include_router(login_router)
-app.include_router(cases_router)
-app.include_router(users_router)
-app.include_router(tags_router)
-app.include_router(case_notes_router)
-app.include_router(chain_of_custody_router)
-app.include_router(evidence_item_router)
+app.include_router(login_router, prefix="/api")
+app.include_router(cases_router, prefix="/api")
+app.include_router(users_router, prefix="/api")
+app.include_router(tags_router, prefix="/api")
+app.include_router(case_notes_router, prefix="/api")
+app.include_router(chain_of_custody_router, prefix="/api")
+app.include_router(evidence_item_router, prefix="/api")
 
 @app.get("/")
 def root():
