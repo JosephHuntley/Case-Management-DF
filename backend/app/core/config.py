@@ -10,6 +10,12 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
     RATE_LIMIT_ENABLED: bool = True
 
+    ENV: str = "development"
+    PORT: int = 8000
+    USE_HTTPS: bool = False
+    SSL_KEYFILE: str | None = None
+    SSL_CERTFILE: str | None = None
+
     class Config:
         env_file = ".env"
 

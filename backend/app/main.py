@@ -1,8 +1,7 @@
 from fastapi import FastAPI
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
-import os
-
+from app.core.config import settings
 from app.core.limiter import limiter
 from .db.init_db import init_db
 from .api.routes.cases import router as cases_router
@@ -15,17 +14,13 @@ from app.api.routes.login import router as login_router
 
 app = FastAPI(title="Case Management DF")
 
-ENV = os.getenv("ENV", "development")
-if ENV == "development":
+if settings.ENV == "development":
     from .db.seed import seed_db
     seed_db()
 
 init_db()
-
-
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
-
 app.include_router(login_router)
 app.include_router(cases_router)
 app.include_router(users_router)
@@ -35,6 +30,23 @@ app.include_router(chain_of_custody_router)
 app.include_router(evidence_item_router)
 
 @app.get("/")
-
 def root():
     return {"status": "running"}
+
+if __name__ == "__main__":
+    import uvicorn
+
+    ssl_kwargs = {}
+    if settings.USE_HTTPS:
+        ssl_kwargs = {
+            "ssl_keyfile": settings.SSL_KEYFILE,
+            "ssl_certfile": settings.SSL_CERTFILE,
+        }
+
+    uvicorn.run(
+        "app.main:app",
+        host="0.0.0.0",
+        port=settings.PORT,
+        reload=True,
+        **ssl_kwargs,
+    )
