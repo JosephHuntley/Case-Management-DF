@@ -12,56 +12,53 @@ Embeded Postgres SQL
 
 # Features
 
-## TODO (More Details to be added)
-- ~~Create new cases~~
-  - ~~Log new case in audit table~~
-  - Assign tags to new cases
-- ~~Cleaned Imports adding __init__.py files to services, schemas, and repositories~~
-- ~~Added hash chain to audit table.~~
-- Create Routes
-  - ~~Cases~~
-    - ~~Case Tags~~
-  - ~~Tags~~
-  - ~~Users~~
-  - ~~Case Notes~~
-  - ~~Chain of Custody~~
-  - ~~Evidence Items~~
-  - Report
-- ~~Store case details in database~~
-  - ~~Retrieve old cases~~
-- Track changes to data 
-  - Update each route to log changes in audit table
-    - ~~Case~~
-    - ~~Tags~~
-    - ~~Users~~
-    - ~~Chain of Custody~~
-    - ~~Case Notes~~
-    - ~~Evidence Items~~
-    - ~~Failed logins~~
-    - Report
-  - Create tests
-    - ~~Users~~
-    - ~~Cases~~
-    - ~~Tags~~ 
-    - ~~Audit~~
-    - ~~Case Notes~~
-    - ~~Evidence Items~~
-    - ~~Authenticate User~~
-  - Embeded SQL
-- Generate reports for common data extractions
-- Integrate with other forensic tools (Which tools?)
-  - To start, CLI Based tools like TSK and Volatility
-- Fix status codes, particularly replace creating endpoints with 201 rather than 200
-- Replace repeated user creation with helper function in unit tests
-- ~~Add rate limiter on auth login~~
-- ~~Log failed logins to the audit table or create new table for failed logins.~~
-- ~~CORS~~ ## Note, CORS isn't added to the project because the project is built to operate on a LAN and shouldn't be exposed to the WAN
-- Security Headers
-- Lockout after x failed logins
-- ~~Add check for prod or dev env before seeding the DB~~
-- Tests for failed logins added to auth table
-- ~~HTTPS~~
+## Completed
 
+### Core Case Management
+- Create new cases
+- Store case details in database
+- Retrieve old cases
+
+### Routes
+- Cases
+- Case Tags
+- Tags
+- Users
+- Case Notes
+- Chain of Custody
+- Evidence Items
+
+### Audit Logging
+- Log new case creation to audit table
+- Hash chain added to audit table for tamper-evidence
+- Track changes to data:
+  - Cases
+  - Tags
+  - Users
+  - Chain of Custody
+  - Case Notes
+  - Evidence Items
+  - Failed logins
+
+### Authentication & Security
+- Rate limiter on auth login
+- Failed login attempts logged to audit table
+- HTTPS support (via mkcert-generated certificates)
+- Environment check before seeding database (prevents seeding in production)
+
+> **Note on CORS:** CORS middleware is intentionally not implemented. This application is designed to run on a LAN and is not exposed to the WAN, so cross-origin requests are not a relevant threat model here.
+
+### Code Quality
+- Cleaned up imports by adding `__init__.py` files to services, schemas, and repositories
+
+### Testing
+- Unit tests for:
+  - Users
+  - Cases
+  - Tags
+  - Audit
+  - Case Notes
+  - Evidence Items
 # HTTPS (HIGHLY RECOMMENDED)
 
 In order to use HTTPS you must complete the following steps.
@@ -119,7 +116,7 @@ SSL_CERTFILE=./certs/case-df.local.pem
 
 | Variable | Required | Default | Description |
 |---|---|---|---|
-| `SECRET_KEY` | Yes | — | Secret key used to sign JWT access/refresh tokens. Must be a long, random string. **Never commit this to version control or reuse across environments.** |
+| `SECRET_KEY` | Yes | — | Secret key used to sign JWT access/refresh tokens. Must be a long, random string.  |
 | `ENV` | No | `development` | Application environment. `development` enables database seeding on startup. Set to `production` for real deployments to disable seeding. |
 | `USE_HTTPS` | No | `false` | Whether to run the server over HTTPS. Set to `true` for LAN or multi-investigator deployments. See [HTTPS setup](#https-highly-recommended) above. |
 | `PORT` | No | `8000` | Port the server listens on. Use `8443` (or similar) when `USE_HTTPS=true`, to avoid conflicting with the plain-HTTP default. |
