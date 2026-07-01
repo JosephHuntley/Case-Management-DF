@@ -55,10 +55,10 @@ Embeded Postgres SQL
 - Replace repeated user creation with helper function in unit tests
 - ~~Add rate limiter on auth login~~
 - ~~Log failed logins to the audit table or create new table for failed logins.~~
-- CORS
+- ~~CORS~~ ## Note, CORS isn't added to the project because the project is built to operate on a LAN and shouldn't be exposed to the WAN
 - Security Headers
 - Lockout after x failed logins
-- Add check for prod or dev env before seeding the DB
+- ~~Add check for prod or dev env before seeding the DB~~
 - Tests for failed logins added to auth table
 
 # SQL Schema (More Details to be added)
