@@ -1,0 +1,21 @@
+:root {
+  --bg-primary: #191922;
+  --bg-secondary: #2B2B34;
+  --text-primary: #FFFFFF;
+  --text-secondary: #686D81;
+  --color-primary: #38BDD4;
+  --border: #464650;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  min-height: 100vh;
+}
