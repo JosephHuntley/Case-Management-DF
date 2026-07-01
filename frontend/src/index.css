@@ -5,6 +5,7 @@
   --text-secondary: #686D81;
   --color-primary: #38BDD4;
   --border: #464650;
+  --color-danger: #FF4D4F;
 }
 
 * {
@@ -16,6 +17,16 @@
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   min-height: 100vh;
+}
+
+.primary-text {
+  color: var(--text-primary);
+  font-size: 24px;
+}
+
+.secondary-text {
+  color: var(--text-secondary);
+  font-size: 14px;
 }

@@ -1,7 +1,9 @@
+import LoginPage from "./pages/Login"
+
 function App() {
   return (
     <div>
-      <h1>Case Management DF</h1>
+      <LoginPage />
     </div>
   )
 }
