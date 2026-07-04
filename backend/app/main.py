@@ -11,8 +11,17 @@ from .api.routes.case_notes import router as case_notes_router
 from .api.routes.chain_of_custody import router as chain_of_custody_router
 from .api.routes.evidence_item import router as evidence_item_router
 from app.api.routes.login import router as login_router
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Case Management DF")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://case-df.local:8443", "http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 if settings.ENV == "development":
     from .db.seed import seed_db

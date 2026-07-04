@@ -6,17 +6,19 @@ import {useState} from "react"
 type loginProps =  {
   accessToken: string | null;
   setAccessToken: (token: string | null) => void;
-  refreshToken: string | null;
-  setRefreshToken: (token: string | null) => void;
 };
 
-function LoginPage({accessToken, setAccessToken, refreshToken, setRefreshToken}: loginProps) {
+function LoginPage({accessToken, setAccessToken}: loginProps) {
 
   const [username, setUsername] = useState<string>("")
   const [password, setPassword] = useState<string>("")
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
+  setError(null);
+  setLoading(true);
 
   const body = new URLSearchParams({
     grant_type: "password",
@@ -24,24 +26,30 @@ function LoginPage({accessToken, setAccessToken, refreshToken, setRefreshToken}:
     password: password,
   });
 
-  const res = await fetch("/api/auth/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "Accept": "application/json",
-    },
-    body: body.toString(),
-  });
+  try {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Accept": "application/json",
+      },
+      body: body.toString(),
+    });
 
-  const data = await res.json();
+    if (!res.ok) {
+      const errData = await res.json().catch(() => null);
+      setError(errData?.detail ?? "Invalid username or password");
+      return;
+    }
 
-  if (data.access_token) {
+    const data = await res.json();
     setAccessToken(data.access_token);
+  } catch (err) {
+    setError("Unable to reach the server. Check your connection.");
+  } finally {
+    setLoading(false);
   }
-  if (data.refresh_token) {
-    setRefreshToken(data.refresh_token);
-  }
-
 };
 
   const isSecure = window.location.protocol === 'https:'
@@ -64,6 +72,7 @@ function LoginPage({accessToken, setAccessToken, refreshToken, setRefreshToken}:
       </div>
 
       <form id="login-form" onSubmit={handleSubmit}>
+        {error && <p style={{ color: "var(--color-danger)" }}>{error}</p>}
         <div>
           <label htmlFor="username">Username</label>
           <input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)} type="text" id="username" name="username" required />
