@@ -43,10 +43,7 @@ export interface User {
   role: Role;
 }
 
-/**
- * Shape returned by GET /api/auth/me — confirmed split first/last name
- * (snake_case), not a single full_name field.
- */
+
 interface RawUser {
   id: string;
   username: string;
@@ -147,9 +144,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = useCallback(
     async (username: string, password: string) => {
       setError(null);
-      // Backend route takes OAuth2PasswordRequestForm = Depends(), which
-      // requires application/x-www-form-urlencoded — confirmed against
-      // the actual /api/auth/login route signature.
       const res = await fetch(ENDPOINTS.login, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -179,7 +173,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await fetch(ENDPOINTS.logout, {
         method: 'POST',
-        credentials: 'include', // lets the backend revoke the refresh cookie
+        credentials: 'include', 
       });
     } finally {
       setAccessToken(null);

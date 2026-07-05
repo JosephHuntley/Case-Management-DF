@@ -26,7 +26,7 @@ class ChainOfCustodyService:
         return chain
 
     @staticmethod
-    def get_chain_of_custody_by_id(db: Session, chain_of_custody_id: UUID) -> list[ChainOfCustody] | None:
+    def get_chain_of_custody_by_id(db: Session, chain_of_custody_id: UUID) -> ChainOfCustody:
         response = ChainOfCustodyRepository(db).get_chain_of_custody_by_id(chain_of_custody_id)
         if response is None:
             raise HTTPException(status_code=404, detail="Chain of custody not found")
@@ -34,8 +34,21 @@ class ChainOfCustodyService:
 
     @staticmethod
     def get_chain_of_custody_by_evidence_id(db: Session, evidence_id: UUID) -> list[ChainOfCustody]:
-        
         response = ChainOfCustodyRepository(db).get_chain_of_custody_by_evidence_id(evidence_id)
-        if response is None:
-            raise HTTPException(status_code=404, detail=f"Chain of custody not found for evidence id: {evidence_id}")
+        if not response:
+            raise HTTPException(
+                status_code=404,
+                detail=f"No chain of custody records found for evidence id: {evidence_id}"
+            )
         return response
+
+    @staticmethod
+    def verify_chain_of_custody(db: Session, evidence_id: UUID) -> dict:
+        repo = ChainOfCustodyRepository(db)
+        entries = repo.get_chain_of_custody_by_evidence_id(evidence_id)
+        if not entries:
+            raise HTTPException(
+                status_code=404,
+                detail=f"No chain of custody records found for evidence id: {evidence_id}"
+            )
+        return repo.verify_chain_of_custody(evidence_id)

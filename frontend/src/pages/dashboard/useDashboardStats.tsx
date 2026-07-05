@@ -6,6 +6,7 @@ export interface DashboardStats {
   totalCases: number;
   evidenceItemsTotal: number;
   pendingReviews: number;
+  custodyIntegrityPercent: number;
 }
 
 interface RawDashboardSummary {
@@ -13,6 +14,7 @@ interface RawDashboardSummary {
   total_cases: number;
   evidence_items_total: number;
   pending_reviews: number;
+  custody_integrity_percent: number;
 }
 
 function normalize(raw: RawDashboardSummary): DashboardStats {
@@ -21,6 +23,7 @@ function normalize(raw: RawDashboardSummary): DashboardStats {
     totalCases: raw.total_cases,
     evidenceItemsTotal: raw.evidence_items_total,
     pendingReviews: raw.pending_reviews,
+    custodyIntegrityPercent: raw.custody_integrity_percent,
   };
 }
 

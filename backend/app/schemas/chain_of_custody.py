@@ -16,13 +16,16 @@ class ChainOfCustodyCreate(ChainOfCustodyBase):
 
 class ChainOfCustodyOut(ChainOfCustodyBase):
     id: UUID
-    created_at: str
     performed_by: UUID
-    evidence_id: UUID
-    action: CustodyAction
-    from_person: str | None = None
-    to_person: str | None = None
-    notes: str | None = None
     created_at: datetime
+    previous_hash: str | None = None
+    row_hash: str
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class ChainOfCustodyVerifyOut(BaseModel):
+    evidence_id: UUID
+    is_valid: bool
+    entry_count: int
+    broken_entry_ids: list[UUID]
