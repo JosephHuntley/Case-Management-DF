@@ -2,4 +2,27 @@
   display: flex;
   flex-direction: row;
   height: 100vh;
+  width: 100vw;
+}
+
+#topbar{
+  height: 90px;
+  border-bottom: 1px solid var(--border);
+  width: 85vw;
+  padding: 16px 26px;
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#topbar-title{
+  color: var(--text-white);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+#topbar-message{
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-top: 2px;
 }

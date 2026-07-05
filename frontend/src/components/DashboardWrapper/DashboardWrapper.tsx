@@ -7,7 +7,15 @@ function DashboardWrapper({children}: {children: React.ReactNode}) {
     <div id="dashboard-wrapper">
         <Sidebar />
         <div>
-            <div>Topbar</div>
+            <div id="topbar">
+              <div> 
+
+                <div id="topbar-title">Dashboard</div>
+                <div id="topbar-message">Overview across all cases</div>
+              </div>
+              {/* TODO: May implement search function in the future */}
+              {/* <div id="search">Search case, evidence ID...</div> */}
+            </div>
             <div>{children}</div>
         </div>
     </div>

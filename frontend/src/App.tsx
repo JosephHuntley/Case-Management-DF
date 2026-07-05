@@ -1,8 +1,15 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 import LoginPage from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import DashboardWrapper from "./components/DashboardWrapper/DashboardWrapper";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Cases from "./pages/cases/Cases"
+import Evidence from "./pages/evidence/Evidence";
+import ChainOfCustody from "./pages/chainOfCustody/ChainOfCustody";
+import Reports from "./pages/reports/Reports"
+import UsersRoles from "./pages/Users_Roles/UsersRoles";
 
 function App() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -56,26 +63,94 @@ function App() {
   }
 
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/login"
-          element={<LoginPage accessToken={accessToken} setAccessToken={setAccessToken} />}
-        />
-        <Route
-          path="/"
+    // AuthProvider must wrap the Router: Sidebar (and anything else using
+    // useAuth()) renders inside these routes, so the context needs to be
+    // above them in the tree or useAuth() throws.
+    //
+    // NOTE: this file still tracks its own accessToken/authChecked state
+    // and calls /api/auth/refresh directly (above), which now duplicates
+    // what AuthContext already does internally. ProtectedRoute currently
+    // takes accessToken as a prop — once you're ready, it's worth switching
+    // ProtectedRoute to read { isAuthenticated, isLoading } from useAuth()
+    // instead, and removing the accessToken/authChecked state and the two
+    // useEffects above entirely. Left as-is here since I haven't seen
+    // ProtectedRoute.tsx yet.
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route
+            path="/login"
+            element={<LoginPage />}
+          />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute accessToken={accessToken}>
+                <DashboardWrapper>
+                  <Dashboard/>
+                </DashboardWrapper>
+              </ProtectedRoute>
+            }
+          />
+
+         <Route 
+          path="/cases"
           element={
             <ProtectedRoute accessToken={accessToken}>
               <DashboardWrapper>
-
-                <div>Dashboard placeholder</div>
+                <Cases/>
               </DashboardWrapper>
             </ProtectedRoute>
           }
-        />
-        {/* additional protected routes: wrap each element in <ProtectedRoute accessToken={accessToken}>...</ProtectedRoute> */}
-      </Routes>
-    </Router>
+          />
+
+          <Route 
+          path="/evidence"
+          element={
+            <ProtectedRoute accessToken={accessToken}>
+              <DashboardWrapper>
+                <Evidence/>
+              </DashboardWrapper>
+            </ProtectedRoute>
+          }
+          />
+
+          <Route 
+          path="/chainofcustody"
+          element={
+            <ProtectedRoute accessToken={accessToken}>
+              <DashboardWrapper>
+                <ChainOfCustody/>
+              </DashboardWrapper>
+            </ProtectedRoute>
+          }
+          />
+
+          <Route 
+          path="/reports"
+          element={
+            <ProtectedRoute accessToken={accessToken}>
+              <DashboardWrapper>
+                <Reports/>
+              </DashboardWrapper>
+            </ProtectedRoute>
+          }
+          />
+
+          <Route 
+          path="/users-roles"
+          element={
+            <ProtectedRoute accessToken={accessToken}>
+              <DashboardWrapper>
+                <UsersRoles/>
+              </DashboardWrapper>
+            </ProtectedRoute>
+          }
+          />
+
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

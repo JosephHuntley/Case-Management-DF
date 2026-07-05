@@ -1,11 +1,20 @@
 import './Sidebar.css'
 import { LayoutDashboard, Folder, Shield, Link, StickyNote, User } from 'lucide-react'
+import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { useAuth } from '../../../context/AuthContext'
 
 function Sidebar() {
   const { user } = useAuth()
+  const location = useLocation()
+
   const isAdmin = user?.role === 'admin'
   const initials = user ? `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase() : ''
+
+  // "/" needs an exact match (otherwise it'd match every route). Everything
+  // else uses startsWith so nested routes (e.g. /cases/123 later) still
+  // highlight the parent nav item.
+  const isActive = (path: string) =>
+    path === '/' ? location.pathname === '/' : location.pathname.startsWith(path)
 
   return (
     <nav id="sidebar">
@@ -17,19 +26,42 @@ function Sidebar() {
             </div>
         </div>
         <span className="sidebar-title" style={{"marginBottom": "10px"}}>WORKSPACE</span>
-        {/* TODO Add logic to determine logic of active item */}
         <ul id="sidebar-list">
-            <li className="sidebar-item active"> <LayoutDashboard size={13} /> Dashboard</li>
-            <li className="sidebar-item"><Folder size={13}/> Cases</li>
-            <li className="sidebar-item"><Shield size={13}/> Evidence</li>
-            <li className="sidebar-item"><Link size={13}/> Chain of Custody</li>
-            <li className="sidebar-item"><StickyNote size={13}/> Reports</li>
+            <li>
+              <RouterLink to="/" className={`sidebar-item ${isActive('/') ? 'active' : ''}`}>
+                <LayoutDashboard size={13} /> Dashboard
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/cases" className={`sidebar-item ${isActive('/cases') ? 'active' : ''}`}>
+                <Folder size={13}/> Cases
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/evidence" className={`sidebar-item ${isActive('/evidence') ? 'active' : ''}`}>
+                <Shield size={13}/> Evidence
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/chainofcustody" className={`sidebar-item ${isActive('/chainofcustody') ? 'active' : ''}`}>
+                <Link size={13}/> Chain of Custody
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/reports" className={`sidebar-item ${isActive('/reports') ? 'active' : ''}`}>
+                <StickyNote size={13}/> Reports
+              </RouterLink>
+            </li>
         </ul>
         {isAdmin && (
           <>
             <span className="sidebar-title" style={{"marginBottom": "10px"}}>System</span>
             <ul id="sidebar-list">
-                <li className="sidebar-item"> <User size={13} /> Users & Roles</li>
+                <li>
+                  <RouterLink to="/users-roles" className={`sidebar-item ${isActive('/users') ? 'active' : ''}`}>
+                    <User size={13} /> Users & Roles
+                  </RouterLink>
+                </li>
             </ul>
           </>
         )}
