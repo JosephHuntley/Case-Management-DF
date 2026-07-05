@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
+from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.limiter import limiter
 from .db.init_db import init_db
@@ -11,7 +12,8 @@ from .api.routes.case_notes import router as case_notes_router
 from .api.routes.chain_of_custody import router as chain_of_custody_router
 from .api.routes.evidence_item import router as evidence_item_router
 from app.api.routes.login import router as login_router
-from fastapi.middleware.cors import CORSMiddleware
+from app.api.routes.search import router as search_router
+
 
 app = FastAPI(title="Case Management DF")
 
@@ -32,6 +34,7 @@ if settings.ENV == "development":
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.include_router(login_router, prefix="/api")
+app.include_router(search_router)
 app.include_router(cases_router, prefix="/api")
 app.include_router(users_router, prefix="/api")
 app.include_router(tags_router, prefix="/api")

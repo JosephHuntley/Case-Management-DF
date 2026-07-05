@@ -8,11 +8,14 @@
 #topbar{
   height: 90px;
   border-bottom: 1px solid var(--border);
-  width: 85vw;
-  padding: 16px 26px;
+  /* width: 85vw; */
+  width: 100%;
+  padding: 0px 26px;
+  /* margin: 0 32px; */
   display:flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 24px
 }
 
 #topbar-title{
