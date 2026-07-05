@@ -1,7 +1,7 @@
 :root {
   --bg-primary: #191922;
   --bg-secondary: #262838;
-  --bg-tertiary: #2c2e40;
+  --bg-tertiary: #212230;
   --text-primary: #FFFFFF;
   /* --text-secondary: #686D81; */
   --text-secondary: #9494ac;
@@ -9,6 +9,8 @@
   --color-primary: #38BDD4;
   --border: #464650;
   --color-danger: #FF4D4F;
+  --success: #4ADE80;
+  --success-dim: rgba(74,222,128,0.12);
 }
 
 * {
@@ -32,4 +34,9 @@ body {
 .secondary-text {
   color: var(--text-secondary);
   font-size: 14px;
+}
+
+main{
+  padding:0 26px;
+  padding-bottom: 24px;
 }

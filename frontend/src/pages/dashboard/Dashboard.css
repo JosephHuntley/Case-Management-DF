@@ -1,0 +1,51 @@
+#dashboard-row{
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.dashboard-card{
+    border: 1px solid var(--border);
+    background-color: var(--bg-tertiary);
+    padding:18px;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.dashboard-card-title{
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dashboard-card-content{
+    font-family: var(--mono);
+    font-size: 26px;
+    font-weight: 600; 
+}
+
+.dashboard-card-subcontent{
+    font-size: 11.5px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.dashboard-card-change{
+    font-size: 11px;
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 7px;
+    border-radius: 5px;
+}
+
+.up{
+    color: var(--success);
+    background: var(--success-dim);
+}
