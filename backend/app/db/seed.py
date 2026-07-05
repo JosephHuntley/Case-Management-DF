@@ -17,14 +17,18 @@ def seed_db():
         username="admin",
         email="admin@test.local",
         password_hash=hash_password("password"),
-        role=UserRole.ADMIN
+        role=UserRole.ADMIN,
+        first_name="John",
+        last_name="Doe"
     )
     investigator = User(
         id=uuid4(),
         username="investigator",
         email="investigator@test.local",
         password_hash=hash_password("diffPassword"),
-        role=UserRole.INVESTIGATOR
+        role=UserRole.INVESTIGATOR,
+        first_name="Jane",
+        last_name="Doe"
     )
     db.add_all([admin, investigator])
 

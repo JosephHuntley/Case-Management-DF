@@ -14,11 +14,10 @@ class UserService:
     def create_user(db: Session, payload: UserCreate, current_user: User) -> User:
         user = User(
             id=uuid4(),
-            username=payload.username,
-            email=payload.email,
             password_hash=hash_password(payload.password),
-            role=payload.role
-        )
+            **payload.model_dump(exclude={"password"}),
+            )
+        
         user = UserRepository.create(db, user)
 
         audit_data = UserOut.model_validate(user).model_dump(mode="json")

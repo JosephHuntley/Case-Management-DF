@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import DashboardWrapper from "./components/DashboardWrapper/DashboardWrapper";
 
 function App() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -24,13 +26,12 @@ function App() {
     tryRefresh();
   }, []);
 
-  // TEMP: test fetch to confirm access token works end-to-end
   useEffect(() => {
     if (!accessToken) return;
 
     const fetchCases = async () => {
       try {
-        const res = await fetch("/api/cases", {
+        const res = await fetch("/api/cases/", {
           credentials: "include",
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -61,7 +62,18 @@ function App() {
           path="/login"
           element={<LoginPage accessToken={accessToken} setAccessToken={setAccessToken} />}
         />
-        {/* protected routes go here, gated on accessToken */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute accessToken={accessToken}>
+              <DashboardWrapper>
+
+                <div>Dashboard placeholder</div>
+              </DashboardWrapper>
+            </ProtectedRoute>
+          }
+        />
+        {/* additional protected routes: wrap each element in <ProtectedRoute accessToken={accessToken}>...</ProtectedRoute> */}
       </Routes>
     </Router>
   );

@@ -1,0 +1,137 @@
+#sidebar{
+    width: 15vw;
+    background-color: var(--bg-tertiary);
+    border-right: 1px solid var(--border);
+    padding: 20px;
+    color: var(--text-secondary);
+    min-height: 100%;
+    height:fit-content;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
+}
+
+#sidebar-logo{
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+    min-width:36px;
+    min-height:36px;
+    border-radius: 4px;
+    background-color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#sidebar-title{
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+#sidebar-header{
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#sidebar-list{
+    list-style-type: none;
+    margin-bottom: 10px;
+}
+
+.sidebar-item{
+    padding: 10px 0;
+    cursor: pointer;
+    font-size: 14px;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar-item:hover{
+    background-color: #38BDD433;
+    color: var(--color-primary);
+    border-radius: 4px;
+    padding:10px;
+}
+
+.active{
+    background-color: #38BDD433;
+    color: var(--color-primary);;
+    border-radius: 4px;
+    padding:10px;
+}
+
+.sidebar-title{
+    font-size: 10px;
+    text-transform: uppercase;
+    padding-left: 10px;
+}
+
+#title{
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--text-primary);
+}
+
+.sidebar-user{
+    color: var(--text-primary);
+}
+
+.sidebar-role{
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.sidebar-profile-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+#sidebar-header-text{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100%;
+}
+
+.sidebar-header-title{
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
+/* #sidebar-header{
+    display: flex;
+    align-items: start;
+    justify-content: center;
+} */
+
+#sidebar-profile{
+    display: flex;
+    gap: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+    align-items: center;
+}
+
+#sidebar-initials{
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    background-color: var(--bg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+}

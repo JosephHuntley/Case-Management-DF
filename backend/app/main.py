@@ -23,11 +23,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+init_db()
+
 if settings.ENV == "development":
     from .db.seed import seed_db
     seed_db()
 
-init_db()
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.include_router(login_router, prefix="/api")

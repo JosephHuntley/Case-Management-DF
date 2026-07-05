@@ -8,7 +8,7 @@ export default defineConfig({
     '/api': {
       target: 'https://case-df.local:8443',
       changeOrigin: true,
-      secure: false, // don't reject self-signed/mkcert certs
+      secure: false,
     },
   },
 },

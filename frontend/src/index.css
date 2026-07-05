@@ -1,8 +1,10 @@
 :root {
   --bg-primary: #191922;
-  --bg-secondary: #2B2B34;
+  --bg-secondary: #262838;
+  --bg-tertiary: #2c2e40;
   --text-primary: #FFFFFF;
-  --text-secondary: #686D81;
+  /* --text-secondary: #686D81; */
+  --text-secondary: #9494ac;
   --color-primary: #38BDD4;
   --border: #464650;
   --color-danger: #FF4D4F;

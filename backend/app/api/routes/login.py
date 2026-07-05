@@ -1,8 +1,9 @@
 from app.db.session import get_db
 from app.models import User, AuthEventType
-from app.security import verify_password, create_access_token
+from app.security import get_current_user, verify_password, create_access_token
 from app.services import AuthService
 from app.core.config import settings
+from app.services import UserService
 
 
 from fastapi import APIRouter, Depends, HTTPException, Response
@@ -86,3 +87,7 @@ def refresh(request: Request, response: Response, db: Session = Depends(get_db))
 
 #     response.delete_cookie(key="refresh_token", path="/api/auth")
 #     return {"detail": "Logged out"}
+
+@router.get("/me")
+def read_users_me(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    return UserService.get_user_by_id(db, current_user.id)
