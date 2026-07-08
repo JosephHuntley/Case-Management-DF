@@ -7,7 +7,8 @@
   --text-secondary: #9494ac;
   --text-muted: #6B6C82;
   --color-primary: #38BDD4;
-  --border: #464650;
+  /* --border: #464650; */
+  --border:#292a3c;
   --color-danger: #FF4D4F;
   --success: #4ADE80;
   --success-dim: rgba(74,222,128,0.12);

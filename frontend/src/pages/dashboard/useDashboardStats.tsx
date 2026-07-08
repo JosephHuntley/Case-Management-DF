@@ -61,5 +61,5 @@ export function useDashboardStats() {
     };
   }, [getAccessToken]);
 
-  return { stats, isLoading, error };
+  return { stats, isLoading, error, setIsLoading };
 }

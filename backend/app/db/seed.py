@@ -64,6 +64,30 @@ def seed_db():
     case.tags.extend([malware_tag, windows_tag, triage_tag])
     db.add(case)
 
+    case2 = Case(
+        id=uuid4(),
+        case_number="CASE-2026-0002",
+        title="Test Forensic Case 2",
+        description="Development seed data",
+        status=CaseStatus.OPEN,
+        priority=CasePriority.HIGH,
+        created_by=investigator.id
+    )
+    case2.tags.extend([malware_tag, windows_tag, triage_tag])
+    db.add(case2)
+
+    case3 = Case(
+        id=uuid4(),
+        case_number="CASE-2026-0003",
+        title="Test Forensic Case3",
+        description="Development seed data",
+        status=CaseStatus.OPEN,
+        priority=CasePriority.HIGH,
+        created_by=investigator.id
+    )
+    case3.tags.extend([malware_tag, windows_tag, triage_tag])
+    db.add(case3)
+
     item = EvidenceItem(
         id=uuid4(),
         case_id=case.id,
