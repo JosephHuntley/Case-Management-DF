@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import "./Dashboard.css"
 import { useDashboardStats } from './useDashboardStats';
 import { useAuth } from '../../context/AuthContext';
@@ -84,7 +84,7 @@ function Dashboard() {
     <main id="dashboard">
       <div id="dashboard-row">
         <div className="dashboard-card">
-          {/* TODO: Update change to be dynamic and reflect real data */}
+          {/* TODO: Update changes section to be dynamic and reflect real data */}
           <h2 className="dashboard-card-title">Active Cases</h2>
           <p className="dashboard-card-content">{isLoading ? '—' : stats?.activeCases ?? 0}</p>
           <p className="dashboard-card-subcontent">
