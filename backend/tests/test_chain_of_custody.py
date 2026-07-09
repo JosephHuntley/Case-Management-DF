@@ -1,32 +1,17 @@
 from app.models import EvidenceType, AcquisitionMethod, CustodyAction, AuditLog, AuditAction
 from datetime import datetime, timezone
 from uuid import UUID
+from helper import create_test_case, create_test_user
 
 
 def test_create_chain_of_custody(client_factory, db_session):
     client = client_factory()
-    user = client.post("/users/", json={
-        "username": "custodyuser1",
-        "email": "custodyuser1@example.com",
-        "password": "password123",
-        "role": "investigator"
-    })
-    user2 = client.post("/users/", json={
-        "username": "custodyuser1.5",
-        "email": "custodyuser1_5@example.com",
-        "password": "password123",
-        "role": "investigator"
-    })
-    case = client.post("/cases/", json={
-        "title": "Test Case for Chain of Custody",
-        "description": "This case is for testing creation of chain of custody records",
-        "status": "open",
-        "priority": "medium",
-        "created_by": user.json()["id"]
-    })
+    user = create_test_user(client)
+    user2 = create_test_user(client)
+    case = create_test_case(client)
     case_id = case.json()["id"]
 
-    item = client.post("/evidence-items", json={
+    item = client.post("/api/evidence-items", json={
         "case_id": case_id,
         "acquired_by": user.json()["id"],
         "evidence_tag": "E-0001-P-ATL",
@@ -43,7 +28,7 @@ def test_create_chain_of_custody(client_factory, db_session):
     })
 
     # This is a bad example as there should be no 'to_person' on a collected evidence. But I'm testing to ensure both fields keep their value
-    response = client.post("/chain-of-custody/", json={
+    response = client.post("/api/chain-of-custody/", json={
         "evidence_id": item.json()["id"],
         "from_person": user.json()["id"],
         "to_person": user2.json()["id"],
@@ -68,22 +53,11 @@ def test_create_chain_of_custody(client_factory, db_session):
 
 def test_get_chain_by_id(client_factory, db_session):
     client = client_factory()
-    user = client.post("/users/", json={
-        "username": "custodyuser2",
-        "email": "custodyuser2@example.com",
-        "password": "password123",
-        "role": "investigator"
-    })
-    case = client.post("/cases/", json={
-        "title": "Test Case for Chain of Custody",
-        "description": "This case is for testing creation of chain of custody records",
-        "status": "open",
-        "priority": "medium",
-        "created_by": user.json()["id"]
-    })
+    user = create_test_user(client)
+    case = create_test_case(client)
     case_id = case.json()["id"]
 
-    item = client.post("/evidence-items", json={
+    item = client.post("/api/evidence-items", json={
         "case_id": case_id,
         "acquired_by": user.json()["id"],
         "evidence_tag": "E-0001-P-ATL",
@@ -99,14 +73,14 @@ def test_get_chain_by_id(client_factory, db_session):
         "is_verified": True
     })
 
-    chain = client.post("/chain-of-custody/", json={
+    chain = client.post("/api/chain-of-custody/", json={
         "evidence_id": item.json()["id"],
         "from_person": user.json()["id"],
         "notes": "Initial collection of evidence",
         "action": CustodyAction.COLLECTED.value
     })
 
-    response = client.get(f"/chain-of-custody/{chain.json()["id"]}")
+    response = client.get(f"/api/chain-of-custody/{chain.json()["id"]}")
 
     assert response.status_code == 200
     assert response.json()["evidence_id"] == item.json()["id"]
@@ -117,22 +91,11 @@ def test_get_chain_by_id(client_factory, db_session):
 
 def test_get_chain_by_id(client_factory, db_session):
     client = client_factory()
-    user = client.post("/users/", json={
-        "username": "custodyuser3",
-        "email": "custodyuser3@example.com",
-        "password": "password123",
-        "role": "investigator"
-    })
-    case = client.post("/cases/", json={
-        "title": "Test Case for Chain of Custody",
-        "description": "This case is for testing creation of chain of custody records",
-        "status": "open",
-        "priority": "medium",
-        "created_by": user.json()["id"]
-    })
+    user = create_test_user(client)
+    case = create_test_case(client)
     case_id = case.json()["id"]
 
-    item = client.post("/evidence-items", json={
+    item = client.post("/api/evidence-items", json={
         "case_id": case_id,
         "acquired_by": user.json()["id"],
         "evidence_tag": "E-0001-P-ATL",
@@ -148,18 +111,18 @@ def test_get_chain_by_id(client_factory, db_session):
         "is_verified": True
     })
 
-    chain = client.post("/chain-of-custody/", json={
+    chain = client.post("/api/chain-of-custody/", json={
         "evidence_id": item.json()["id"],
         "from_person": user.json()["id"],
         "notes": "Initial collection of evidence",
         "action": CustodyAction.COLLECTED.value
     })
 
-    response = client.get(f"/chain-of-custody/evidence/{item.json()["id"]}")
+    response = client.get(f"/api/chain-of-custody/evidence/{item.json()["id"]}")
 
     assert response.status_code == 200
-    assert response.json()["evidence_id"] == item.json()["id"]
-    assert response.json()["from_person"] == user.json()["id"]
-    assert response.json()["to_person"] is None
-    assert response.json()["notes"] == "Initial collection of evidence"
-    assert response.json()["action"] == CustodyAction.COLLECTED.value
+    assert response.json()[0]["evidence_id"] == item.json()["id"]
+    assert response.json()[0]["from_person"] == user.json()["id"]
+    assert response.json()[0]["to_person"] is None
+    assert response.json()[0]["notes"] == "Initial collection of evidence"
+    assert response.json()[0]["action"] == CustodyAction.COLLECTED.value
