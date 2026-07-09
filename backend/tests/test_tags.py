@@ -5,7 +5,7 @@ from app.models import AuditLog
 def test_create_tag(client_factory, db_session):
     client = client_factory()
     response = client.post(
-        "/tags/",
+        "/api/tags/",
         json={
             "name": "Test Tag",
             "description": "This is a test tag",
@@ -29,7 +29,7 @@ def test_create_tag(client_factory, db_session):
 
 def test_get_tags(client_factory):
     client = client_factory()
-    response = client.get("/tags/")
+    response = client.get("/api/tags/")
 
     assert response.status_code == 200
     assert isinstance(response.json(), list)
@@ -37,7 +37,7 @@ def test_get_tags(client_factory):
 def test_update_tag(client_factory, db_session):
     client = client_factory()
     created = client.post(
-        "/tags/",
+        "/api/tags/",
         json={
             "name": "Update Tag",
             "description": "This tag will be updated",
@@ -49,7 +49,7 @@ def test_update_tag(client_factory, db_session):
     tag_id = created.json()["id"]
 
     response = client.put(
-        f"/tags/{tag_id}",
+        f"/api/tags/{tag_id}",
         json={
             "name": "Updated Tag",
             "description": "This tag has been updated",
@@ -77,7 +77,7 @@ def test_update_tag(client_factory, db_session):
 def test_delete_tag(client_factory, db_session):
     client = client_factory()
     created = client.post(
-        "/tags/",
+        "/api/tags/",
         json={
             "name": "Delete Tag",
             "description": "This tag will be deleted",
@@ -88,12 +88,12 @@ def test_delete_tag(client_factory, db_session):
     assert created.status_code == 200
     tag_id = created.json()["id"]
 
-    response = client.delete(f"/tags/{tag_id}")
+    response = client.delete(f"/api/tags/{tag_id}")
 
     assert response.status_code == 200
     assert response.json()["detail"] == "Tag deleted successfully"
 
-    response = client.get("/tags/")
+    response = client.get("/api/tags/")
     deleted_tag = [t for t in response.json() if t["id"] == tag_id]
     assert len(deleted_tag) == 0
 
