@@ -1,24 +1,17 @@
 from uuid import uuid4
 
 from app.models import AuditLog
+from helper import create_test_user, create_test_case
 
 def test_create_case(client_factory, db_session):
     client = client_factory()
-    user = client.post(
-        "/users/",
-        json={
-            "username": "caseuser123",
-            "email": "caseuser@test.com",
-            "password": "password123",
-            "role": "investigator"
-        }
-    )
+    user = create_test_user(client)
 
     assert user.status_code == 201
     user_id = user.json()["id"]
 
     tag = client.post(
-        "/tags/",
+        "/api/tags/",
         json={
             "name": "Test Tag1",
             "description": "This is a test tag",
@@ -29,17 +22,7 @@ def test_create_case(client_factory, db_session):
     assert tag.status_code == 200
     tag_id = tag.json()["id"]
 
-    response = client.post(
-        "/cases/",
-        json={
-            "title": "Test Case",
-            "description": "This is a test case",
-            "status": "open",
-            "priority": "medium",
-            "created_by": user_id,
-            "tag_ids": []
-        }
-    )
+    response = create_test_case(client, tag_id=tag_id, title="Test Case", description="This is a test case", status="open", priority="medium")
 
     assert response.status_code == 200
 
@@ -58,81 +41,37 @@ def test_create_case(client_factory, db_session):
     
 def test_get_cases(client_factory):
     client = client_factory()
-    response = client.get("/cases/")
+    response = client.get("/api/cases/")
 
     assert response.status_code == 200
     assert isinstance(response.json(), list)
 
 def test_get_case(client_factory):
     client = client_factory()
-    user = client.post(
-        "/users/",
-        json={
-            "username": "caseuser2",
-            "email": "caseuser2@test.com",
-            "password": "password123",
-            "role": "investigator"
-        }
-    )
-
-    assert user.status_code == 201
-    user_id = user.json()["id"]
-
-    created = client.post(
-        "/cases/",
-        json={
-            "title": "Test Case",
-            "description": "This is a test case",
-            "status": "open",
-            "priority": "medium",
-            "created_by": user_id
-        }
-    )
+    created = create_test_case(client)
 
     assert created.status_code == 200
     case_id = created.json()["id"]
 
-    response = client.get(f"/cases/{case_id}")
+    response = client.get(f"/api/cases/{case_id}")
     assert response.status_code == 200
     assert response.json()["id"] == case_id
 
 def test_get_missing_cases(client_factory):
     client = client_factory()
-    response = client.get(f"/cases/{uuid4()}")
+    response = client.get(f"/api/cases/{uuid4()}")
 
     assert response.status_code == 404
 
 def test_update_case(client_factory, db_session):
     client = client_factory()
-    user = client.post(
-        "/users/",
-        json={
-            "username": "caseuser3",
-            "email": "caseuser3@test.com",
-            "password": "password123",
-            "role": "investigator"
-        }
-    )
-
-    assert user.status_code == 201
-    user_id = user.json()["id"]
-
-    created = client.post(
-        "/cases/",
-        json={
-            "title": "Test Case",
-            "description": "This is a test case",
-            "status": "open",
-            "priority": "medium",
-            "created_by": user_id
-        }
-    )
+    created = create_test_case(client, title="Test Case", status="open")
 
     assert created.status_code == 200
     case_id = created.json()["id"]
 
     response = client.put(
-        f"/cases/{case_id}",
+        f"/api/cases/{case_id}",
         json={
             "title": "Updated Test Case",
             "description": "This is an updated test case",
@@ -160,42 +99,20 @@ def test_update_case(client_factory, db_session):
 
 def test_delete_case(client_factory, db_session):
     client = client_factory()
-    user = client.post(
-        "/users/",
-        json={
-            "username": "caseuser42",
-            "email": "caseuser24@test.com",
-            "password": "password123",
-            "role": "investigator"
-        }
-    )
-
-    assert user.status_code == 201
-    user_id = user.json()["id"]
-
-    created = client.post(
-        "/cases/",
-        json={
-            "title": "Test Case",
-            "description": "This is a test case",
-            "status": "open",
-            "priority": "medium",
-            "created_by": user_id
-        }
-    )
+    created = create_test_case(client, title="Test Case")
 
     assert created.status_code == 200
     case_id = created.json()["id"]
 
-    response = client.delete(f"/cases/{case_id}")
+    response = client.delete(f"/api/cases/{case_id}")
     assert response.status_code == 200
 
-    get_all = client.get("/cases/")
+    get_all = client.get("/api/cases/")
     case_ids = [c["id"] for c in get_all.json()]
     assert case_id not in case_ids
 
     # Since it's a soft delete, we should still be able to get the case by ID, but it should be marked as deleted. 
-    response = client.get(f"/cases/{case_id}")
+    response = client.get(f"/api/cases/{case_id}")
     assert response.status_code == 200
     assert response.json()["deleted_at"] is not None
 

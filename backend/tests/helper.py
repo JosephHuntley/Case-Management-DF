@@ -12,7 +12,7 @@ def create_test_user(client, username=None, role="investigator"):
         "last_name": "Doe"
     })
 
-def create_test_case(client, user=None, title=None):
+def create_test_case(client, user=None, title=None, tag_id=[], description="This is a test case", status="open", priority="medium"):
     if user is None:
         user = create_test_user(client)
     if title is None:
@@ -20,10 +20,11 @@ def create_test_case(client, user=None, title=None):
     
     return client.post("/api/cases/", json={
         "title": title,
-        "description": "This case is for testing case notes",
-        "status": "open",
-        "priority": "medium",
-        "created_by": user.json()["id"]
+        "description": description,
+        "status": status,
+        "priority": priority,
+        "created_by": user.json()["id"],
+        "tag_id": tag_id
     })
 
     
