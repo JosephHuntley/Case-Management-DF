@@ -40,6 +40,8 @@ def db_session(setup_db):
         email="test@test.com",
         password_hash=hash_password(TEST_PASSWORD),
         role=UserRole.ADMIN,
+        first_name="John",
+        last_name="doe"
     )
     test_audit = User(
         id=TEST_AUDITOR_ID,
@@ -47,6 +49,8 @@ def db_session(setup_db):
         email="testaudit@test.com",
         password_hash=hash_password(TEST_PASSWORD),
         role=UserRole.AUDITOR,
+        first_name="John",
+        last_name="doe"
     )
     session.add_all([test_user, test_audit])
     session.commit()

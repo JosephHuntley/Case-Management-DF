@@ -1,24 +1,15 @@
 # test_case_notes.py
 from uuid import UUID, uuid4
 from app.models import AuditLog, AuditAction, UserRole
+from helper import create_test_user, create_test_case
 
 
 def test_create_case_note(client_factory, db_session):
     client = client_factory()
-    user = client.post("/users/", json={
-        "username": "caseuser1",
-        "email": "caseuser1@example.com",
-        "password": "password123",
-        "role": "investigator"
-    })
-    case = client.post("/cases/", json={
-        "title": "Test Case for Notes",
-        "description": "This case is for testing case notes",
-        "status": "open",
-        "priority": "medium",
-        "created_by": user.json()["id"]
-    })
-    response = client.post("/case-notes/", json={
+    
+    case = create_test_case(client)
+
+    response = client.post("/api/case-notes/", json={
         "case_id": case.json()["id"],
         "note": "This is a test case note"
     })
@@ -38,26 +29,16 @@ def test_create_case_note(client_factory, db_session):
 
 def test_get_case_note_by_id(client_factory, db_session):
     client = client_factory()
-    user = client.post("/users/", json={
-        "username": "caseuser4",
-        "email": "caseuser4@example.com",
-        "password": "password123",
-        "role": UserRole.ADMIN.value
-    })
-    case = client.post("/cases/", json={
-        "title": "Test Case for Note Retrieval",
-        "description": "This case is for testing retrieval of case notes",
-        "status": "open",
-        "priority": "medium",
-        "created_by": user.json()["id"]
-    })
-    note_response = client.post("/case-notes/", json={
+    
+    case = create_test_case(client)
+
+    note_response = client.post("/api/case-notes/", json={
         "case_id": case.json()["id"],
         "note": "This is a test case note for retrieval"
     })
 
     note_id = note_response.json()["id"]
-    response = client.get(f"/case-notes/{note_id}")
+    response = client.get(f"/api/case-notes/{note_id}")
 
     assert response.status_code == 200
     assert response.json()["id"] == note_id
@@ -67,32 +48,21 @@ def test_get_case_note_by_id(client_factory, db_session):
 
 def test_get_missing_case_note_by_id(client_factory):
     client = client_factory()
-    response = client.get(f"/case-notes/{uuid4()}")
+    response = client.get(f"/api/case-notes/{uuid4()}")
     assert response.status_code == 404
 
 
 def test_get_case_notes_by_case_id(client_factory, db_session):
     client = client_factory()
-    user = client.post("/users/", json={
-        "username": "caseuser5",
-        "email": "caseuser5@example.com",
-        "password": "password123",
-        "role": "investigator"
-    })
-    case = client.post("/cases/", json={
-        "title": "Test Case for Notes List",
-        "description": "This case is for testing retrieval of case notes list",
-        "status": "open",
-        "priority": "medium",
-        "created_by": user.json()["id"]
-    })
+    case = create_test_case(client)
+
     for i in range(3):
-        client.post("/case-notes/", json={
+        client.post("/api/case-notes/", json={
             "case_id": case.json()["id"],
             "note": f"This is test case note {i + 1}"
         })
 
-    response = client.get(f"/case-notes/case/{case.json()['id']}")
+    response = client.get(f"/api/case-notes/case/{case.json()['id']}")
 
     assert response.status_code == 200
     assert len(response.json()) == 3
@@ -103,26 +73,15 @@ def test_get_case_notes_by_case_id(client_factory, db_session):
 
 def test_archive_case_note(client_factory, db_session):
     client = client_factory()
-    user = client.post("/users/", json={
-        "username": "caseuser6",
-        "email": "caseuser6@example.com",
-        "password": "password123",
-        "role": "investigator"
-    })
-    case = client.post("/cases/", json={
-        "title": "Test Case for Note Deletion",
-        "description": "This case is for testing deletion of case notes",
-        "status": "open",
-        "priority": "medium",
-        "created_by": user.json()["id"]
-    })
-    note_response = client.post("/case-notes/", json={
+    case = create_test_case(client)
+
+    note_response = client.post("/api/case-notes/", json={
         "case_id": case.json()["id"],
         "note": "This is a test case note for deletion"
     })
 
     note_id = note_response.json()["id"]
-    response = client.delete(f"/case-notes/{note_id}")
+    response = client.delete(f"/api/case-notes/{note_id}")
 
     assert response.status_code == 200
     assert response.json()["id"] == note_id
@@ -139,26 +98,15 @@ def test_archive_case_note(client_factory, db_session):
 
 def test_update_case_note(client_factory, db_session):
     client = client_factory()
-    user = client.post("/users/", json={
-        "username": "caseuser7",
-        "email": "caseuser7@example.com",
-        "password": "password123",
-        "role": "investigator"
-    })
-    case = client.post("/cases/", json={
-        "title": "Test Case for Note Update",
-        "description": "This case is for testing update of case notes",
-        "status": "open",
-        "priority": "medium",
-        "created_by": user.json()["id"]
-    })
-    note_response = client.post("/case-notes/", json={
+    case = create_test_case(client)
+
+    note_response = client.post("/api/case-notes/", json={
         "case_id": case.json()["id"],
         "note": "This is a test case note for update"
     })
 
     note_id = note_response.json()["id"]
-    response = client.put(f"/case-notes/{note_id}", json={
+    response = client.put(f"/api/case-notes/{note_id}", json={
         "note": "This is an updated test case note",
         "case_id": case.json()["id"]
     })
