@@ -1,11 +1,14 @@
 from uuid import uuid4
 
-def create_test_user(client, username=None, role="investigator"):
+def create_test_user(client, username=None, role="investigator", email=None):
     if username is None:
         username = f"testuser{uuid4()}"
+
+    if email is None:
+        email = f"{username}@example.com"
     return client.post("/api/users/", json={
         "username": username,
-        "email": f"{username}@example.com",
+        "email": email,
         "password": "password123",
         "role": role,
         "first_name": "John",

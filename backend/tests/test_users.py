@@ -1,18 +1,11 @@
 from uuid import uuid4
 
 from app.models import AuditLog
+from helper import create_test_user
 
 def test_create_user(client_factory, db_session):
     client = client_factory()
-    response = client.post(
-        "/users/",
-        json={
-            "username": "testuser6748",
-            "email": "test@example.com",
-            "password": "password123",
-            "role": "investigator"
-        }
-    )
+    response = create_test_user(client, username="testuser6748", email="test@example.com", role="investigator")
 
     assert response.status_code == 201
 
@@ -31,7 +24,7 @@ def test_create_user(client_factory, db_session):
 
 def test_get_users(client_factory):
     client = client_factory()
-    response = client.get("/users/")
+    response = client.get("/api/users/")
 
     assert response.status_code == 200
     assert isinstance(response.json(), list)
@@ -39,21 +32,13 @@ def test_get_users(client_factory):
 
 def test_get_user(client_factory):
     client = client_factory()
-    created = client.post(
-        "/users/",
-        json={
-            "username": "lookupuser",
-            "email": "lookup@example.com",
-            "password": "password123",
-            "role": "investigator"
-        }
-    )
+    created = create_test_user(client)
 
     assert created.status_code == 201
 
     user_id = created.json()["id"]
 
-    response = client.get(f"/users/{user_id}")
+    response = client.get(f"/api/users/{user_id}")
 
     assert response.status_code == 200
     assert response.json()["id"] == user_id
@@ -61,28 +46,20 @@ def test_get_user(client_factory):
 
 def test_get_missing_user(client_factory):
     client = client_factory()
-    response = client.get(f"/users/{uuid4()}")
+    response = client.get(f"/api/users/{uuid4()}")
     assert response.status_code == 404
 
 
 def test_update_user(client_factory, db_session):
     client = client_factory()
-    created = client.post(
-        "/users/",
-        json={
-            "username": "updateuser",
-            "email": "update@example.com",
-            "password": "password123",
-            "role": "investigator"
-        }
-    )
+    created = create_test_user(client, email="update@example.com")
 
     assert created.status_code == 201
 
     user_id = created.json()["id"]
 
     response = client.put(
-        f"/users/{user_id}",
+        f"/api/users/{user_id}",
         json={
             "email": "Update2@example.com"
         }
@@ -106,24 +83,16 @@ def test_update_user(client_factory, db_session):
 
 def test_delete_user(client_factory):
     client = client_factory()
-    created = client.post(
-        "/users/",
-        json={
-            "username": "deleteuser",
-            "email": "delete@example.com",
-            "password": "password123",
-            "role": "investigator"
-        }
-    )
+    created = create_test_user(client)
 
     assert created.status_code == 201
 
     user_id = created.json()["id"]
 
-    response = client.delete(f"/users/{user_id}")
+    response = client.delete(f"/api/users/{user_id}")
 
     assert response.status_code == 200
     
-    user_response = client.get(f"/users/{user_id}")
+    user_response = client.get(f"/api/users/{user_id}")
     assert user_response.json()["is_active"] == False
     assert user_response.json()["deleted_at"] is not None
