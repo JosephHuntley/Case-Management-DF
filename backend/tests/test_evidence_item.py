@@ -2,25 +2,15 @@ from datetime import datetime, timezone
 from app.models.evidence_item import EvidenceType, AcquisitionMethod
 from app.models.audit_log import AuditLog, AuditAction
 from uuid import UUID
+from helper import create_test_case, create_test_user
 
 def test_item_create(client_factory, db_session):
     client = client_factory()
-    user = client.post("/users/", json={
-        "username": "evidenceuser1",
-        "email": "evidenceuser1@example.com",
-        "password": "password123",
-        "role": "investigator"
-    })
-    case = client.post("/cases/", json={
-        "title": "Test Case for Evidence",
-        "description": "This case is for testing evidence items",
-        "status": "open",
-        "priority": "medium",
-        "created_by": user.json()["id"]
-    })
+    user = create_test_user(client)
+    case = create_test_case(client)
 
     case_id = case.json()["id"]
-    evidence = client.post("/evidence-items/", json={
+    evidence = client.post("/api/evidence-items/", json={
         "case_id": case_id,
         "acquired_by": user.json()["id"],
         "evidence_tag": "E-0001-P-ATL",
@@ -60,24 +50,13 @@ def test_item_create(client_factory, db_session):
 
 def test_get_by_id(client_factory, db_session):
     client = client_factory()
-    user = client.post("/users/", json={
-        "username": "evidenceuser2",
-        "email": "evidenceuser2@example.com",
-        "password": "password123",
-        "role": "investigator"
-    })
-    case = client.post("/cases/", json={
-        "title": "Test Case for Evidence",
-        "description": "This case is for testing evidence items",
-        "status": "open",
-        "priority": "medium",
-        "created_by": user.json()["id"]
-    })
+    user = create_test_user(client)
+    case = create_test_case(client)
 
     timestamp = datetime.now(timezone.utc).isoformat()
 
     case_id = case.json()["id"]
-    evidence = client.post("/evidence-items/", json={
+    evidence = client.post("/api/evidence-items/", json={
         "case_id": case_id,
         "acquired_by": user.json()["id"],
         "evidence_tag": "E-0001-P-ATL",
@@ -94,7 +73,7 @@ def test_get_by_id(client_factory, db_session):
     })
 
     item_id = evidence.json()["id"]
-    response = client.get(f"/evidence-items/{item_id}")
+    response = client.get(f"/api/evidence-items/{item_id}")
 
     assert response.json()["case_id"] == case_id
     assert response.json()["acquired_by"] == user.json()["id"]
@@ -112,24 +91,13 @@ def test_get_by_id(client_factory, db_session):
 
 def test_get_by_case_id(client_factory, db_session):
     client = client_factory()
-    user = client.post("/users/", json={
-        "username": "evidenceuser3",
-        "email": "evidenceuser3@example.com",
-        "password": "password123",
-        "role": "investigator"
-    })
-    case = client.post("/cases/", json={
-        "title": "Test Case for Evidence",
-        "description": "This case is for testing evidence items",
-        "status": "open",
-        "priority": "medium",
-        "created_by": user.json()["id"]
-    })
+    user = create_test_user(client)
+    case = create_test_case(client)
 
     timestamp = datetime.now(timezone.utc).isoformat()
 
     case_id = case.json()["id"]
-    evidence = client.post("/evidence-items/", json={
+    evidence = client.post("/api/evidence-items/", json={
         "case_id": case_id,
         "acquired_by": user.json()["id"],
         "evidence_tag": "E-0001-P-ATL",
@@ -146,30 +114,19 @@ def test_get_by_case_id(client_factory, db_session):
     })
 
     item_id = evidence.json()["id"]
-    response = client.get(f"/evidence-items/case/{case_id}")
+    response = client.get(f"/api/evidence-items/case/{case_id}")
 
     assert len(response.json()) == 1
 
 def test_update_item(client_factory, db_session):
     client = client_factory()
-    user = client.post("/users/", json={
-        "username": "evidenceuser4",
-        "email": "evidenceuser4@example.com",
-        "password": "password123",
-        "role": "investigator"
-    })
-    case = client.post("/cases/", json={
-        "title": "Test Case for Evidence",
-        "description": "This case is for testing evidence items",
-        "status": "open",
-        "priority": "medium",
-        "created_by": user.json()["id"]
-    })
+    user = create_test_user(client)
+    case = create_test_case(client)
 
     timestamp = datetime.now(timezone.utc).isoformat()
 
     case_id = case.json()["id"]
-    evidence = client.post("/evidence-items/", json={
+    evidence = client.post("/api/evidence-items/", json={
         "case_id": case_id,
         "acquired_by": user.json()["id"],
         "evidence_tag": "E-0001-P-ATL",
@@ -186,7 +143,7 @@ def test_update_item(client_factory, db_session):
     })
 
     item_id = evidence.json()["id"]
-    response = client.put(f"/evidence-items/{item_id}", json={
+    response = client.put(f"/api/evidence-items/{item_id}", json={
         "source_path": "D://test/Example/E-001-P-ATL.001"
     })
 
