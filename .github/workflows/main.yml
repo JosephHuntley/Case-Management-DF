@@ -14,9 +14,9 @@ jobs:
       postgres:
         image: postgres:16
         env:
-          POSTGRES_USER: testuser
-          POSTGRES_PASSWORD: testpass
-          POSTGRES_DB: testdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: casedf
         ports:
           - 5432:5432
         options: >-
@@ -41,7 +41,7 @@ jobs:
 
       - name: Run pytest
         env:
-          DATABASE_URL: postgresql://testuser:testpass@localhost:5432/testdb
+          DATABASE_URL: postgresql+psycopg://postgres:password@localhost:5432/casedf
           SECRET_KEY: 23029f6feee73d0f836c40d94cbbe6e6d3a5d32ed3ef066fb25fb959e07ff671
         run: |
           cd backend
