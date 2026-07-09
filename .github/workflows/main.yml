@@ -42,6 +42,7 @@ jobs:
       - name: Run pytest
         env:
           DATABASE_URL: postgresql://testuser:testpass@localhost:5432/testdb
+          SECRET_KEY: 23029f6feee73d0f836c40d94cbbe6e6d3a5d32ed3ef066fb25fb959e07ff671
         run: |
           cd backend
           pytest -v
