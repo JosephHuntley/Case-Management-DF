@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
   proxy: {
     '/api': {
-      target: 'https://case-df.local:8443',
+      target: 'http://backend:8000',
       changeOrigin: true,
       secure: false,
     },

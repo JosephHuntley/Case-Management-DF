@@ -1,0 +1,54 @@
+# Place this file at the project ROOT (one level above backend/ and frontend/)
+
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: casedf
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        DEV_MODE: "false"   # set to "true" to install requirements-dev.txt
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env       # loads SECRET_KEY, ENV, etc. as-is
+    environment:
+      # These override the values in .env for the containerized run only
+      DATABASE_URL: postgresql+psycopg://postgres:password@postgres:5432/casedf
+      USE_HTTPS: "false"      # no certs baked into the container yet
+      PORT: "8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      # Browser talks to the backend via the host-mapped port, not the
+      # internal docker network name — the frontend JS runs in the user's
+      # browser, not inside the docker network.
+      VITE_API_URL: http://localhost:8000
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
