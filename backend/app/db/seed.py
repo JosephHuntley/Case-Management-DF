@@ -1,6 +1,6 @@
 from uuid import uuid4, UUID
 from app.db.session import SessionLocal
-from app.models import User, UserRole, Case, CaseStatus, CasePriority, Tag, EvidenceItem, EvidenceType, AcquisitionMethod
+from app.models import User, UserRole, Case, CaseStatus, CasePriority, Tag, EvidenceItem, EvidenceType, AcquisitionMethod, ChainOfCustody, CustodyAction
 from datetime import datetime, timezone
 from app.security import hash_password
 
@@ -105,6 +105,29 @@ def seed_db():
         is_verified=True
     )
     db.add(item)
+
+    chain = ChainOfCustody(
+        id=uuid4(),
+        evidence_id=item.id,
+        performed_by=admin.id,
+        to_person=admin.id,
+        action=CustodyAction.COLLECTED,
+        notes="Initial creation of evidence item",
+        row_hash="dffd6021bb2bd5b0af676290809ec3a53191dd81c7f70a4b28688a362182986f"
+    )
+    db.add(chain)
+
+    chain = ChainOfCustody(
+        id=uuid4(),
+        evidence_id=item.id,
+        performed_by=admin.id,
+        from_person=admin.id,
+        to_person=investigator.id,
+        action=CustodyAction.TRANSFERRED,
+        notes="Initial transfer to investigator",
+        row_hash="dffd6021bb2bd5b0af676290809ec3a53191dd81c7f70a4b28688a362182986f"
+    )
+    db.add(chain)
 
     db.commit()
     db.close()
