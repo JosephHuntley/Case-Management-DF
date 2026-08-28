@@ -121,3 +121,7 @@ class EvidenceItem(Base):
     cascade="all, delete-orphan",
     order_by="ChainOfCustody.created_at"
 )
+
+    @property
+    def case_title(self) -> str:
+        return self.case.title
