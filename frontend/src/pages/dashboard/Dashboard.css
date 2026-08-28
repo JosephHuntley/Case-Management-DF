@@ -110,8 +110,8 @@
 }
 
 .active{
-    color: var(--success);
-    background: var(--success-dim);   
+    color: var(--color-primary);
+    background: #38BDD433;   
 }
 
 .dashboard-case-information{
