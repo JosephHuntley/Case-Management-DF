@@ -98,6 +98,7 @@ function Dashboard() {
           <p className="dashboard-card-subcontent">tracked across all cases</p>
           <p className="dashboard-card-change">no change</p>
         </div>
+        {/* TODO: Implement dynamic content for pending reviews */}
         <div className="dashboard-card">
           <h2 className="dashboard-card-title">Pending Reviews</h2>
           <p className="dashboard-card-content">{isLoading ? '—' : stats?.pendingReviews ?? 0}</p>
@@ -106,10 +107,11 @@ function Dashboard() {
         </div>
         <div className="dashboard-card">
           <h2 className="dashboard-card-title">Custody Integrity</h2>
-          <p className="dashboard-card-content">
+          <p className="dashboard-card-content green">
             {isLoading ? '—' : `${stats?.custodyIntegrityPercent ?? 0}%`}
           </p>
           <p className="dashboard-card-subcontent">hash-chain verified</p>
+          {stats?.custodyIntegrityPercent !== undefined && stats.custodyIntegrityPercent === 100 && (<p className='dashboard-card-change up' >0 Breaks Detected</p>)}
         </div>
       </div>
 

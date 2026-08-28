@@ -122,3 +122,7 @@
 .dashboard-activity-table{
     width: 100%;
 }
+
+.green{
+    color: var(--success);
+}
