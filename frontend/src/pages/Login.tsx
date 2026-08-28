@@ -21,8 +21,10 @@ function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    const tmpPassword = password; 
+    setPassword(""); 
     try {
-      await login(username, password);
+      await login(username, tmpPassword);
       navigate('/dashboard');
     } catch {
       // AuthContext already set `error` with a user-facing message
@@ -57,7 +59,7 @@ function LoginPage() {
         </div>
         <div>
           <label htmlFor="password">Password</label>
-          <input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} type="password" id="password" name="password" required />
+          <input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} type="password" id="password" name="password" value={password} required />
         </div>
         <button type="button" id="forgot-password">Forgot password?</button>
         <Button text={submitting ? "Signing in…" : "Sign in"} type="submit" />
