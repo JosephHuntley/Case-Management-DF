@@ -36,7 +36,6 @@ class AuditRepository:
             json.dumps(payload, sort_keys=True, default=str).encode()
         ).hexdigest()
 
-        print(db_log)
 
         self.db.add(db_log)
         self.db.flush()
