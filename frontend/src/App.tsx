@@ -65,18 +65,40 @@ function AppRoutes() {
           </DashboardWrapper>
         </ProtectedRoute>
       }
-      />
 
+      />
       <Route 
-      path="/chainofcustody"
+      path="/evidence/evidenceId/:evidenceId"
       element={
         <ProtectedRoute>
           <DashboardWrapper>
-            <ChainOfCustody/>
+            <Evidence/>
           </DashboardWrapper>
         </ProtectedRoute>
       }
       />
+
+
+      <Route path="/chainofcustody/evidence/:evidenceId" element={
+        <ProtectedRoute>
+          <DashboardWrapper>
+            <ChainOfCustody/>
+          </DashboardWrapper>
+        </ProtectedRoute>} />
+
+      <Route path="/chainofcustody/:chainId" element={
+        <ProtectedRoute>
+          <DashboardWrapper>
+            <ChainOfCustody/>
+          </DashboardWrapper>
+        </ProtectedRoute>} />
+
+      <Route path="/chainofcustody" element={
+        <ProtectedRoute>
+          <DashboardWrapper>
+            <ChainOfCustody/>
+          </DashboardWrapper>
+        </ProtectedRoute>} />
 
       <Route 
       path="/reports"
