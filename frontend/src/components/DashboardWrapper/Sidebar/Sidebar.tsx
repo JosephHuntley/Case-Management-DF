@@ -4,11 +4,28 @@ import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { useAuth } from '../../../context/AuthContext'
 
 function Sidebar() {
-  const { user } = useAuth()
+  const { user, getAccessToken } = useAuth()
   const location = useLocation()
 
   const isAdmin = user?.role === 'admin'
   const initials = user ? `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase() : ''
+
+  const handleLogout = async () => {
+    try {
+      const token = await getAccessToken();
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        credentials: 'include',
+      })
+      if (!response.ok) {
+        throw new Error('Logout failed')
+      }
+      window.location.href = '/login'
+    } catch (error) {
+      console.error('Error during logout:', error)
+    }
+  }
 
   // "/" needs an exact match (otherwise it'd match every route). Everything
   // else uses startsWith so nested routes (e.g. /cases/123 later) still
@@ -66,7 +83,7 @@ function Sidebar() {
           </>
         )}
 
-        <div id="sidebar-profile">
+        <div id="sidebar-profile" onClick={() => handleLogout()}>
             <div id="sidebar-initials">{initials || '—'}</div>
             <div className="sidebar-profile-info">
                 <div className="sidebar-user">{user ? `${user.firstName.charAt(0)}. ${user.lastName}` : 'Loading…'}</div>

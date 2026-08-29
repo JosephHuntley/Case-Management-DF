@@ -61,6 +61,7 @@ def login(
 @router.post("/refresh")
 def refresh(request: Request, response: Response, db: Session = Depends(get_db)):
     raw_refresh_token = request.cookies.get("refresh_token")
+
     if not raw_refresh_token:
         raise HTTPException(status_code=401, detail="No refresh token provided")
 
@@ -79,14 +80,15 @@ def refresh(request: Request, response: Response, db: Session = Depends(get_db))
     return {"access_token": tokens["access_token"], "token_type": "bearer"}
 
 # TODO Implement logout endpoint that revokes the refresh token and clears the cookie
-# @router.post("/logout")
-# def logout(request: Request, response: Response, db: Session = Depends(get_db)):
-#     refresh_token = request.cookies.get("refresh_token")
-#     if refresh_token:
-#         revoke_refresh_token(db, refresh_token)  
+@router.post("/logout")
+def logout(request: Request, response: Response, db: Session = Depends(get_db)):
+    refresh_token = request.cookies.get("refresh_token")
+    print(f"Logging out user with refresh token: {refresh_token}" if refresh_token else "No refresh token found in cookies")
+    if refresh_token:
+        AuthService.revoke_refresh_token(db, refresh_token)  
 
-#     response.delete_cookie(key="refresh_token", path="/api/auth")
-#     return {"detail": "Logged out"}
+    response.delete_cookie(key="refresh_token", path="/api/auth")
+    return {"detail": "Logged out"}
 
 @router.get("/me")
 def read_users_me(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):

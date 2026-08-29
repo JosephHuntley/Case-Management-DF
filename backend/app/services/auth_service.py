@@ -52,3 +52,13 @@ class AuthService:
         )
 
         AuthRepository.create(db,log)
+
+    @staticmethod
+    def revoke_refresh_token(db, raw_refresh_token: str) -> None:
+        repo = RefreshTokenRepository(db)
+        stored = repo.get_by_hash(hash_token(raw_refresh_token))
+        print(f"Revoking refresh token for user {stored.user_id}" if stored else "No refresh token found to revoke")
+        if stored is not None and not stored.revoked:
+            print(f"Revoking refresh token for user {stored.user_id}")
+            repo.revoke(stored)
+            db.commit()
