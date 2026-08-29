@@ -22,7 +22,7 @@ function LogCustodyEvent({ isOpen, onClose, evidence }: LogCustodyEventProps) {
     const handleSubmit = async () => {
         try {
             const token = await getAccessToken();
-            const response = await fetch(`/api/chain-of-custody/`, {
+            const response = await fetch(`/api/chain-of-custody/append`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

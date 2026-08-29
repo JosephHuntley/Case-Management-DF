@@ -2,7 +2,7 @@ import hashlib
 import json
 from uuid import UUID, uuid4
 
-from app.schemas import ChainOfCustodyCreate
+from app.schemas import ChainOfCustodyCreate, ChainOfCustodyApend
 from app.models import ChainOfCustody, User
 
 
@@ -11,33 +11,51 @@ class ChainOfCustodyRepository:
         self.db = db
 
     def create_chain_of_custody(self, chain_of_custody_data: ChainOfCustodyCreate, current_user: User) -> ChainOfCustody:
-        previous_hash = self.get_last_hash(chain_of_custody_data.evidence_id)
+        new_chain = ChainOfCustody(
+            id=uuid4(),
+            evidence_id=chain_of_custody_data.evidence_id,
+            performed_by=current_user.id,
+            action=chain_of_custody_data.action,
+            from_person=None,
+            to_person=chain_of_custody_data.to_person,
+            notes=chain_of_custody_data.notes,
+            previous_hash=None,
+        )
+
+        new_chain.row_hash = self._compute_row_hash(new_chain, None)
+
+        self.db.add(new_chain)
+        self.db.flush()
+        return new_chain
+
+    def append_chain_of_custody(self, chain_of_custody_data: ChainOfCustodyApend, current_user: User) -> ChainOfCustody:
+        last = self.get_last_entry(chain_of_custody_data.evidence_id)
 
         new_chain = ChainOfCustody(
             id=uuid4(),
             evidence_id=chain_of_custody_data.evidence_id,
             performed_by=current_user.id,
             action=chain_of_custody_data.action,
-            from_person=chain_of_custody_data.from_person,
+            from_person=last.to_person,
             to_person=chain_of_custody_data.to_person,
             notes=chain_of_custody_data.notes,
-            previous_hash=previous_hash,
+            previous_hash=last.row_hash,
         )
 
-        new_chain.row_hash = self._compute_row_hash(new_chain, previous_hash)
+        new_chain.row_hash = self._compute_row_hash(new_chain, last.row_hash)
 
         self.db.add(new_chain)
         self.db.flush()
         return new_chain
 
-    def get_last_hash(self, evidence_id: UUID) -> str | None:
+    def get_last_entry(self, evidence_id: UUID) -> str | None:
         last = (
             self.db.query(ChainOfCustody)
             .filter(ChainOfCustody.evidence_id == evidence_id)
             .order_by(ChainOfCustody.created_at.desc())
             .first()
         )
-        return last.row_hash if last else None
+        return last if last else None
 
     def get_chain_of_custody_by_id(self, chain_of_custody_id: UUID) -> ChainOfCustody | None:
         return self.db.query(ChainOfCustody).filter(

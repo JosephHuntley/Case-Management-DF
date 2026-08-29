@@ -11,7 +11,13 @@ class ChainOfCustodyBase(BaseModel):
     to_person: str | None = None
     notes: str | None = None
 
-class ChainOfCustodyCreate(ChainOfCustodyBase):
+class ChainOfCustodyCreate(BaseModel):
+    evidence_id: UUID
+    action: CustodyAction
+    to_person: str | None = None
+    notes: str | None = None
+
+class ChainOfCustodyApend(ChainOfCustodyCreate):
     pass
 
 class ChainOfCustodyOut(ChainOfCustodyBase):

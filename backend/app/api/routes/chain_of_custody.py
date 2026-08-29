@@ -5,11 +5,11 @@ from app.db.session import get_db
 from app.security import get_current_user, require_role
 from app.services import ChainOfCustodyService
 from app.models import User, UserRole
-from app.schemas import ChainOfCustodyCreate, ChainOfCustodyOut, ChainOfCustodyVerifyOut
+from app.schemas import ChainOfCustodyCreate, ChainOfCustodyOut, ChainOfCustodyVerifyOut, ChainOfCustodyApend
 
 router = APIRouter(prefix="/chain-of-custody", tags=["Chain of Custody"])
 
-# CREATE
+# CREATE 
 @router.post("/", response_model=ChainOfCustodyOut)
 def create_chain_of_custody(
     payload: ChainOfCustodyCreate,
@@ -17,6 +17,15 @@ def create_chain_of_custody(
     current_user: User = Depends(require_role (UserRole.ADMIN, UserRole.INVESTIGATOR))
 ):
     return ChainOfCustodyService.create_chain_of_custody(db, payload, current_user)
+
+# APPEND 
+@router.post("/append", response_model=ChainOfCustodyOut)
+def append_chain_of_custody(
+    payload: ChainOfCustodyApend,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_role (UserRole.ADMIN, UserRole.INVESTIGATOR))
+):
+    return ChainOfCustodyService.append_chain_of_custody(db, payload, current_user)
 
 # READ by ID
 @router.get("/{chain_of_custody_id}", response_model=ChainOfCustodyOut)
