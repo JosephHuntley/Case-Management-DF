@@ -78,7 +78,7 @@ function AppRoutes() {
       }
       />
 
-
+      {/* TODO: ChainOfCustody Page needs to be refactor */}
       <Route path="/chainofcustody/evidence/:evidenceId" element={
         <ProtectedRoute>
           <DashboardWrapper>

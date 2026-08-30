@@ -75,14 +75,14 @@ function CaseEvidenceSelector({ onViewChain }: CaseEvidenceSelectorProps) {
   }, [selectedCaseId])
 
   return (
-    <div className="coc-card coc-selector">
-      <div className="coc-card-title">Select an evidence item</div>
+    <div className="card selector">
+      <div className="card-title">Select an evidence item</div>
 
-      <div className="coc-select-field">
-        <label htmlFor="coc-case-select">Case</label>
+      <div className="select-field">
+        <label htmlFor="case-select">Case</label>
         <select
           id="coc-case-select"
-          className="coc-select"
+          className="select"
           value={selectedCaseId}
           disabled={casesLoading || Boolean(casesError)}
           onChange={(e) => setSelectedCaseId(e.target.value)}
@@ -97,11 +97,11 @@ function CaseEvidenceSelector({ onViewChain }: CaseEvidenceSelectorProps) {
         {casesError && <p className="coc-field-error">{casesError}</p>}
       </div>
 
-      <div className="coc-select-field">
-        <label htmlFor="coc-evidence-select">Evidence</label>
+      <div className="select-field">
+        <label htmlFor="evidence-select">Evidence</label>
         <select
           id="coc-evidence-select"
-          className="coc-select"
+          className="select"
           value={selectedEvidenceId}
           disabled={!selectedCaseId || evidenceLoading || Boolean(evidenceError)}
           onChange={(e) => setSelectedEvidenceId(e.target.value)}
@@ -126,7 +126,7 @@ function CaseEvidenceSelector({ onViewChain }: CaseEvidenceSelectorProps) {
       </div>
 
       <button
-        className="coc-btn coc-btn-sm coc-btn-primary"
+        className="btn btn-sm btn-primary"
         type="button"
         disabled={!selectedEvidenceId}
         onClick={() => onViewChain(selectedEvidenceId)}

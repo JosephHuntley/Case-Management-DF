@@ -1,6 +1,10 @@
 import { Lock, Plus, Loader2, AlertTriangle, ArrowRight } from 'lucide-react'
 import type { CustodyEntry } from "./types"
 import { formatTimestamp, shortHash } from "./utils"
+import LogCustodyEvent from "../../components/LogCustodyEvent/LogCustodyEvent"
+import { useEffect, useState } from 'react'
+import type { Evidence } from '../../types'
+import { useAuth } from '../../context/AuthContext'
 
 interface CustodyTimelineProps {
   displayId?: string
@@ -10,6 +14,8 @@ interface CustodyTimelineProps {
   error: string | null
   entries: CustodyEntry[]
   onRetry: () => void
+  evidenceId: string | undefined
+  chainId: string | undefined
 }
 
 function CustodyTimeline({
@@ -20,7 +26,38 @@ function CustodyTimeline({
   error,
   entries,
   onRetry,
+  evidenceId
 }: CustodyTimelineProps) {
+  const [isLogCustodyOpen, setIsLogCustodyOpen] = useState<boolean>(false)
+  const [evidence, setEvidence] = useState<Evidence>(new Object as Evidence)
+
+  const {getAccessToken} = useAuth();
+
+  useEffect(() => {
+  
+      const fetchEvidenceItems = async () => {
+
+        try {
+          const token = await getAccessToken();
+          const res = await fetch(`/api/evidence-items/${evidenceId}`, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+            credentials: 'include',
+          })
+          if (!res.ok) {
+            throw new Error(`Error fetching evidence items: ${res.statusText}`)
+          }
+          
+          const data: Evidence = await res.json()
+          setEvidence(data)
+        } catch (error) {
+          console.error(error)
+        } finally {
+        }
+      }
+  
+      fetchEvidenceItems()
+    }, [])
+
   return (
     <>
       <div className="coc-toolbar">
@@ -34,7 +71,7 @@ function CustodyTimeline({
           Item <span className="coc-mono">{displayId}</span>
           {itemLabel && <> — {itemLabel}</>}
         </div>
-        <button className="coc-btn coc-btn-sm coc-btn-primary" type="button">
+        <button className="coc-btn coc-btn-sm coc-btn-primary" type="button" onClick={() => setIsLogCustodyOpen(true)}>
           <Plus size={14} />
           Log Custody Event
         </button>
@@ -95,6 +132,7 @@ function CustodyTimeline({
           </div>
         </div>
       )}
+      <LogCustodyEvent isOpen={isLogCustodyOpen} onClose={() => setIsLogCustodyOpen(false)} evidence={evidence}/>
     </>
   )
 }

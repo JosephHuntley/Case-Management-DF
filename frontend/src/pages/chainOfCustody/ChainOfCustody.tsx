@@ -44,7 +44,7 @@ function ChainOfCustody() {
   if (!hasDirectId) {
     return (
       <section id="chain-of-custody-page" className="coc-page-selector">
-        <div className="coc-page-sub">Chain of Custody</div>
+        <div className="page-sub">Chain of Custody</div>
         <CaseEvidenceSelector
           onViewChain={(selectedEvidenceId) =>
             navigate(`/chainofcustody/evidence/${selectedEvidenceId}`)
@@ -64,6 +64,8 @@ function ChainOfCustody() {
         error={error}
         entries={entries}
         onRetry={loadCustodyLog}
+        evidenceId={evidenceId}
+        chainId={chainId}
       />
     </section>
   )
