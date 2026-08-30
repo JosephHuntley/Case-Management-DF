@@ -35,7 +35,7 @@ def test_item_create(client_factory, db_session):
 
     assert evidence.status_code == 200
     assert evidence.json()["evidence_tag"] == "E-0001-P-ATL"
-    assert evidence.json()["acquired_by"] == user.json()["id"]
+    assert evidence.json()["acquired_by"] == user.json()
     assert evidence.json()["is_verified"] == True
     assert evidence.json()["case_id"] == case_id    
     assert evidence.json()["name"] == f"iPhone case# {case_id}"
@@ -76,7 +76,7 @@ def test_get_by_id(client_factory, db_session):
     response = client.get(f"/api/evidence-items/{item_id}")
 
     assert response.json()["case_id"] == case_id
-    assert response.json()["acquired_by"] == user.json()["id"]
+    assert response.json()["acquired_by"] == user.json()
     assert response.json()["evidence_tag"] == "E-0001-P-ATL"
     assert response.json()["name"] == f"iPhone case# {case_id}"
     assert response.json()["description"] == "iPhone 7, serial number 11204930"
