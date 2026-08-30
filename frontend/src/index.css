@@ -174,3 +174,16 @@ main{
 .form-textarea::placeholder {
   color: var(--text-muted);
 }
+
+.low-margin{
+    margin-bottom: 3px;
+}
+
+.gap{
+  display:flex;
+  gap: 16px;
+}
+
+.col{
+  flex-direction: column;
+}

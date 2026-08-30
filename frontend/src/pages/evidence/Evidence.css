@@ -4,3 +4,139 @@
     gap: 16px;
     align-items: center;
 }
+
+#evidence-detail-page{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.evidence-detail-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+}
+
+.evidence-detail-header-text{
+    color:var(--text-secondary);
+    font-size: .75rem;
+}
+
+.evidence-detail-header-btn{
+    border: 1px solid var(--border);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-radius: 8px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 11px;
+    font-size: 11.5px;
+}
+
+.evidence-detail-header-btn:hover{
+    border-color: var(--accent-line);
+}
+
+#evidence-detail-grid{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+}
+
+.evidence-detail-item{
+    display: flex;
+    flex-direction: column;
+}
+
+.evidence-detail-item h3{
+    color: var(--text-muted);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: 3px;
+}
+
+.evidence-detail-item p, .evidence-detail-description{
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+#evidence-detail{
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    width: 100%;
+}
+
+#evidence-detail-hashes{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.evidence-detail-hash{
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.evidence-detail-hash p, .evidence-detail-hash h3{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+}
+
+.evidence-detail-hash h3{
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-soft);
+    padding: 3px 8px;
+    border-radius: 5px;
+}
+
+.evidence-card{
+    display:flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+#evidence-detail-custody-snapshot {
+    display: flex;
+    justify-content: space-between;
+}
+
+#evidence-detail-custody-snapshot a{
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    /* padding-top: 8px; */
+}
+
+.evidence-detail-custody-snapshot-details{
+    display:flex;
+    gap:2px;
+    flex-direction: column;
+}
+
+.evidence-detail-custody-snapshot-details h3{
+    display: block;
+    color: var(--text-muted);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: 3px;
+}
+
+.evidence-detail-custody-snapshot-details p{
+    font-size: 12px;
+    color: var(--text-secondary);
+}

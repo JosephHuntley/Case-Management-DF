@@ -1,7 +1,7 @@
 from uuid import UUID, uuid4
 from sqlalchemy.orm import Session, joinedload
 
-from app.models import EvidenceItem, User
+from app.models import EvidenceItem, User, ChainOfCustody
 from app.schemas import EvidenceItemCreate, EvidenceItemUpdate
 
 class EvidenceItemRepository:
@@ -30,7 +30,17 @@ class EvidenceItemRepository:
         return item
 
     def get_evidence_item_by_id(self, evidence_id: UUID) -> EvidenceItem | None:
-        return self.db.query(EvidenceItem).options(joinedload(EvidenceItem.case)).filter(EvidenceItem.id == evidence_id).first()
+
+        return (
+            self.db.query(EvidenceItem)
+            .options(
+                joinedload(EvidenceItem.case),
+                joinedload(EvidenceItem.acquirer),
+                joinedload(EvidenceItem.custody_chain).joinedload(ChainOfCustody.performer),
+            )
+            .filter(EvidenceItem.id == evidence_id)
+            .first()
+        )
     
     def get_evidence_item_by_case_id(self, case_id: UUID) -> list[EvidenceItem] | None:
         return self.db.query(EvidenceItem).options(joinedload(EvidenceItem.case)).filter(EvidenceItem.case_id == case_id).order_by(EvidenceItem.updated_at.desc()).all()

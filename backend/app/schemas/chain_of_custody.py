@@ -1,20 +1,21 @@
 from uuid import UUID
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from app.models import CustodyAction
 from datetime import datetime
+from app.schemas import UserOut
 
 
 class ChainOfCustodyBase(BaseModel):
     evidence_id: UUID
     action: CustodyAction
-    from_person: str | None = None
-    to_person: str | None = None
+    from_person: UUID | None = None
+    to_person: UUID | None = None
     notes: str | None = None
 
 class ChainOfCustodyCreate(BaseModel):
     evidence_id: UUID
     action: CustodyAction
-    to_person: str | None = None
+    to_person: UUID | None = None
     notes: str | None = None
 
 class ChainOfCustodyApend(ChainOfCustodyCreate):
@@ -22,7 +23,9 @@ class ChainOfCustodyApend(ChainOfCustodyCreate):
 
 class ChainOfCustodyOut(ChainOfCustodyBase):
     id: UUID
-    performed_by: UUID
+    performed_by: UserOut = Field(validation_alias="performer")
+    from_person: UserOut | None = Field(default=None, validation_alias="from_person_user")
+    to_person: UserOut | None = Field(default=None, validation_alias="to_person_user")
     created_at: datetime
     previous_hash: str | None = None
     row_hash: str

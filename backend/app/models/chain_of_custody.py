@@ -41,12 +41,14 @@ class ChainOfCustody(Base):
         SQLEnum(CustodyAction, name="custody_action"),
         nullable=False
     )
-    from_person: Mapped[str | None] = mapped_column(
-        String(255),
+    from_person: Mapped[UUID | None] = mapped_column(
+        PGUUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="RESTRICT"),
         nullable=True
     )
-    to_person: Mapped[str | None] = mapped_column(
-        String(255),
+    to_person: Mapped[UUID | None] = mapped_column(
+        PGUUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="RESTRICT"),
         nullable=True
     )
     notes: Mapped[str | None] = mapped_column(
@@ -75,5 +77,14 @@ class ChainOfCustody(Base):
     )
     performer: Mapped["User"] = relationship(
         "User",
+        foreign_keys=[performed_by],
         back_populates="custody_actions"
+    )
+    from_person_user: Mapped["User | None"] = relationship(
+        "User",
+        foreign_keys=[from_person],
+    )
+    to_person_user: Mapped["User | None"] = relationship(
+        "User",
+        foreign_keys=[to_person],
     )

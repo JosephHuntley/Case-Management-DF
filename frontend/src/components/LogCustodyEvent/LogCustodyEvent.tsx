@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
 import Modal from '../Modal/Modal'
 import './LogCustodyEvent.css'
-import type {Evidence} from '../../pages/evidence/EvidenceDetail' 
-import type {User} from '../../types/User'
+import type {User, Evidence} from '../../types'
 import { useAuth } from '../../context/AuthContext'
 
 interface LogCustodyEventProps {

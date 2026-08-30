@@ -108,5 +108,6 @@ class User(Base):
     )
     custody_actions: Mapped[list["ChainOfCustody"]] = relationship(
         "ChainOfCustody",
+        foreign_keys="ChainOfCustody.performed_by",
         back_populates="performer"
     )

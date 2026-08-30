@@ -1,7 +1,8 @@
 from datetime import datetime
 from uuid import UUID
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from app.models.evidence_item import EvidenceType, AcquisitionMethod
+from app.schemas import UserOut, ChainOfCustodyOut
 
 
 class EvidenceItemBase(BaseModel):
@@ -38,5 +39,7 @@ class EvidenceItemOut(EvidenceItemBase):
     created_at: datetime
     updated_at: datetime
     case_title: str
+    acquired_by: UserOut = Field(validation_alias="acquirer")
+    chain_of_custody: list[ChainOfCustodyOut] = Field(validation_alias="custody_chain")
 
     model_config = ConfigDict(from_attributes=True)

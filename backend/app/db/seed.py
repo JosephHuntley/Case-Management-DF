@@ -93,7 +93,7 @@ def seed_db():
         case_id=case.id,
         acquired_by=admin.id,
         evidence_tag="E-0001-P-ATL",
-        name=f"iPhone case# {case.id}",
+        name=f"iPhone 13",
         description="iPhone 7, serial number 11204930",
         evidence_type=EvidenceType.DISK_IMAGE.value,
         source_path="C://test/Example/E-0001-P-ATL.001",

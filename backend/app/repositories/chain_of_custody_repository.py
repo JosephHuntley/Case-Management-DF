@@ -1,6 +1,7 @@
 import hashlib
 import json
 from uuid import UUID, uuid4
+from sqlalchemy.orm import joinedload
 
 from app.schemas import ChainOfCustodyCreate, ChainOfCustodyApend
 from app.models import ChainOfCustody, User
@@ -48,7 +49,7 @@ class ChainOfCustodyRepository:
         self.db.flush()
         return new_chain
 
-    def get_last_entry(self, evidence_id: UUID) -> str | None:
+    def get_last_entry(self, evidence_id: UUID) -> ChainOfCustody | None:
         last = (
             self.db.query(ChainOfCustody)
             .filter(ChainOfCustody.evidence_id == evidence_id)
@@ -58,16 +59,27 @@ class ChainOfCustodyRepository:
         return last if last else None
 
     def get_chain_of_custody_by_id(self, chain_of_custody_id: UUID) -> ChainOfCustody | None:
-        return self.db.query(ChainOfCustody).filter(
-            ChainOfCustody.id == chain_of_custody_id
-        ).first()
+        return (
+            self.db.query(ChainOfCustody)
+            .options(
+                joinedload(ChainOfCustody.performer),
+                joinedload(ChainOfCustody.from_person_user),
+                joinedload(ChainOfCustody.to_person_user),
+            )
+            .filter(ChainOfCustody.id == chain_of_custody_id)
+            .first()
+        )
 
     def get_chain_of_custody_by_evidence_id(self, evidence_id: UUID) -> list[ChainOfCustody]:
-        
         return (
             self.db.query(ChainOfCustody)
             .filter(ChainOfCustody.evidence_id == evidence_id)
             .order_by(ChainOfCustody.created_at.asc())
+            .options(
+                joinedload(ChainOfCustody.performer),
+                joinedload(ChainOfCustody.from_person_user),
+                joinedload(ChainOfCustody.to_person_user),
+            )
             .all()
         )
 
@@ -120,8 +132,8 @@ class ChainOfCustodyRepository:
             "evidence_id": str(entry.evidence_id),
             "performed_by": str(entry.performed_by),
             "action": action_value,
-            "from_person": entry.from_person,
-            "to_person": entry.to_person,
+            "from_person": str(entry.from_person) if entry.from_person else None,
+            "to_person": str(entry.to_person) if entry.to_person else None,
             "notes": entry.notes,
             "previous_hash": previous_hash,
         }

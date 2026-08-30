@@ -1,0 +1,83 @@
+.hash-display {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 3px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: var(--text-primary);
+}
+
+.hash-display svg {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.hash-display:hover,
+.hash-display:focus-visible {
+  background: var(--bg-secondary);
+}
+
+.hash-display:hover svg,
+.hash-display:focus-visible svg {
+  color: var(--text-secondary);
+}
+
+.hash-display.copied svg {
+  color: var(--success);
+}
+
+/* Tooltip bubble */
+.hash-display::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 11px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease, transform 120ms ease;
+  z-index: 20;
+}
+
+/* Tooltip arrow */
+.hash-display::before {
+  content: "";
+  position: absolute;
+  bottom: calc(100% + 3px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--border);
+  opacity: 0;
+  transition: opacity 120ms ease;
+  z-index: 20;
+}
+
+.hash-display:hover::after,
+.hash-display:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.hash-display:hover::before,
+.hash-display:focus-visible::before {
+  opacity: 1;
+}
+
+.hash-display.copied::after {
+  color: var(--success);
+  border-color: var(--success);
+}
