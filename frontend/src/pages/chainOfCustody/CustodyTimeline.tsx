@@ -26,7 +26,8 @@ function CustodyTimeline({
   error,
   entries,
   onRetry,
-  evidenceId
+  evidenceId,
+  chainId
 }: CustodyTimelineProps) {
   const [isLogCustodyOpen, setIsLogCustodyOpen] = useState<boolean>(false)
   const [evidence, setEvidence] = useState<Evidence>(new Object as Evidence)
@@ -37,22 +38,41 @@ function CustodyTimeline({
   
       const fetchEvidenceItems = async () => {
 
-        try {
-          const token = await getAccessToken();
-          const res = await fetch(`/api/evidence-items/${evidenceId}`, {
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
-            credentials: 'include',
-          })
-          if (!res.ok) {
-            throw new Error(`Error fetching evidence items: ${res.statusText}`)
+        if(chainId && !evidenceId){
+          try {
+            const token = await getAccessToken();
+            const res = await fetch(`/api/evidence-items/${evidenceId}`, {
+              headers: token ? { Authorization: `Bearer ${token}` } : {},
+              credentials: 'include',
+            })
+            if (!res.ok) {
+              throw new Error(`Error fetching evidence items: ${res.statusText}`)
+            }
+            
+            const data: Evidence = await res.json()
+            setEvidence(data)
+          } catch (error) {
+            console.error(error)
+          } finally {
           }
-          
-          const data: Evidence = await res.json()
-          setEvidence(data)
-        } catch (error) {
-          console.error(error)
-        } finally {
         }
+        else{
+          try {
+            const token = await getAccessToken();
+            const res = await fetch(`/api/evidence-items/${evidenceId}`, {
+              headers: token ? { Authorization: `Bearer ${token}` } : {},
+              credentials: 'include',
+            })
+            if (!res.ok) {
+              throw new Error(`Error fetching evidence items: ${res.statusText}`)
+            }
+            
+            const data: Evidence = await res.json()
+            setEvidence(data)
+          } catch (error) {
+            console.error(error)
+          } finally {
+          }}
       }
   
       fetchEvidenceItems()
