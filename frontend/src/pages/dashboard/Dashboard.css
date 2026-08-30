@@ -126,3 +126,8 @@
 .green{
     color: var(--success);
 }
+
+.dashboard-card-recent-activity{
+    max-height: 60vh;
+    height: 30vh;
+}

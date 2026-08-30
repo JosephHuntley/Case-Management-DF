@@ -25,6 +25,10 @@ type Case = {
 // actually parse them.
 const tmpActivity: Activity[] = [
   {
+    timeStamp: "2026-07-06T00:00:00Z",
+    details: "TODO Implement recent activity endpoint backend"
+  },
+  {
     timeStamp: "2026-07-07T14:32:00Z",
     details: "Evidence EV-0093 imaged — CM-2026-0142"
   },
@@ -39,7 +43,8 @@ const tmpActivity: Activity[] = [
   {
     timeStamp: "2026-07-06T00:00:00Z",
     details: "Case CM-2026-0139 moved to In Review"
-  }
+  },
+  
 ]
 
 function Dashboard() {
@@ -116,9 +121,9 @@ function Dashboard() {
       </div>
 
       <div id="dashboard-grid">
-        <div className="dashboard-card">
-          <h2 className="dashboard-card-title">Recent Activities</h2>
-          <table className="dashboard-activity-table">
+        <div className="dashboard-card dashboard-card-recent-activity">
+          <h2 className="dashboard-card-title ">Recent Activities</h2>
+          <table className="dashboard-activity-table"> 
             <tbody>
               {recentActivities.map((activity, index) => (
                 // Using index as a fallback key since placeholder data has
