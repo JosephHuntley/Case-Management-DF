@@ -12,6 +12,7 @@ class ChainOfCustodyBase(BaseModel):
     to_person: UUID | None = None
     notes: str | None = None
 
+# TODO: Create doesn't require action since it should only be COLLECTED
 class ChainOfCustodyCreate(BaseModel):
     evidence_id: UUID
     action: CustodyAction
