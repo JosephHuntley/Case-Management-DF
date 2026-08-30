@@ -1,0 +1,30 @@
+#cases-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+#cases-filter-btn{
+    display: flex;
+    gap: 8px;
+}
+
+#cases-filter-btn .cases-active{
+    color: var(--color-primary);
+    border-color: var(--accent-line);
+    background: var(--accent-line);
+}
+
+#cases-filter-btn div{
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
