@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom'
-import { useAuth } from '../../context/AuthContext'
 import './Evidence.css'
 import EvidenceSearch from './EvidenceSearh'
 import EvidenceDetail from './EvidenceDetail'

@@ -3,6 +3,7 @@
     flex-direction: column; 
     gap: 16px;
     align-items: center;
+    padding: 24px 26px;
 }
 
 #evidence-detail-page{

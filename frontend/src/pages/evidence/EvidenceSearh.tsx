@@ -125,7 +125,7 @@ useEffect(() => {
                     id="evidence-case-select"
                     className="select"
                     value={selectedEvidenceId}
-                    disabled={evidenceLoading || Boolean(evidenceError)}
+                    disabled={evidenceLoading || Boolean(evidenceError) || !selectedCaseId}
                     onChange={(e) => setSelectedEvidenceId(e.target.value)}
                   >
                     <option value="">
