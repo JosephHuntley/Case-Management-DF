@@ -1,7 +1,9 @@
 from pydantic import BaseModel, ConfigDict, Field
 from uuid import UUID
 from datetime import datetime
-from app.schemas.tag import TagOut
+from .tag import TagOut
+from .user import UserOut
+from .evidence_item import EvidenceItemOut
 
 
 class CaseBase(BaseModel):
@@ -32,6 +34,11 @@ class CaseOut(CaseBase):
     case_number: str
     created_at: datetime
     updated_at: datetime
+    assigned_to: UserOut | None = Field(
+        default=None,
+        validation_alias="assignee"
+    )
+    evidence: list[EvidenceItemOut] = Field(validation_alias="evidence_items")
 
     tags: list[TagOut] = Field(default_factory=list)
 

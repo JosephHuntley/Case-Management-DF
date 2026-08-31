@@ -18,7 +18,11 @@ class CaseRepository:
     def get_by_id(db: Session, case_id: UUID) -> Case | None:
         return (
             db.query(Case)
-            .options(joinedload(Case.tags))
+            .options(
+                joinedload(Case.tags),
+                joinedload(Case.evidence_items),
+                joinedload(Case.assignee)
+                )
             .filter(
                 Case.id == case_id
             )
@@ -29,7 +33,11 @@ class CaseRepository:
     def get_all(db: Session) -> list[Case]:
         return (
             db.query(Case)
-            .options(joinedload(Case.tags))
+            .options(
+                joinedload(Case.tags),
+                joinedload(Case.evidence_items),
+                joinedload(Case.assignee)
+                )
             .filter(Case.deleted_at.is_(None))
             .all()
         )
