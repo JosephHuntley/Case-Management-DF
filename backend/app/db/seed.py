@@ -83,7 +83,8 @@ def seed_db():
         description="Development seed data",
         status=CaseStatus.OPEN,
         priority=CasePriority.HIGH,
-        created_by=investigator.id
+        created_by=investigator.id,
+        assigned_to=investigator.id
     )
     case3.tags.extend([malware_tag, windows_tag, triage_tag])
     db.add(case3)
