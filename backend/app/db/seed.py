@@ -55,9 +55,9 @@ def seed_db():
     case = Case(
         id=uuid4(),
         case_number="CASE-2026-0001",
-        title="Test Forensic Case",
+        title="	Workstation Exfiltration — Finance Dept",
         description="Development seed data",
-        status=CaseStatus.OPEN,
+        status=CaseStatus.IN_PROGRESS,
         priority=CasePriority.HIGH,
         created_by=investigator.id
     )
@@ -67,9 +67,9 @@ def seed_db():
     case2 = Case(
         id=uuid4(),
         case_number="CASE-2026-0002",
-        title="Test Forensic Case 2",
+        title="Mobile Device Extraction — HR Complaint",
         description="Development seed data",
-        status=CaseStatus.OPEN,
+        status=CaseStatus.CLOSED,
         priority=CasePriority.HIGH,
         created_by=investigator.id
     )
@@ -79,7 +79,7 @@ def seed_db():
     case3 = Case(
         id=uuid4(),
         case_number="CASE-2026-0003",
-        title="Test Forensic Case3",
+        title="Server Compromise — External IP",
         description="Development seed data",
         status=CaseStatus.OPEN,
         priority=CasePriority.HIGH,
