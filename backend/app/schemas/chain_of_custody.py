@@ -2,7 +2,7 @@ from uuid import UUID
 from pydantic import BaseModel, ConfigDict, Field
 from app.models import CustodyAction
 from datetime import datetime
-from app.schemas import UserOut
+from app.schemas.user import UserOut
 
 
 class ChainOfCustodyBase(BaseModel):

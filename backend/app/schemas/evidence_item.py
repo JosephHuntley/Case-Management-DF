@@ -2,7 +2,8 @@ from datetime import datetime
 from uuid import UUID
 from pydantic import BaseModel, ConfigDict, Field
 from app.models.evidence_item import EvidenceType, AcquisitionMethod
-from app.schemas import UserOut, ChainOfCustodyOut
+from app.schemas.user import UserOut
+from .chain_of_custody import ChainOfCustodyOut
 
 
 class EvidenceItemBase(BaseModel):
