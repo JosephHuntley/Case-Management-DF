@@ -1,3 +1,4 @@
+import type { Evidence } from './Evidence';
 import type {User} from './User'
 
 export const CaseStatus = {
@@ -38,6 +39,8 @@ export interface Case{
     created_at:string
     updated_at:string
     tags: Tag[]
+    asigned_to: User
+    evidence: Evidence[]
 }
 
 export const CaseStatusLabels: Record<CaseStatus, string> = {

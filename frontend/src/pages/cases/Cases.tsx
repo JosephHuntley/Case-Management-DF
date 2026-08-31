@@ -89,13 +89,16 @@ function Cases() {
                   </span>
                 </td>
                 <td >
-                  { c.created_by.first_name && c.created_by.last_name ? `${c.created_by.first_name} ${c.created_by.last_name}` : 'No user found'}
+                  { c.asigned_to ? 
+                  c.asigned_to.first_name && c.asigned_to.last_name ? `${c.created_by.first_name} ${c.created_by.last_name}` : 'No user found'
+                  : "To Be Assigned"
+                  }
                 </td>
                 <td className='cases-case-date'>
                   {formatTimestamp(c.created_at)}
                 </td>
                 <td>
-                  Implement in backend
+                  {c.evidence.length || '0'}
                 </td>
 
               </tr>
