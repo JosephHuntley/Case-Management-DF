@@ -12,11 +12,15 @@ class CaseBase(BaseModel):
     status: str = "open"
     priority: str = "medium"
     created_by: UUID
-    deleted_at: datetime | None = None
+    assigned_to:str | None = None
 
 
-class CaseCreate(CaseBase):
-    pass
+class CaseCreate(BaseModel):
+    title: str
+    description: str
+    status: str = "open"
+    priority: str = "medium"
+    assigned_to:str | None = None
 
 
 class CaseUpdate(BaseModel):
@@ -34,6 +38,7 @@ class CaseOut(CaseBase):
     case_number: str
     created_at: datetime
     updated_at: datetime
+    deleted_at: datetime | None = None
     assigned_to: UserOut | None = Field(
         default=None,
         validation_alias="assignee"

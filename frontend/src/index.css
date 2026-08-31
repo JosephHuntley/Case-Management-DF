@@ -73,6 +73,17 @@ main{
   appearance: none;
 }
 
+.select-field input{
+    width: 100%;
+    background: var(--bg-surface-2, #262838);
+    border: 1px solid var(--border, #33344a);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--text-primary, #ededf2);
+    font-size: 13px;
+    appearance: none;
+}
+
 .select-field .select:focus {
   outline: none;
   border-color: var(--accent, #38bdd4);
@@ -188,4 +199,10 @@ main{
 
 .col{
   flex-direction: column;
+}
+
+.error{
+  font-size: 11.5px;
+  color: var(--danger, #f87171);
+  margin: 6px 0 0;
 }

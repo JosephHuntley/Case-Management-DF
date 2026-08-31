@@ -34,9 +34,7 @@ function CustodyTimeline({
 
   const {getAccessToken} = useAuth();
 
-  useEffect(() => {
-  
-      const fetchEvidenceItems = async () => {
+  const fetchEvidenceItems = async () => {
 
         if(chainId && !evidenceId){
           try {
@@ -74,6 +72,9 @@ function CustodyTimeline({
           } finally {
           }}
       }
+
+  useEffect(() => {
+
   
       fetchEvidenceItems()
     }, [])
@@ -152,7 +153,10 @@ function CustodyTimeline({
           </div>
         </div>
       )}
-      <LogCustodyEvent isOpen={isLogCustodyOpen} onClose={() => setIsLogCustodyOpen(false)} evidence={evidence}/>
+      <LogCustodyEvent isOpen={isLogCustodyOpen} onClose={() => {
+        setIsLogCustodyOpen(false)
+        fetchEvidenceItems()
+      }} evidence={evidence}/>
     </>
   )
 }

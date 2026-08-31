@@ -39,7 +39,7 @@ export interface Case{
     created_at:string
     updated_at:string
     tags: Tag[]
-    asigned_to: User
+    assigned_to: User
     evidence: Evidence[]
 }
 

@@ -1,0 +1,8 @@
+.create-case-modal-buttons{
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    margin-top: 16px;
+    justify-content: flex-end;
+
+}

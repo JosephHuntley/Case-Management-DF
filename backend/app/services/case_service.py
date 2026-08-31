@@ -25,7 +25,8 @@ class CaseService:
             description=payload.description,
             status=payload.status,
             priority=payload.priority,
-            created_by=payload.created_by
+            created_by=current_user.id,
+            assigned_to=payload.assigned_to
         )
         
         CaseRepository.create(db, case)

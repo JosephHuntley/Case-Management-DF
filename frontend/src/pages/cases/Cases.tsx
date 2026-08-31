@@ -5,11 +5,13 @@ import {useAuth} from '../../context/AuthContext'
 import type {Case} from '../../types'
 import { formatTimestamp } from "../chainOfCustody/utils";
 import {CaseStatusLabels} from '../../types'
+import CreateCase from '../../components/CreateCase/CreateCase'
 
 function Cases() {
   const [activeFilter, setActiveFilter] = useState<string>('all')
   const [cases, setCases] = useState<Case[]>([])
   const [casesFiltered, setCasesFiltered] = useState<Case[]>([])
+  const [isOpen, setIsOpen] = useState<boolean>(false)
   
   const { getAccessToken } = useAuth(); 
 
@@ -59,7 +61,7 @@ function Cases() {
           <div className={`${activeFilter == 'pending' ? 'cases-active' : ''}`} onClick={() => setActiveFilter('pending')}>In Review</div>
           <div className={`${activeFilter == 'closed' ? 'cases-active' : ''}`} onClick={() => setActiveFilter('closed')}>Closed</div>
         </div>
-        <Button id="cases-new-button" text="+ New Case"/>
+        <Button onClick={() => setIsOpen(true)} id="cases-new-button" text="+ New Case" />
       </div>
       <div className='card'>
         <table id='cases-table'>
@@ -89,9 +91,12 @@ function Cases() {
                   </span>
                 </td>
                 <td >
-                  { c.asigned_to ? 
-                  c.asigned_to.first_name && c.asigned_to.last_name ? `${c.created_by.first_name} ${c.created_by.last_name}` : 'No user found'
-                  : "To Be Assigned"
+                  {
+                    !c.assigned_to
+                      ? "To Be Assigned"
+                      : c.assigned_to.first_name && c.assigned_to.last_name
+                        ? `${c.assigned_to.first_name} ${c.assigned_to.last_name}`
+                        : "No user found"
                   }
                 </td>
                 <td className='cases-case-date'>
@@ -106,6 +111,7 @@ function Cases() {
           </tbody>
         </table>
       </div>
+      <CreateCase isOpen={isOpen} onClose={() => setIsOpen(false)}/>
       
     </main>
   )
