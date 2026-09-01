@@ -9,6 +9,7 @@ import Evidence from "./pages/evidence/Evidence";
 import ChainOfCustody from "./pages/chainOfCustody/ChainOfCustody";
 import Reports from "./pages/reports/Reports"
 import UsersRoles from "./pages/Users_Roles/UsersRoles";
+import CaseDetail from "./pages/cases/CaseDetail";
 
 
 function App() {
@@ -51,6 +52,16 @@ function AppRoutes() {
         <ProtectedRoute>
           <DashboardWrapper>
             <Cases/>
+          </DashboardWrapper>
+        </ProtectedRoute>
+      }
+      />
+      <Route 
+      path="/cases/caseId/:caseId"
+      element={
+        <ProtectedRoute>
+          <DashboardWrapper>
+            <CaseDetail/>
           </DashboardWrapper>
         </ProtectedRoute>
       }

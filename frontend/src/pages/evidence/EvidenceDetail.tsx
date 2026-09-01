@@ -10,8 +10,11 @@ import { formatTimestamp } from "../chainOfCustody/utils";
 import { formatBytes } from "../../utils/formatBytes";
 import { useNavigate } from 'react-router-dom'
 
+interface EvidenceDetailProps{
+    evidenceIdProp?:String | null;
+}
 
-function EvidenceDetail() {
+function EvidenceDetail({evidenceIdProp = null}:EvidenceDetailProps) {
     const [evidence, SetEvidence] = useState<Evidence >(new Object() as Evidence);
     const [isLogCustodyEventOpen, setIsLogCustodyEventOpen] = useState(false);
 
@@ -27,10 +30,11 @@ function EvidenceDetail() {
     }
 
     useEffect(() => {
+        const tmpEvidenceId = evidenceIdProp || evidenceId
         const fetchEvidence = async () => {
             try {
                 const token = await getAccessToken();
-                const response = await fetch(`/api/evidence-items/${evidenceId}`, {
+                const response = await fetch(`/api/evidence-items/${tmpEvidenceId}`, {
                     headers: token ? { Authorization: `Bearer ${token}` } : {},
                     credentials: 'include',
                 });
@@ -48,10 +52,14 @@ function EvidenceDetail() {
     }, [evidenceId]);
     return (
         <main id="evidence-detail-page">
-            <div className="evidence-detail-header">
-                <p className="evidence-detail-header-text"><span style={{color: 'var(--text-muted)'}}>Case</span> {evidence?.case_title} · <span style={{color: 'var(--text-muted)'}}>Item</span> {evidence?.evidence_tag}</p>
-                <button className="evidence-detail-header-btn" onClick={() => handleLogCustodyEvent()}>Log Custody Event</button>
-            </div>
+            {
+                evidenceIdProp ? <></> :
+                <div className="evidence-detail-header">
+                    <p className="evidence-detail-header-text"><span style={{color: 'var(--text-muted)'}}>Case</span> {evidence?.case_title} · <span style={{color: 'var(--text-muted)'}}>Item</span> {evidence?.evidence_tag}</p>
+                    <button className="evidence-detail-header-btn" onClick={() => handleLogCustodyEvent()}>Log Custody Event</button>
+                </div>
+            }
+            
             <div id="evidence-detail-grid">
                 <div className="card evidence-card">
                     <h2 className="card-title low-margin">Item Details</h2>

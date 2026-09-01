@@ -6,6 +6,7 @@ import type {Case} from '../../types'
 import { formatTimestamp } from "../chainOfCustody/utils";
 import {CaseStatusLabels} from '../../types'
 import CreateCase from '../../components/CreateCase/CreateCase'
+import { useNavigate } from 'react-router-dom'
 
 function Cases() {
   const [activeFilter, setActiveFilter] = useState<string>('all')
@@ -14,6 +15,7 @@ function Cases() {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   
   const { getAccessToken } = useAuth(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
 
@@ -32,7 +34,6 @@ function Cases() {
           const data: Case[] = await res.json()
           setCases(data)
           setCasesFiltered(data)
-          console.log(data)
         }catch (error){
           console.error(error)
         }
@@ -77,7 +78,7 @@ function Cases() {
           </thead>
           <tbody>
             {casesFiltered.map((c, i) => (
-              <tr key={c.id} className={`${i == casesFiltered.length - 1 ? 'no-border' : ''}`}>
+              <tr onClick={() => navigate(`/cases/caseId/${c.id}`)} key={c.id} className={`${i == casesFiltered.length - 1 ? 'no-border' : ''}`}>
                 <td className='cases-case-title'>
                   {c.case_number}
                 </td>

@@ -15,8 +15,9 @@
 }
 
 .btn-secondary {
-  background-color: transparent;
+  background-color: var(--bg-secondary);
   color: var(--text-primary);
+  border: 1px solid var(--bg-tertiary);
 }
 
 .btn-primary:hover {
@@ -24,5 +25,5 @@
 }
 
 .btn-secondary:hover {
-  background-color: var(--bg-primary);
+  border: 1px solid var(--accent-line);
 }
