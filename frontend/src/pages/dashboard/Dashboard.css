@@ -129,5 +129,5 @@
 
 .dashboard-card-recent-activity{
     max-height: 60vh;
-    height: 30vh;
+    min-height: 30vh;
 }
