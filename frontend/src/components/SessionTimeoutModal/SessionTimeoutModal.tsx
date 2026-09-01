@@ -1,4 +1,5 @@
 import Modal from '../Modal/Modal'; 
+import Button from '../Button/Button';
 
 interface Props {
   isOpen: boolean;
@@ -20,8 +21,8 @@ export function SessionTimeoutModal({ isOpen, secondsRemaining, onExtend, onLogo
         forms should be saved now.
       </p>
       <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
-        <button onClick={onExtend}>Stay signed in</button>
-        <button onClick={onLogout}>Log out now</button>
+        <Button onClick={onExtend} text={"Stay signed in"}/>
+        <Button onClick={onLogout} text={"Log out now"} secondary/>
       </div>
     </Modal>
   );
