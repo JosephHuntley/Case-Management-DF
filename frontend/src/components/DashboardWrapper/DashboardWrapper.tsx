@@ -45,7 +45,7 @@ function DashboardWrapper({children}: {children: React.ReactNode}) {
               </div>
               <SearchBar/>
             </div>
-            <div>{children}</div>
+            <div id="content">{children}</div>
         </div>
     </div>
   )
