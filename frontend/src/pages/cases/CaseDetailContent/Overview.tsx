@@ -25,14 +25,18 @@ function Overview({currentCase}:OverviewProps) {
                 <tbody>
                 {currentCase?.evidence ? 
                 currentCase.evidence.map((e, i) => (
-                    <tr onClick={() => navigate(`/evidence/evidenceId/${e.id}`)} className={i == currentCase.evidence.length -1 ? 'no-border' : ''}>
+                    <tr onClick={() => navigate(`/evidence/evidenceId/${e.id}`)} key={i} className={i == currentCase.evidence.length -1 ? 'no-border' : ''}>
                         <td>{e.evidence_tag}</td>
                         <td>{e.name}</td>
                         <td>{e.description}</td>
                         <td>{formatTimestamp(e.acquired_at)}</td>
                     </tr>
                 ))
-             : "No evidence to display"}
+             : (
+                    <tr className="no-border">
+                    <td colSpan={4}>No evidence to display</td>
+                    </tr>
+                )}
                 </tbody>
             </table>
         </>
