@@ -105,9 +105,12 @@ function CaseDetail(){
                 </div>
                 <div id="case-detail-tab-content" className='card'>
                     {tab == 'overview' && <Overview currentCase={currentCase} />}
-                    {tab == 'evidence' && currentCase?.evidence.map(e => (
-                        <EvidenceDetail evidenceIdProp={e.id}/>
-                    ))}
+                    {tab == 'evidence' && (
+                        <>
+                            <h2 style={{"marginBottom":"16px", "color":"var(--text-secondary)"}}>Evidence:</h2>
+                            {currentCase?.evidence.map(e => (<EvidenceDetail key={e.id} evidenceIdProp={e.id}/>))}
+                        </>
+                    )}
                 </div>
             </div>
         </main>
