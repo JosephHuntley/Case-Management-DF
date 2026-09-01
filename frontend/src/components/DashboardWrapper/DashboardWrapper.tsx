@@ -3,10 +3,13 @@ import Sidebar from './Sidebar/Sidebar'
 import './DashboardWrapper.css'
 import SearchBar from './search/SearchBar'
 import { useLocation } from 'react-router-dom'
+import { useSessionGuard } from '../../hooks/useSessionGuard'
+import { SessionTimeoutModal } from '../SessionTimeoutModal/SessionTimeoutModal'
 
 function DashboardWrapper({children}: {children: React.ReactNode}) {
   const location = useLocation()
   const [title, setTitle] = useState<string>()
+  const { showWarning, secondsRemaining, extendSession, logoutNow } = useSessionGuard();
 
   useEffect(() => {
     const path = location.pathname
@@ -35,19 +38,28 @@ function DashboardWrapper({children}: {children: React.ReactNode}) {
   
 
   return (
-    <div id="dashboard-wrapper">
-        <Sidebar />
-        <div style={{"width":"85%"}}>
-            <div id="topbar">
-              <div> 
-                <div id="topbar-title">{title}</div>
-                <div id="topbar-message">Overview across all cases</div>
+    <>
+      <div id="dashboard-wrapper">
+          <Sidebar />
+          <div style={{"width":"85%"}}>
+              <div id="topbar">
+                <div> 
+                  <div id="topbar-title">{title}</div>
+                  <div id="topbar-message">Overview across all cases</div>
+                </div>
+                <SearchBar/>
               </div>
-              <SearchBar/>
-            </div>
-            <div id="content">{children}</div>
-        </div>
-    </div>
+              <div id="content">{children}</div>
+          </div>
+      </div>
+      <SessionTimeoutModal
+        isOpen={showWarning}
+        secondsRemaining={secondsRemaining}
+        onExtend={extendSession}
+        onLogout={logoutNow}
+      />
+
+    </>
   )
 }
 

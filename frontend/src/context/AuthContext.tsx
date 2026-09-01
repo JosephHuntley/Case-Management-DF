@@ -14,16 +14,11 @@ import React, {
  *
  * Assumptions about the backend (adjust the endpoint constants below if
  * your actual routes differ):
- *   POST /api/auth/login    -> { access_token }           sets refresh cookie (httpOnly)
+ *   POST /api/auth/login    -> { access_token }            sets refresh cookie (httpOnly)
  *   POST /api/auth/refresh  -> { access_token }            reads refresh cookie, rotates it
  *   POST /api/auth/logout   -> 204                         clears refresh cookie, revokes it
- *   GET  /api/auth/me       -> RawUser (snake_case)        requires Authorization: Bearer <access_token>
+ *   GET  /api/auth/me       -> RawUser                     requires Authorization: Bearer <access_token>
  *
- * The access token is kept in memory only (React state), never in
- * localStorage/sessionStorage. The refresh token lives entirely in the
- * httpOnly cookie your backend already sets, so this file never touches it
- * directly — it just calls /api/auth/refresh and lets the browser send the
- * cookie automatically (credentials: 'include').
  */
 
 const ENDPOINTS = {
@@ -62,6 +57,16 @@ function normalizeUser(raw: RawUser): User {
   };
 }
 
+/** Reads the `exp` claim (seconds since epoch) out of a JWT, no verification needed client-side. */
+function decodeTokenExpiry(token: string): number | null {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return typeof payload.exp === 'number' ? payload.exp * 1000 : null;
+  } catch {
+    return null;
+  }
+}
+
 interface AuthContextValue {
   user: User | null;
   isAuthenticated: boolean;
@@ -71,6 +76,10 @@ interface AuthContextValue {
   logout: () => Promise<void>;
   /** Returns a valid access token, refreshing it first if needed. */
   getAccessToken: () => Promise<string | null>;
+  /** ms-since-epoch the current access token expires at, or null if not known/logged in. */
+  expiresAt: number | null;
+  /** Forces a refresh call regardless of whether a cached token exists. Used for silent renewal. */
+  refreshToken: () => Promise<string | null>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -86,12 +95,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // re-render and always see the latest value inside async callbacks.
   const accessTokenRef = useRef<string | null>(null);
 
+  // Mirrors accessTokenRef's expiry so components (e.g. a session-timeout
+  // hook) can react to it. The token itself stays in the ref; only the
+  // expiry timestamp is state, so re-renders happen only when expiry changes.
+  const [expiresAt, setExpiresAt] = useState<number | null>(null);
+
   // Prevents a stampede of parallel refresh calls if several requests
   // hit a 401 at the same time (e.g. multiple widgets loading at once).
   const refreshPromiseRef = useRef<Promise<string | null> | null>(null);
 
   const setAccessToken = (token: string | null) => {
     accessTokenRef.current = token;
+    setExpiresAt(token ? decodeTokenExpiry(token) : null);
   };
 
   const fetchCurrentUser = useCallback(async (token: string): Promise<User> => {
@@ -213,6 +228,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     login,
     logout,
     getAccessToken,
+    expiresAt,
+    refreshToken: refresh,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
