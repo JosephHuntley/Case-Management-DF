@@ -142,7 +142,7 @@ function CustodyTimeline({
                   </div>
                   <div className="coc-hash-row">
                     <span className="coc-hash-chip">
-                      {entry.prevHash ? shortHash(entry.prevHash) : "No previous hash"}
+                      {entry.previous_hash ? shortHash(entry.previous_hash) : "No previous hash"}
                     </span>
                     <ArrowRight size={12} className="coc-hash-arrow" />
                     <span className="coc-hash-chip">{shortHash(entry.row_hash)}</span>

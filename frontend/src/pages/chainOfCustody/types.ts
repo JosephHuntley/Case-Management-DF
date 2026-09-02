@@ -4,7 +4,7 @@ export interface CustodyEntry {
   actor: string
   detail: string
   timestamp: string
-  prevHash: string
+  previous_hash: string
   row_hash: string
 }
 
