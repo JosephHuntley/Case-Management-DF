@@ -3,7 +3,7 @@ import json
 from uuid import UUID, uuid4
 from sqlalchemy.orm import joinedload
 
-from app.schemas import ChainOfCustodyCreate, ChainOfCustodyApend
+from app.schemas import ChainOfCustodyCreate, ChainOfCustodyAppend
 from app.models import ChainOfCustody, User
 
 
@@ -29,7 +29,7 @@ class ChainOfCustodyRepository:
         self.db.flush()
         return new_chain
 
-    def append_chain_of_custody(self, chain_of_custody_data: ChainOfCustodyApend, current_user: User) -> ChainOfCustody:
+    def append_chain_of_custody(self, chain_of_custody_data: ChainOfCustodyAppend, current_user: User) -> ChainOfCustody:
         last = self.get_last_entry(chain_of_custody_data.evidence_id)
 
         new_chain = ChainOfCustody(

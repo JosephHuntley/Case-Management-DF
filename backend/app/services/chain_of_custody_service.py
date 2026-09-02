@@ -4,7 +4,7 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.repositories import ChainOfCustodyRepository
-from app.schemas import ChainOfCustodyCreate, ChainOfCustodyOut, ChainOfCustodyApend
+from app.schemas import ChainOfCustodyCreate, ChainOfCustodyOut, ChainOfCustodyAppend
 from app.services.audit_service import AuditService
 from app.models import User, ChainOfCustody
 
@@ -25,7 +25,7 @@ class ChainOfCustodyService:
         db.refresh(chain)
         return chain
 
-    def append_chain_of_custody(db: Session, payload: ChainOfCustodyApend, current_user: User) -> ChainOfCustody:
+    def append_chain_of_custody(db: Session, payload: ChainOfCustodyAppend, current_user: User) -> ChainOfCustody:
         chain = ChainOfCustodyRepository(db).append_chain_of_custody(payload, current_user)
 
         audit_data = ChainOfCustodyOut.model_validate(chain).model_dump(mode="json")

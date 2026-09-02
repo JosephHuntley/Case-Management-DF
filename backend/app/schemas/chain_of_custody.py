@@ -19,7 +19,7 @@ class ChainOfCustodyCreate(BaseModel):
     to_person: UUID | None = None
     notes: str | None = None
 
-class ChainOfCustodyApend(ChainOfCustodyCreate):
+class ChainOfCustodyAppend(ChainOfCustodyCreate):
     pass
 
 class ChainOfCustodyOut(ChainOfCustodyBase):
