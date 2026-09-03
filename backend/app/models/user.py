@@ -15,7 +15,7 @@ class UserRole(str, Enum):
     INVESTIGATOR = "investigator"
     AUDITOR = "auditor" 
 
-
+# TODO: Add phone number field mostly for report generation purposes. This will be used to contact the lead investigator in case of any issues or questions regarding the case report.
 class User(Base):
     __tablename__ = "users"
 

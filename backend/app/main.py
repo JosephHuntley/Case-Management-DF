@@ -14,6 +14,7 @@ from .api.routes.evidence_item import router as evidence_item_router
 from app.api.routes.login import router as login_router
 from app.api.routes.search import router as search_router
 from app.api.routes.dashboard import router as dashboard_router
+from app.api.routes.reports import router as report_router
 
 
 app = FastAPI(title="Case Management DF")
@@ -34,6 +35,7 @@ if settings.ENV == "development":
 
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.include_router(report_router, prefix="/api")
 app.include_router(login_router, prefix="/api")
 app.include_router(search_router)
 app.include_router(dashboard_router)

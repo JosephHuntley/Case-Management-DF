@@ -6,3 +6,4 @@ from .audit_service import AuditService
 from .chain_of_custody_service import ChainOfCustodyService
 from .evidence_item_service import EvidenceService
 from .auth_service import AuthService
+from .report_service import ReportService
