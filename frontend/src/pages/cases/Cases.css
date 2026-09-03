@@ -236,3 +236,60 @@
     background: var(--bg-secondary);
     cursor: pointer;
 }
+
+#case-detail-coc{
+    display: flex;
+    flex-direction: column;
+    /* gap: 16px; */
+}
+
+#case-detail-coc h2{
+    margin-bottom: 16px;
+}
+
+.case-detail-chain{
+    display: flex;
+    position: relative;
+    padding: 0 0 26px 46px;
+}
+
+.case-detail-chain .card{
+    width: 100%;
+}
+
+.case-detail-chain::before{
+  content: "";
+  position: absolute;
+  left: 19px;
+  top: 8px;
+  bottom: 8px;
+  width: 1.5px;
+  background: repeating-linear-gradient(180deg,var(--accent-line) 0 6px, transparent 6px 11px);
+}
+
+#case-detail-coc-last-child::before{
+  background: transparent;
+}
+
+#case-detail-coc-last-child{
+    padding-bottom: 0;
+}
+
+.arrow{
+    color: var(--color-primary);
+}
+
+.case-detail-coc-evidence-tag{
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.case-detail-coc-card{
+    color: var(--text-secondary);
+    font-size: 16px;
+}

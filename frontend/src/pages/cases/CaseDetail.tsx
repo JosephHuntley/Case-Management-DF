@@ -7,6 +7,7 @@ import { CaseStatusLabels } from '../../types'
 import { formatTimestamp } from '../../utils/formatTimestamp'
 import Overview from './CaseDetailContent/Overview'
 import EvidenceDetail from '../evidence/EvidenceDetail'
+import ChainOfCustody from './CaseDetailContent/ChainOfCustody'
 
 
 interface CaseDetailParams{
@@ -111,6 +112,7 @@ function CaseDetail(){
                             {currentCase?.evidence.map(e => (<EvidenceDetail key={e.id} evidenceIdProp={e.id}/>))}
                         </>
                     )}
+                    {tab == 'coc' && <ChainOfCustody evidence={ currentCase ? currentCase?.evidence: null}/>}
                 </div>
             </div>
         </main>

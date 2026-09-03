@@ -220,3 +220,25 @@ main{
   overflow: scroll;
   height: calc(100vh - 104px);
 }
+
+.chain-node{
+  position: absolute;
+  left: 9px;
+  top: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  border: 1.5px solid var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chain-node::after{
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--color-primary);
+  border-radius: 50%;
+}
